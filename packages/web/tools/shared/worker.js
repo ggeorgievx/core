@@ -16,7 +16,7 @@ onconnect = function (e) {
   const c = gateway.connect((client, msg) => port.postMessage(msg))
 
   port.onmessage = function (e) {
-    console.log(e);
+    console.log(e);}
 
     c.then((client) => client.send(e.data));
   }

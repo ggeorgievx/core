@@ -348,6 +348,10 @@ export namespace Glue42Web {
      */
     export namespace Notifications {
         export interface API {
+            /**
+             * Raises a new notification
+             * @param notification notification options
+             */
             raise(notification: Glue42NotificationOptions): Promise<Notification>;
         }
 
@@ -356,8 +360,6 @@ export namespace Glue42Web {
             title: string;
             /** set to make the notification click invoke an interop method with specific arguments */
             clickInterop?: InteropActionSettings;
-            /** TODO - move this to glue desktop  */
-            actions?: Glue42NotificationAction[];
         }
 
         export interface Glue42NotificationAction extends NotificationAction {

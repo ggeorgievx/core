@@ -1,5 +1,6 @@
 import { Glue42Web } from "../../web";
 import { Glue42Core } from "@glue42/core";
+import shortid from "shortid";
 
 export class Notifications implements Glue42Web.Notifications.API {
     constructor(private interop: Glue42Core.Interop.API) {
@@ -21,13 +22,19 @@ export class Notifications implements Glue42Web.Notifications.API {
 
         await permissionPromise;
 
-        const notification = new Notification(options.title, options);
+        const notification = this.raiseUsingWebApi(options);
+
         if (options.clickInterop) {
             const interopOptions = options.clickInterop;
             notification.onclick = () => {
                 this.interop.invoke(interopOptions.method, interopOptions?.arguments ?? {}, interopOptions?.target ?? "best");
             };
         }
+
         return notification;
+    }
+
+    private raiseUsingWebApi(options: Glue42Web.Notifications.Glue42NotificationOptions): Notification {
+        return new Notification(options.title, options);
     }
 }
