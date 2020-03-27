@@ -1,0 +1,27 @@
+<head>
+    <script src="../shared/web.umd.js"></script>
+    <script>
+        GlueWeb().then((glue) => {
+            window.glue = glue;
+            document.getElementById("id").innerHTML += ` ${glue.windows.my().id}`;
+            document.getElementById("value").innerText = glue.windows.my().context.number || 0;
+
+            glue.layouts.onSaveRequested(() => {
+                const value = Number(document.getElementById("value").innerText);
+                return { windowContext: { number: value } };
+            });
+        });
+
+        function increaseValue() {
+            let value = Number(document.getElementById("value").innerText);
+            value++;
+            document.getElementById("value").innerText = value;
+        }
+    </script>
+    <title>Layouts</title>
+</head>
+
+<body style="background-color:powderblue;">
+    <h1 id="id">child</h1>
+    <h2 id="value">0 </h2><button onclick="increaseValue()">+</button>
+</body>
