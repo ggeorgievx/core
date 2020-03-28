@@ -1,16 +1,16 @@
-import { Glue42Core } from "@glue42/core";
 import { LocalWebWindow } from "../windows/my";
 import { RemoteCommand, ControlDomain, LayoutRemoteCommand } from "./commands";
+import { Glue42Web } from "../../web";
 
 export class Control {
     public static CONTROL_METHOD = "GC.Control";
 
     private myWindow: LocalWebWindow | undefined;
-    private interop!: Glue42Core.Interop.API;
+    private interop!: Glue42Web.Interop.API;
     private callbacks: { [domain: string]: (command: RemoteCommand) => void } = {};
-    private logger!: Glue42Core.Logger.API;
+    private logger!: Glue42Web.Logger.API;
 
-    public start(interop: Glue42Core.Interop.API, logger: Glue42Core.Logger.API) {
+    public start(interop: Glue42Web.Interop.API, logger: Glue42Web.Logger.API) {
         this.interop = interop;
         this.logger = logger;
         this.interop.register(Control.CONTROL_METHOD, async (arg: any) => {
@@ -31,7 +31,7 @@ export class Control {
         });
     }
 
-    public send(command: RemoteCommand, target: Glue42Core.Interop.Instance) {
+    public send(command: RemoteCommand, target: Glue42Web.Interop.Instance) {
         if (!this.interop) {
             throw new Error("Control not started");
         }

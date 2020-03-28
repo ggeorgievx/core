@@ -13,6 +13,10 @@ export default GlueWebFactory;
 // tslint:disable-next-line:no-namespace
 export namespace Glue42Web {
 
+    export import Interop = Glue42Core.Interop;
+    export import Contexts = Glue42Core.Contexts;
+    export import Logger = Glue42Core.Logger;
+
     export interface Config {
         /**
          * By default @glue42/web will try to connect to a shared worker located in "/shared/worker.js". Use this ot override the shared worker location.

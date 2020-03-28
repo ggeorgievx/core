@@ -1,9 +1,7 @@
 import { Glue42Web } from "../../web";
-import { Glue42Core } from "@glue42/core";
-import shortid from "shortid";
 
 export class Notifications implements Glue42Web.Notifications.API {
-    constructor(private interop: Glue42Core.Interop.API) {
+    constructor(private interop: Glue42Web.Interop.API) {
     }
 
     public async raise(options: Glue42Web.Notifications.Glue42NotificationOptions): Promise<Notification> {

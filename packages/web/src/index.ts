@@ -10,7 +10,8 @@ import { defaultWorkerLocation } from "./defaults";
 import { buildConfig } from "./config";
 import { Control } from "./control/control";
 import { SaveAutoLayoutCommand } from "./control/commands";
-import { LocalWebWindow } from "./windows/my";
+import { restoreAutoSavedLayout } from "./layouts/autoRestore";
+import { initStartupContext } from "./windows/startup";
 
 const CreateGlueWeb: GlueWebFactory = async (config?: Glue42Web.Config): Promise<Glue42Web.API | Glue42.Glue> => {
     config = await buildConfig(config);
@@ -56,27 +57,17 @@ const CreateGlueWeb: GlueWebFactory = async (config?: Glue42Web.Config): Promise
     };
 
     const core = await Glue42CoreFactory(coreConfig, ext) as Glue42Web.API;
+    // start control component
     control.start(core.interop, core.logger.subLogger("control"));
-
+    // fill in our window context
     await initStartupContext(core);
-    await restoreAutoSavedLayout(core, config);
+    // if there is a saved layout restore it
+    if (config.layouts?.autoRestore) {
+        await restoreAutoSavedLayout(core);
+    }
     await hookCloseEvents(core, config, control);
 
     return core;
-};
-
-const initStartupContext = async (core: Glue42Web.API) => {
-    // retrieve the startup context from the window that created us
-    const methodName = `GC.Wnd.${core.interop.instance.windowId}`;
-    if (core.interop.methods().find((m) => m.name === methodName)) {
-        const result = await core.interop.invoke<StartingContext>(methodName);
-        const my = core.windows?.my() as LocalWebWindow;
-        if (my) {
-            my.setContext(result.returned.context);
-            my.name = result.returned.name;
-            my.parent = result.returned.parent;
-        }
-    }
 };
 
 const hookCloseEvents = (api: Glue42Web.API, config: Glue42Web.Config, control: Control) => {
@@ -124,36 +115,6 @@ const hookCloseEvents = (api: Glue42Web.API, config: Glue42Web.Config, control: 
     });
 };
 
-const restoreAutoSavedLayout = (api: Glue42Web.API, config: Glue42Web.Config): Promise<void> => {
-    if (!config.layouts?.autoRestore) {
-        return Promise.resolve();
-    }
-    const layoutName = `_auto_${document.location.href}`;
-    const layout = api.layouts.list().find((l) => l.name === layoutName);
-    if (!layout) {
-        return Promise.resolve();
-    }
-    const my: LocalWebWindow = api.windows.my() as LocalWebWindow;
-    if (my.parent) {
-        // stop the restore at level 1
-        return Promise.resolve();
-    }
-
-    api.logger.info(`restoring layout ${layoutName}`);
-    // set the context to our window
-    const mainComponent = layout.components.find((c) => c.main);
-    my.setContext(mainComponent?.windowContext);
-
-    try {
-        return api.layouts.restore({
-            name: layoutName,
-            closeRunningInstance: false,
-        });
-    } catch (e) {
-        api.logger.error(e);
-        return Promise.resolve();
-    }
-};
 // attach to window object
 if (typeof window !== "undefined") {
     (window as any).GlueWeb = CreateGlueWeb;

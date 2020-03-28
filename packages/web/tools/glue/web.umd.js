@@ -2079,13 +2079,16 @@
             }
         };
         GW3ProtocolImpl.prototype.ping = function () {
+            var _this = this;
             if (!this.shouldTryLogin) {
                 return;
             }
             if (this._isLoggedIn) {
                 this.connection.send({ type: "ping" });
             }
-            this.pingTimer = setTimeout(this.ping, 30 * 1000);
+            this.pingTimer = setTimeout(function () {
+                _this.ping();
+            }, 30 * 1000);
         };
         GW3ProtocolImpl.prototype.authToken = function () {
             var createTokenReq = {
@@ -2452,7 +2455,7 @@
                 }
             }
             if (this.canPublish(level, this.publishLevel())) {
-                if ((_a = Logger.Interop) === null || _a === void 0 ? void 0 : _a.methods({ name: Logger.InteropMethodName })) {
+                if (((_a = Logger.Interop) === null || _a === void 0 ? void 0 : _a.methods({ name: Logger.InteropMethodName }).length) > 0) {
                     (_b = Logger.Interop) === null || _b === void 0 ? void 0 : _b.invoke(Logger.InteropMethodName, {
                         msg: "" + message,
                         logger: loggerName,
@@ -2533,7 +2536,7 @@
         }
     };
 
-    var version = "5.0.0-beta.11";
+    var version = "5.0.0-beta.12";
 
     function prepareConfig (configuration, ext, glue42gd) {
         var _a, _b, _c, _d;
@@ -6764,7 +6767,7 @@
         LocalWebWindow.prototype.getContext = function () {
             return __awaiter(this, void 0, void 0, function () {
                 return __generator(this, function (_a) {
-                    return [2, this.getContextSync];
+                    return [2, this.getContextSync()];
                 });
             });
         };
@@ -6821,6 +6824,40 @@
         return ChildWebWindow;
     }(RemoteWebWindow));
 
+    var registerChildStartupContext = function (interop, parent, id, name, options) {
+        var _a, _b;
+        var methodName = createMethodName(id);
+        var startingContext = {
+            context: (_b = (_a = options) === null || _a === void 0 ? void 0 : _a.context, (_b !== null && _b !== void 0 ? _b : {})),
+            name: name,
+            parent: parent
+        };
+        interop.register(methodName, function () { return startingContext; });
+    };
+    var initStartupContext = function (core) { return __awaiter(void 0, void 0, void 0, function () {
+        var my, methodName, result;
+        var _a;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    my = (_a = core.windows) === null || _a === void 0 ? void 0 : _a.my();
+                    methodName = createMethodName(my.id);
+                    if (!core.interop.methods().find(function (m) { return m.name === methodName; })) return [3, 2];
+                    return [4, core.interop.invoke(methodName)];
+                case 1:
+                    result = _b.sent();
+                    if (my) {
+                        my.setContext(result.returned.context);
+                        my.name = result.returned.name;
+                        my.parent = result.returned.parent;
+                    }
+                    _b.label = 2;
+                case 2: return [2];
+            }
+        });
+    }); };
+    var createMethodName = function (id) { return "\"GC.Wnd.\"" + id; };
+
     var Windows = (function () {
         function Windows(interop, control) {
             var _a, _b;
@@ -6867,7 +6904,7 @@
                             left = (_f = (_e = options) === null || _e === void 0 ? void 0 : _e.left, (_f !== null && _f !== void 0 ? _f : window.screen.availWidth - window.screenLeft));
                             top = (_h = (_g = options) === null || _g === void 0 ? void 0 : _g.top, (_h !== null && _h !== void 0 ? _h : 0));
                             id = shortid$1();
-                            this.registerChildWindowStartingContext(id, name, options);
+                            registerChildStartupContext(this.interop, this.my().id, id, name, options);
                             if (!((_j = options) === null || _j === void 0 ? void 0 : _j.relativeTo)) return [3, 2];
                             relativeWindowId_1 = options.relativeTo;
                             relativeWindow = this.list().find(function (w) { return w.id === relativeWindowId_1; });
@@ -6913,16 +6950,6 @@
                 return undefined;
             }
             return new RemoteWebWindow(server.windowId, (_a = server.application, (_a !== null && _a !== void 0 ? _a : "")), this.control);
-        };
-        Windows.prototype.registerChildWindowStartingContext = function (id, name, options) {
-            var _a, _b;
-            var methodName = "GC.Wnd." + id;
-            var startingContext = {
-                context: (_b = (_a = options) === null || _a === void 0 ? void 0 : _a.context, (_b !== null && _b !== void 0 ? _b : {})),
-                name: name,
-                parent: this.my().id
-            };
-            this.interop.register(methodName, function () { return startingContext; });
         };
         Windows.prototype.getRelativeBounds = function (rect, relativeTo, relativeDirection) {
             var edgeDistance = 0;
@@ -7327,14 +7354,40 @@
         });
     }); };
 
+    var restoreAutoSavedLayout = function (api) {
+        var _a;
+        var layoutName = "_auto_" + document.location.href;
+        var layout = api.layouts.list().find(function (l) { return l.name === layoutName; });
+        if (!layout) {
+            return Promise.resolve();
+        }
+        var my = api.windows.my();
+        if (my.parent) {
+            return Promise.resolve();
+        }
+        api.logger.info("restoring layout " + layoutName);
+        var mainComponent = layout.components.find(function (c) { return c.main; });
+        my.setContext((_a = mainComponent) === null || _a === void 0 ? void 0 : _a.windowContext);
+        try {
+            return api.layouts.restore({
+                name: layoutName,
+                closeRunningInstance: false,
+            });
+        }
+        catch (e) {
+            api.logger.error(e);
+            return Promise.resolve();
+        }
+    };
+
     var CreateGlueWeb = function (config) { return __awaiter(void 0, void 0, void 0, function () {
         var gdWindowContext, control, windows, ext, coreConfig, core;
-        var _a, _b, _c;
-        return __generator(this, function (_d) {
-            switch (_d.label) {
+        var _a, _b, _c, _d;
+        return __generator(this, function (_e) {
+            switch (_e.label) {
                 case 0: return [4, buildConfig(config)];
                 case 1:
-                    config = _d.sent();
+                    config = _e.sent();
                     gdWindowContext = window;
                     if (gdWindowContext.glue42gd && gdWindowContext.Glue) {
                         return [2, gdWindowContext.Glue({
@@ -7371,40 +7424,20 @@
                     };
                     return [4, GlueCore(coreConfig, ext)];
                 case 2:
-                    core = _d.sent();
+                    core = _e.sent();
                     control.start(core.interop, core.logger.subLogger("control"));
                     return [4, initStartupContext(core)];
                 case 3:
-                    _d.sent();
-                    return [4, restoreAutoSavedLayout(core, config)];
+                    _e.sent();
+                    if (!((_d = config.layouts) === null || _d === void 0 ? void 0 : _d.autoRestore)) return [3, 5];
+                    return [4, restoreAutoSavedLayout(core)];
                 case 4:
-                    _d.sent();
-                    return [4, hookCloseEvents(core, config, control)];
-                case 5:
-                    _d.sent();
+                    _e.sent();
+                    _e.label = 5;
+                case 5: return [4, hookCloseEvents(core, config, control)];
+                case 6:
+                    _e.sent();
                     return [2, core];
-            }
-        });
-    }); };
-    var initStartupContext = function (core) { return __awaiter(void 0, void 0, void 0, function () {
-        var methodName, result, my;
-        var _a;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
-                case 0:
-                    methodName = "GC.Wnd." + core.interop.instance.windowId;
-                    if (!core.interop.methods().find(function (m) { return m.name === methodName; })) return [3, 2];
-                    return [4, core.interop.invoke(methodName)];
-                case 1:
-                    result = _b.sent();
-                    my = (_a = core.windows) === null || _a === void 0 ? void 0 : _a.my();
-                    if (my) {
-                        my.setContext(result.returned.context);
-                        my.name = result.returned.name;
-                        my.parent = result.returned.parent;
-                    }
-                    _b.label = 2;
-                case 2: return [2];
             }
         });
     }); };
@@ -7458,34 +7491,6 @@
                 return [2];
             });
         }); });
-    };
-    var restoreAutoSavedLayout = function (api, config) {
-        var _a, _b;
-        if (!((_a = config.layouts) === null || _a === void 0 ? void 0 : _a.autoRestore)) {
-            return Promise.resolve();
-        }
-        var layoutName = "_auto_" + document.location.href;
-        var layout = api.layouts.list().find(function (l) { return l.name === layoutName; });
-        if (!layout) {
-            return Promise.resolve();
-        }
-        var my = api.windows.my();
-        if (my.parent) {
-            return Promise.resolve();
-        }
-        api.logger.info("restoring layout " + layoutName);
-        var mainComponent = layout.components.find(function (c) { return c.main; });
-        my.setContext((_b = mainComponent) === null || _b === void 0 ? void 0 : _b.windowContext);
-        try {
-            return api.layouts.restore({
-                name: layoutName,
-                closeRunningInstance: false,
-            });
-        }
-        catch (e) {
-            api.logger.error(e);
-            return Promise.resolve();
-        }
     };
     if (typeof window !== "undefined") {
         window.GlueWeb = CreateGlueWeb;

@@ -1,10 +1,10 @@
 importScripts("./pwa-gateway.js");
 
-node_gateway.core.configure_logging({
+gateway_web.core.configure_logging({
 	level:"error"
 });
 
-const gateway = node_gateway.core.create({
+const gateway = gateway_web.core.create({
 });
 
 gateway.start();

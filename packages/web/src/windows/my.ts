@@ -1,7 +1,6 @@
 import { Control } from "../control/control";
 import { default as CallbackFactory, UnsubscribeFunction } from "callback-registry";
 import { Glue42Web } from "../../web";
-import { Glue42Core } from "@glue42/core";
 
 /**
  * Our local window
@@ -14,7 +13,7 @@ export class LocalWebWindow implements Glue42Web.Windows.WebWindow {
     private context = {};
     private registry = CallbackFactory();
 
-    constructor(public id: string, public name: string, private window: Window, private control: Control, private interop: Glue42Core.Interop.API) {
+    constructor(public id: string, public name: string, private window: Window, private control: Control, private interop: Glue42Web.Interop.API) {
         control.setLocalWindow(this);
     }
 
@@ -65,7 +64,7 @@ export class LocalWebWindow implements Glue42Web.Windows.WebWindow {
     }
 
     public async getContext(): Promise<any> {
-        return this.getContextSync;
+        return this.getContextSync();
     }
 
     public getContextSync(): object {

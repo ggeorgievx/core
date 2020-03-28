@@ -2,7 +2,7 @@
 let api;
 function initGrid() {
     const columnDefs = [
-        { headerName: "server", field: "server", width: 300 },
+        { headerName: "window", field: "window", width: 300 },
         { headerName: "method", field: "method", width: 300 },
         { headerName: "accepts", field: "accepts", width: 100 },
         { headerName: "returns", field: "returns", width: 100 },
@@ -46,7 +46,7 @@ async function refreshList() {
     for (const server of servers) {
         for (const method of server.getMethods()) {
             items.push({
-                server: server.instance,
+                window: server.windowId,
                 method: method.name,
                 accepts: method.accepts,
                 returns: method.returns

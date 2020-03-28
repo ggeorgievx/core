@@ -1,7 +1,6 @@
 import { Glue42Web } from "../../web";
 import { LocalStorage } from "./localStorage";
 import { Windows } from "../windows/main";
-import { Glue42Core } from "@glue42/core";
 import { LocalWebWindow } from "../windows/my";
 import { Control } from "../control/control";
 import { SaveAutoLayoutCommandArgs, SaveAutoLayoutCommand, RemoteCommand } from "../control/commands";
@@ -12,7 +11,7 @@ export class Layouts implements Glue42Web.Layouts.API {
     private getLocalInfoCallback?: (context?: object | undefined) => Glue42Web.Layouts.SaveRequestResponse;
     private autoSaveContext: boolean;
 
-    constructor(private windows: Windows, private interop: Glue42Core.Interop.API, private logger: Glue42Core.Logger.API, private control: Control, config?: Glue42Web.Config) {
+    constructor(private windows: Windows, private interop: Glue42Web.Interop.API, private logger: Glue42Web.Logger.API, private control: Control, config?: Glue42Web.Config) {
         this.registerRequestMethods();
         this.control.subscribe("layouts", this.handleControlMessage.bind(this));
         this.autoSaveContext = config?.layouts?.autoSaveWindowContext ?? false;
@@ -125,7 +124,7 @@ export class Layouts implements Glue42Web.Layouts.API {
     }
 
     private async getRemoteWindowsInfo(windows: string[]): Promise<Glue42Web.Layouts.LayoutComponentInfo[]> {
-        const promises: Array<Promise<Glue42Core.Interop.InvocationResult<Glue42Web.Layouts.LayoutComponentInfo>>> = [];
+        const promises: Array<Promise<Glue42Web.Interop.InvocationResult<Glue42Web.Layouts.LayoutComponentInfo>>> = [];
         for (const id of windows) {
             const interopServer = this.interop.servers().find((s) => s.windowId === id);
             if (!interopServer || !interopServer.getMethods) {

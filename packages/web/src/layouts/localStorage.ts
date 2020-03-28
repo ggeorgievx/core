@@ -1,5 +1,4 @@
 import { Glue42Web } from "../../web";
-import { Glue42Core } from "@glue42/core";
 
 interface LocalStorageEntry {
     [name: string]: Glue42Web.Layouts.Layout;

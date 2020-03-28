@@ -10,8 +10,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
 GlueWeb({
     layouts: {
-        autoSaveOnClose: initialAutoSave,
-        autoRestoreOnStartup: initialAutoRestore,
+        autoRestore: true,
         autoSaveWindowContext: true
     }
 }).then((glue) => {

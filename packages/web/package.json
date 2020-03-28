@@ -23,7 +23,7 @@
         "coverage": "nyc npm run test",
         "publish:beta": "npm publish --tag beta",
         "build": "npm run tslint && tsc -p ./tsconfig.json && rollup -c",
-        "updateTools": "copyfiles -f ./dist/web.umd.js* tools/glue"
+        "buildTools": "npm run build && copyfiles -f ./dist/web.umd.js* tools/glue"
     },
     "author": {
         "name": "Glue42",
@@ -31,7 +31,7 @@
     },
     "license": "MIT",
     "dependencies": {
-        "@glue42/core": "^5.0.0-beta.11",
+        "@glue42/core": "^5.0.0-beta.12",
         "shortid": "^2.2.15"
     },
     "devDependencies": {

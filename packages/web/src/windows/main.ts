@@ -1,19 +1,18 @@
-import { Glue42Core } from "@glue42/core";
 import { Glue42Web } from "../../web";
 import shortid from "shortid";
 import { RemoteWebWindow } from "./remote";
 import { Control } from "../control/control";
 import { LocalWebWindow } from "./my";
 import { default as CallbackFactory, UnsubscribeFunction } from "callback-registry";
-import { StartingContext } from "../types";
 import { ChildWebWindow } from "./child";
+import { registerChildStartupContext } from "./startup";
 
 export class Windows implements Glue42Web.Windows.API {
     private registry = CallbackFactory();
     private childWindows: ChildWebWindow[] = [];
     private myWindow: LocalWebWindow;
 
-    constructor(private interop: Glue42Core.Interop.API, private control: Control) {
+    constructor(private interop: Glue42Web.Interop.API, private control: Control) {
         const windowAsAny = window as any;
         const id = interop.instance.windowId as string;
         const name = windowAsAny.glue0?.name ?? `document.title (${shortid()})`; // TODO the second part should come from glue config
@@ -54,7 +53,7 @@ export class Windows implements Glue42Web.Windows.API {
         let top = options?.top ?? 0;
         const id = shortid();
 
-        this.registerChildWindowStartingContext(id, name, options);
+        registerChildStartupContext(this.interop, this.my().id, id, name, options);
 
         if (options?.relativeTo) {
             const relativeWindowId = options.relativeTo;
@@ -97,21 +96,11 @@ export class Windows implements Glue42Web.Windows.API {
         return this.childWindows;
     }
 
-    private remoteFromServer(server: Glue42Core.Interop.Instance): RemoteWebWindow | undefined {
+    private remoteFromServer(server: Glue42Web.Interop.Instance): RemoteWebWindow | undefined {
         if (!server.windowId) {
             return undefined;
         }
         return new RemoteWebWindow(server.windowId, server.application ?? "", this.control);
-    }
-
-    private registerChildWindowStartingContext(id: string, name: string, options?: Glue42Web.Windows.CreateOptions) {
-        const methodName = `GC.Wnd.${id}`;
-        const startingContext: StartingContext = {
-            context: options?.context ?? {},
-            name,
-            parent: this.my().id
-        };
-        this.interop.register(methodName, () => startingContext);
     }
 
     private getRelativeBounds(rect: Glue42Web.Windows.Bounds, relativeTo: Glue42Web.Windows.Bounds, relativeDirection: Glue42Web.Windows.RelativeDirection): Glue42Web.Windows.Bounds {
