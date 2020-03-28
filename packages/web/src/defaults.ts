@@ -1,14 +1,13 @@
 import { Glue42Web } from "../web";
 
-export const defaultConfigLocation = "/shared/glue.config.json";
-export const sharedWorkerLocation = "/shared/worker.js";
+export const defaultConfigLocation = "/glue/glue.config.json";
+export const defaultWorkerLocation = "/glue/worker.js";
 
 export const defaultConfig: Glue42Web.Config = {
-    sharedWorker: sharedWorkerLocation,
+    worker: defaultWorkerLocation,
     extends: defaultConfigLocation,
     layouts: {
-        autoSaveOnClose: false,
-        autoRestoreOnStartup: false,
+        autoRestore: false,
         autoSaveWindowContext: false
     },
     logger: "error",

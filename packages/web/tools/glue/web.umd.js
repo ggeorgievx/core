@@ -7209,7 +7209,7 @@
         }
         Notifications.prototype.raise = function (options) {
             return __awaiter(this, void 0, void 0, function () {
-                var permissionPromise, serviceWorkers, notification, interopOptions_1;
+                var permissionPromise, notification, interopOptions_1;
                 var _this = this;
                 return __generator(this, function (_a) {
                     switch (_a.label) {
@@ -7229,17 +7229,7 @@
                             return [4, permissionPromise];
                         case 1:
                             _a.sent();
-                            return [4, navigator.serviceWorker.getRegistrations()];
-                        case 2:
-                            serviceWorkers = _a.sent();
-                            if (!(serviceWorkers.length === 0)) return [3, 3];
                             notification = this.raiseUsingWebApi(options);
-                            return [3, 5];
-                        case 3: return [4, this.raiseUsingServiceWorkerApi(serviceWorkers[0], options)];
-                        case 4:
-                            notification = _a.sent();
-                            _a.label = 5;
-                        case 5:
                             if (options.clickInterop) {
                                 interopOptions_1 = options.clickInterop;
                                 notification.onclick = function () {
@@ -7252,40 +7242,19 @@
                 });
             });
         };
-        Notifications.prototype.raiseUsingServiceWorkerApi = function (serviceWorker, options) {
-            var _a, _b;
-            return __awaiter(this, void 0, void 0, function () {
-                var notifications, current;
-                return __generator(this, function (_c) {
-                    switch (_c.label) {
-                        case 0:
-                            options.tag = (_a = options.tag, (_a !== null && _a !== void 0 ? _a : shortid$1()));
-                            return [4, serviceWorker.showNotification(options.title, options)];
-                        case 1:
-                            _c.sent();
-                            return [4, serviceWorker.getNotifications()];
-                        case 2:
-                            notifications = _c.sent();
-                            current = (_b = notifications.find(function (n) { return n.tag === options.tag; }), (_b !== null && _b !== void 0 ? _b : notifications[notifications.length - 1]));
-                            return [2, current];
-                    }
-                });
-            });
-        };
         Notifications.prototype.raiseUsingWebApi = function (options) {
             return new Notification(options.title, options);
         };
         return Notifications;
     }());
 
-    var defaultConfigLocation = "/shared/glue.config.json";
-    var sharedWorkerLocation = "/shared/worker.js";
+    var defaultConfigLocation = "/glue/glue.config.json";
+    var defaultWorkerLocation = "/glue/worker.js";
     var defaultConfig = {
-        sharedWorker: sharedWorkerLocation,
+        worker: defaultWorkerLocation,
         extends: defaultConfigLocation,
         layouts: {
-            autoSaveOnClose: false,
-            autoRestoreOnStartup: false,
+            autoRestore: false,
             autoSaveWindowContext: false
         },
         logger: "error",
@@ -7396,7 +7365,7 @@
                     };
                     coreConfig = {
                         gateway: {
-                            sharedWorker: (_b = (_a = config) === null || _a === void 0 ? void 0 : _a.sharedWorker, (_b !== null && _b !== void 0 ? _b : sharedWorkerLocation))
+                            sharedWorker: (_b = (_a = config) === null || _a === void 0 ? void 0 : _a.worker, (_b !== null && _b !== void 0 ? _b : defaultWorkerLocation))
                         },
                         logger: (_c = config) === null || _c === void 0 ? void 0 : _c.logger
                     };
@@ -7447,7 +7416,7 @@
             return __generator(this, function (_c) {
                 if (!done) {
                     done = true;
-                    shouldSave = (_b = (_a = config) === null || _a === void 0 ? void 0 : _a.layouts) === null || _b === void 0 ? void 0 : _b.autoSaveOnClose;
+                    shouldSave = (_b = (_a = config) === null || _a === void 0 ? void 0 : _a.layouts) === null || _b === void 0 ? void 0 : _b.autoRestore;
                     if (shouldSave) {
                         allChildren = api.windows.getChildWindows().map(function (w) { return w.id; });
                         firstChild = allChildren[0];
@@ -7492,7 +7461,7 @@
     };
     var restoreAutoSavedLayout = function (api, config) {
         var _a, _b;
-        if (!((_a = config.layouts) === null || _a === void 0 ? void 0 : _a.autoRestoreOnStartup)) {
+        if (!((_a = config.layouts) === null || _a === void 0 ? void 0 : _a.autoRestore)) {
             return Promise.resolve();
         }
         var layoutName = "_auto_" + document.location.href;

@@ -6,7 +6,7 @@ import { Layouts } from "./layouts/main";
 import { Glue42 } from "@glue42/desktop";
 import { Glue42DesktopWindowContext, StartingContext } from "./types";
 import { Notifications } from "./notifications/main";
-import { sharedWorkerLocation } from "./defaults";
+import { defaultWorkerLocation } from "./defaults";
 import { buildConfig } from "./config";
 import { Control } from "./control/control";
 import { SaveAutoLayoutCommand } from "./control/commands";
@@ -50,7 +50,7 @@ const CreateGlueWeb: GlueWebFactory = async (config?: Glue42Web.Config): Promise
 
     const coreConfig = {
         gateway: {
-            sharedWorker: config?.sharedWorker ?? sharedWorkerLocation
+            sharedWorker: config?.worker ?? defaultWorkerLocation
         },
         logger: config?.logger
     };
@@ -85,7 +85,7 @@ const hookCloseEvents = (api: Glue42Web.API, config: Glue42Web.Config, control: 
     const doneFn = async () => {
         if (!done) {
             done = true;
-            const shouldSave = config?.layouts?.autoSaveOnClose;
+            const shouldSave = config?.layouts?.autoRestore;
             if (shouldSave) {
                 // we don't have enough time to
                 const allChildren = (api.windows as Windows).getChildWindows().map((w) => w.id);
@@ -125,7 +125,7 @@ const hookCloseEvents = (api: Glue42Web.API, config: Glue42Web.Config, control: 
 };
 
 const restoreAutoSavedLayout = (api: Glue42Web.API, config: Glue42Web.Config): Promise<void> => {
-    if (!config.layouts?.autoRestoreOnStartup) {
+    if (!config.layouts?.autoRestore) {
         return Promise.resolve();
     }
     const layoutName = `_auto_${document.location.href}`;

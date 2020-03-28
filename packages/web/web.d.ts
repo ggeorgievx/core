@@ -16,12 +16,13 @@ export namespace Glue42Web {
     export interface Config {
         /**
          * By default @glue42/web will try to connect to a shared worker located in "/shared/worker.js". Use this ot override the shared worker location.
-         * @default "/shared/worker.js"
+         * @default "/glue/worker.js"
          */
-        sharedWorker?: string;
+        worker?: string;
 
         /**
          * Change the log level of the internal logger
+         * @ignore
          * @default error
          */
         logger?: Glue42Core.LogLevel;
@@ -31,23 +32,18 @@ export namespace Glue42Web {
          */
         layouts?: {
             /**
-             * If true the set of windows opened by the application will be saved (in local storage) when the window is closed
-             * The information saved includes URL, window bounds and custom data returned by the child window
+             * If true the set of windows opened by the application will be saved (in local storage) when the window is closed and restored
+             * when the window is started again. The data saved about each window includes URL, bounds and custom window context.
+             * It will also save and restore the window context of the current window.
              * @default false
              */
-            autoSaveOnClose?: boolean;
+            autoRestore?: boolean;
 
             /**
              * If set will return glue.windows.my().context automatically when asked for layout state
              * @default false
              */
             autoSaveWindowContext?: boolean;
-
-            /**
-             * If true the last saved snapshot of windows opened by the application (@see autoSaveOnClose) will be restored on startup
-             * @default false
-             */
-            autoRestoreOnStartup?: boolean;
         };
 
         /**

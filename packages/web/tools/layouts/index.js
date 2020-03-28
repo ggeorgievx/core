@@ -23,13 +23,21 @@ GlueWeb({
     }
 
     // refresh the list with child windows every second (TODO - this should be event driven)
-    setInterval(() => refreshLayouts(), 1000);
+    setInterval(() => refreshChildWindows(), 1000);
+    refreshLayouts();
 });
 
 
 async function openNew() {
-    glue.windows.open("child", "./child.html");
+    let relativeTo = glue.windows.my().id;
+    const childWindows = glue.windows.getChildWindows();
+    if (childWindows.length > 0){
+        relativeTo = childWindows[childWindows.length - 1].id;
+    }
+
+    glue.windows.open("child", "./child.html", { relativeTo });
     refreshChildWindows();
+
 }
 
 function update() {

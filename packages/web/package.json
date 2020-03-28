@@ -22,7 +22,8 @@
         "auditPackage": "npm audit --registry=https://registry.npmjs.com",
         "coverage": "nyc npm run test",
         "publish:beta": "npm publish --tag beta",
-        "build": "npm run tslint && tsc -p ./tsconfig.json && rollup -c && copyfiles -f ./dist/web.umd.js* tools/shared"
+        "build": "npm run tslint && tsc -p ./tsconfig.json && rollup -c",
+        "updateTools": "copyfiles -f ./dist/web.umd.js* tools/glue"
     },
     "author": {
         "name": "Glue42",
