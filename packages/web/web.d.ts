@@ -6,8 +6,8 @@ import { Glue42 } from "@glue42/desktop";
  * Factory function that creates a new Glue42Web API.
  * If your application is running in Glue42 Enterprise this will return a Glue42.Glue API, which is a super-set of the Glue42Web API.
  */
-type GlueWebFactory = (config?: Glue42Web.Config) => Promise<Glue42Web.API | Glue42.Glue>;
-
+export type GlueWebFactoryFunction = (config?: Glue42Web.Config) => Promise<Glue42Web.API | Glue42.Glue>;
+declare const GlueWebFactory: GlueWebFactoryFunction;
 export default GlueWebFactory;
 
 // tslint:disable-next-line:no-namespace
@@ -210,7 +210,7 @@ export namespace Glue42Web {
          * @docmenuorder 11
          *
          */
-        export type LayoutType = "Global" | "Workspace";
+        export type LayoutType = "Global" | "Workspace" | "Activity";
 
         /**
          * Controls the import behavior. If `replace` (default), all existing layouts will be removed.
@@ -271,7 +271,7 @@ export namespace Glue42Web {
             type: LayoutType;
 
             /** Array of component objects describing the applications that are saved in the layout. */
-            components: LayoutComponentInfo[];
+            components: LayoutComponent[];
 
             /** Context object passed when the layout was saved. */
             context: any;
@@ -280,13 +280,25 @@ export namespace Glue42Web {
             metadata: any;
         }
 
-        export interface LayoutComponentInfo {
+        export type ComponentType = "activity" | "application";
+
+        export interface LayoutComponent {
             type: "window";
+
+            /** Type of the component - can be application or activity. */
+            componentType: ComponentType;
+
+            /** Object describing the application bounds, name, context, etc. */
+            state: LayoutComponentState;
+        }
+
+        export interface LayoutComponentState {
             name: any;
-            windowContext: any;
+            context: any;
             url: string;
             bounds: any;
             id: string;
+            parentId?: string;
             main: boolean;
         }
 

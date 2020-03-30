@@ -13,9 +13,8 @@ export class Windows implements Glue42Web.Windows.API {
     private myWindow: LocalWebWindow;
 
     constructor(private interop: Glue42Web.Interop.API, private control: Control) {
-        const windowAsAny = window as any;
         const id = interop.instance.windowId as string;
-        const name = windowAsAny.glue0?.name ?? `document.title (${shortid()})`; // TODO the second part should come from glue config
+        const name = `document.title (${shortid()})`;
         this.myWindow = new LocalWebWindow(id, name, window, this.control, this.interop);
 
         this.trackWindowsLifetime();
@@ -77,7 +76,7 @@ export class Windows implements Glue42Web.Windows.API {
         // adjust bounds
         newWindow.moveTo(left, top);
         newWindow.resizeTo(width, height);
-        const remoteWindow = new ChildWebWindow(newWindow, id, name, this.control);
+        const remoteWindow = new ChildWebWindow(newWindow, id, name, this.control, this);
         this.childWindows.push(remoteWindow);
         return remoteWindow;
     }
@@ -100,7 +99,7 @@ export class Windows implements Glue42Web.Windows.API {
         if (!server.windowId) {
             return undefined;
         }
-        return new RemoteWebWindow(server.windowId, server.application ?? "", this.control);
+        return new RemoteWebWindow(server.windowId, server.application ?? "", this.control, this);
     }
 
     private getRelativeBounds(rect: Glue42Web.Windows.Bounds, relativeTo: Glue42Web.Windows.Bounds, relativeDirection: Glue42Web.Windows.RelativeDirection): Glue42Web.Windows.Bounds {

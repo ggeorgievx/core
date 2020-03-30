@@ -81,6 +81,1468 @@
         }
     }
 
+    var version = "0.0.1-alpha.0";
+
+    function createCommonjsModule(fn, module) {
+    	return module = { exports: {} }, fn(module, module.exports), module.exports;
+    }
+
+    // Found this seed-based random generator somewhere
+    // Based on The Central Randomizer 1.3 (C) 1997 by Paul Houle (houle@msc.cornell.edu)
+
+    var seed = 1;
+
+    /**
+     * return a random number based on a seed
+     * @param seed
+     * @returns {number}
+     */
+    function getNextValue() {
+        seed = (seed * 9301 + 49297) % 233280;
+        return seed/(233280.0);
+    }
+
+    function setSeed(_seed_) {
+        seed = _seed_;
+    }
+
+    var randomFromSeed = {
+        nextValue: getNextValue,
+        seed: setSeed
+    };
+
+    var ORIGINAL = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-';
+    var alphabet;
+    var previousSeed;
+
+    var shuffled;
+
+    function reset() {
+        shuffled = false;
+    }
+
+    function setCharacters(_alphabet_) {
+        if (!_alphabet_) {
+            if (alphabet !== ORIGINAL) {
+                alphabet = ORIGINAL;
+                reset();
+            }
+            return;
+        }
+
+        if (_alphabet_ === alphabet) {
+            return;
+        }
+
+        if (_alphabet_.length !== ORIGINAL.length) {
+            throw new Error('Custom alphabet for shortid must be ' + ORIGINAL.length + ' unique characters. You submitted ' + _alphabet_.length + ' characters: ' + _alphabet_);
+        }
+
+        var unique = _alphabet_.split('').filter(function(item, ind, arr){
+           return ind !== arr.lastIndexOf(item);
+        });
+
+        if (unique.length) {
+            throw new Error('Custom alphabet for shortid must be ' + ORIGINAL.length + ' unique characters. These characters were not unique: ' + unique.join(', '));
+        }
+
+        alphabet = _alphabet_;
+        reset();
+    }
+
+    function characters(_alphabet_) {
+        setCharacters(_alphabet_);
+        return alphabet;
+    }
+
+    function setSeed$1(seed) {
+        randomFromSeed.seed(seed);
+        if (previousSeed !== seed) {
+            reset();
+            previousSeed = seed;
+        }
+    }
+
+    function shuffle() {
+        if (!alphabet) {
+            setCharacters(ORIGINAL);
+        }
+
+        var sourceArray = alphabet.split('');
+        var targetArray = [];
+        var r = randomFromSeed.nextValue();
+        var characterIndex;
+
+        while (sourceArray.length > 0) {
+            r = randomFromSeed.nextValue();
+            characterIndex = Math.floor(r * sourceArray.length);
+            targetArray.push(sourceArray.splice(characterIndex, 1)[0]);
+        }
+        return targetArray.join('');
+    }
+
+    function getShuffled() {
+        if (shuffled) {
+            return shuffled;
+        }
+        shuffled = shuffle();
+        return shuffled;
+    }
+
+    /**
+     * lookup shuffled letter
+     * @param index
+     * @returns {string}
+     */
+    function lookup(index) {
+        var alphabetShuffled = getShuffled();
+        return alphabetShuffled[index];
+    }
+
+    function get () {
+      return alphabet || ORIGINAL;
+    }
+
+    var alphabet_1 = {
+        get: get,
+        characters: characters,
+        seed: setSeed$1,
+        lookup: lookup,
+        shuffled: getShuffled
+    };
+
+    var crypto = typeof window === 'object' && (window.crypto || window.msCrypto); // IE 11 uses window.msCrypto
+
+    var randomByte;
+
+    if (!crypto || !crypto.getRandomValues) {
+        randomByte = function(size) {
+            var bytes = [];
+            for (var i = 0; i < size; i++) {
+                bytes.push(Math.floor(Math.random() * 256));
+            }
+            return bytes;
+        };
+    } else {
+        randomByte = function(size) {
+            return crypto.getRandomValues(new Uint8Array(size));
+        };
+    }
+
+    var randomByteBrowser = randomByte;
+
+    var format_browser = function (random, alphabet, size) {
+      var mask = (2 << Math.log(alphabet.length - 1) / Math.LN2) - 1;
+      var step = -~(1.6 * mask * size / alphabet.length);
+      var id = '';
+
+      while (true) {
+        var i = step;
+        var bytes = random(i);
+        while (i--) {
+          id += alphabet[bytes[i] & mask] || '';
+          if (id.length === +size) return id
+        }
+      }
+    };
+
+    function generate(number) {
+        var loopCounter = 0;
+        var done;
+
+        var str = '';
+
+        while (!done) {
+            str = str + format_browser(randomByteBrowser, alphabet_1.get(), 1);
+            done = number < (Math.pow(16, loopCounter + 1 ) );
+            loopCounter++;
+        }
+        return str;
+    }
+
+    var generate_1 = generate;
+
+    // Ignore all milliseconds before a certain time to reduce the size of the date entropy without sacrificing uniqueness.
+    // This number should be updated every year or so to keep the generated id short.
+    // To regenerate `new Date() - 0` and bump the version. Always bump the version!
+    var REDUCE_TIME = 1567752802062;
+
+    // don't change unless we change the algos or REDUCE_TIME
+    // must be an integer and less than 16
+    var version$1 = 7;
+
+    // Counter is used when shortid is called multiple times in one second.
+    var counter;
+
+    // Remember the last time shortid was called in case counter is needed.
+    var previousSeconds;
+
+    /**
+     * Generate unique id
+     * Returns string id
+     */
+    function build(clusterWorkerId) {
+        var str = '';
+
+        var seconds = Math.floor((Date.now() - REDUCE_TIME) * 0.001);
+
+        if (seconds === previousSeconds) {
+            counter++;
+        } else {
+            counter = 0;
+            previousSeconds = seconds;
+        }
+
+        str = str + generate_1(version$1);
+        str = str + generate_1(clusterWorkerId);
+        if (counter > 0) {
+            str = str + generate_1(counter);
+        }
+        str = str + generate_1(seconds);
+        return str;
+    }
+
+    var build_1 = build;
+
+    function isShortId(id) {
+        if (!id || typeof id !== 'string' || id.length < 6 ) {
+            return false;
+        }
+
+        var nonAlphabetic = new RegExp('[^' +
+          alphabet_1.get().replace(/[|\\{}()[\]^$+*?.-]/g, '\\$&') +
+        ']');
+        return !nonAlphabetic.test(id);
+    }
+
+    var isValid = isShortId;
+
+    var lib = createCommonjsModule(function (module) {
+
+
+
+
+
+    // if you are using cluster or multiple servers use this to make each instance
+    // has a unique value for worker
+    // Note: I don't know if this is automatically set when using third
+    // party cluster solutions such as pm2.
+    var clusterWorkerId =  0;
+
+    /**
+     * Set the seed.
+     * Highly recommended if you don't want people to try to figure out your id schema.
+     * exposed as shortid.seed(int)
+     * @param seed Integer value to seed the random alphabet.  ALWAYS USE THE SAME SEED or you might get overlaps.
+     */
+    function seed(seedValue) {
+        alphabet_1.seed(seedValue);
+        return module.exports;
+    }
+
+    /**
+     * Set the cluster worker or machine id
+     * exposed as shortid.worker(int)
+     * @param workerId worker must be positive integer.  Number less than 16 is recommended.
+     * returns shortid module so it can be chained.
+     */
+    function worker(workerId) {
+        clusterWorkerId = workerId;
+        return module.exports;
+    }
+
+    /**
+     *
+     * sets new characters to use in the alphabet
+     * returns the shuffled alphabet
+     */
+    function characters(newCharacters) {
+        if (newCharacters !== undefined) {
+            alphabet_1.characters(newCharacters);
+        }
+
+        return alphabet_1.shuffled();
+    }
+
+    /**
+     * Generate unique id
+     * Returns string id
+     */
+    function generate() {
+      return build_1(clusterWorkerId);
+    }
+
+    // Export all other functions as properties of the generate function
+    module.exports = generate;
+    module.exports.generate = generate;
+    module.exports.seed = seed;
+    module.exports.worker = worker;
+    module.exports.characters = characters;
+    module.exports.isValid = isValid;
+    });
+    var lib_1 = lib.generate;
+    var lib_2 = lib.seed;
+    var lib_3 = lib.worker;
+    var lib_4 = lib.characters;
+    var lib_5 = lib.isValid;
+
+    var shortid = lib;
+
+    var RemoteWebWindow = (function () {
+        function RemoteWebWindow(id, name, control, windows) {
+            this.id = id;
+            this.name = name;
+            this.control = control;
+            this.windows = windows;
+        }
+        RemoteWebWindow.prototype.getURL = function () {
+            var _a, _b;
+            return __awaiter(this, void 0, void 0, function () {
+                var result;
+                return __generator(this, function (_c) {
+                    switch (_c.label) {
+                        case 0: return [4, this.callControl("getURL", {})];
+                        case 1:
+                            result = _c.sent();
+                            return [2, (_b = (_a = result) === null || _a === void 0 ? void 0 : _a.returned) === null || _b === void 0 ? void 0 : _b._value];
+                    }
+                });
+            });
+        };
+        RemoteWebWindow.prototype.moveResize = function (bounds) {
+            return __awaiter(this, void 0, void 0, function () {
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4, this.callControl("moveResize", bounds, true)];
+                        case 1:
+                            _a.sent();
+                            return [2, this];
+                    }
+                });
+            });
+        };
+        RemoteWebWindow.prototype.close = function () {
+            return __awaiter(this, void 0, void 0, function () {
+                var _this = this;
+                return __generator(this, function (_a) {
+                    return [2, new Promise(function (resolve, reject) {
+                            var done = function () {
+                                if (timeout) {
+                                    clearTimeout(timeout);
+                                }
+                                if (un) {
+                                    un();
+                                }
+                            };
+                            var un = _this.windows.onWindowRemoved(function (w) {
+                                if (w.id === _this.id) {
+                                    resolve(_this);
+                                    done();
+                                }
+                            });
+                            var timeout = setTimeout(function () {
+                                reject("can not close window - probably not opened by your window");
+                                done();
+                            }, 1000);
+                            _this.callControl("close", {}, true)
+                                .catch(function () {
+                            });
+                        })];
+                });
+            });
+        };
+        RemoteWebWindow.prototype.setTitle = function (title) {
+            return __awaiter(this, void 0, void 0, function () {
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0:
+                            if (typeof title === "string") {
+                                title = { title: title };
+                            }
+                            return [4, this.callControl("setTitle", title, true)];
+                        case 1:
+                            _a.sent();
+                            return [2, this];
+                    }
+                });
+            });
+        };
+        RemoteWebWindow.prototype.resizeTo = function (width, height) {
+            return __awaiter(this, void 0, void 0, function () {
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4, this.callControl("moveResize", { width: width, height: height }, true)];
+                        case 1:
+                            _a.sent();
+                            return [2, this];
+                    }
+                });
+            });
+        };
+        RemoteWebWindow.prototype.moveTo = function (top, left) {
+            return __awaiter(this, void 0, void 0, function () {
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4, this.callControl("moveResize", { top: top, left: left }, true)];
+                        case 1:
+                            _a.sent();
+                            return [2, this];
+                    }
+                });
+            });
+        };
+        RemoteWebWindow.prototype.getBounds = function () {
+            return __awaiter(this, void 0, void 0, function () {
+                var result;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4, this.callControl("getBounds", {})];
+                        case 1:
+                            result = _a.sent();
+                            return [2, result.returned];
+                    }
+                });
+            });
+        };
+        RemoteWebWindow.prototype.getContext = function () {
+            return __awaiter(this, void 0, void 0, function () {
+                var result;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4, this.callControl("getContext", {})];
+                        case 1:
+                            result = _a.sent();
+                            return [2, result.returned];
+                    }
+                });
+            });
+        };
+        RemoteWebWindow.prototype.getTitle = function () {
+            return __awaiter(this, void 0, void 0, function () {
+                var result;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4, this.callControl("getTitle", {})];
+                        case 1:
+                            result = _a.sent();
+                            return [2, result.returned._value];
+                    }
+                });
+            });
+        };
+        RemoteWebWindow.prototype.onContextUpdated = function (callback) {
+            throw new Error("Method not implemented.");
+        };
+        RemoteWebWindow.prototype.updateContext = function (context) {
+            return __awaiter(this, void 0, void 0, function () {
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4, this.callControl("updateContext", context, true)];
+                        case 1:
+                            _a.sent();
+                            return [2, this];
+                    }
+                });
+            });
+        };
+        RemoteWebWindow.prototype.setContext = function (context) {
+            return __awaiter(this, void 0, void 0, function () {
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4, this.callControl("setContext", context, true)];
+                        case 1:
+                            _a.sent();
+                            return [2, this];
+                    }
+                });
+            });
+        };
+        RemoteWebWindow.prototype.callControl = function (command, args, skipResult) {
+            if (skipResult === void 0) { skipResult = false; }
+            return __awaiter(this, void 0, void 0, function () {
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4, this.control.send({ command: command, domain: "windows", args: args, skipResult: skipResult }, { windowId: this.id })];
+                        case 1: return [2, _a.sent()];
+                    }
+                });
+            });
+        };
+        return RemoteWebWindow;
+    }());
+
+    var Control = (function () {
+        function Control() {
+            this.callbacks = {};
+        }
+        Control.prototype.start = function (interop, logger) {
+            var _this = this;
+            this.interop = interop;
+            this.logger = logger;
+            this.interop.register(Control.CONTROL_METHOD, function (arg) { return __awaiter(_this, void 0, void 0, function () {
+                var command, result, callback;
+                return __generator(this, function (_a) {
+                    command = arg;
+                    logger.trace("received control command " + JSON.stringify(command));
+                    if (command.domain === "windows") {
+                        if (!this.myWindow) {
+                            return [2];
+                        }
+                        result = this.myWindow[command.command].call(this.myWindow, command.args);
+                        if (command.skipResult) {
+                            return [2, {}];
+                        }
+                        else {
+                            return [2, result];
+                        }
+                    }
+                    if (command.domain === "layouts") {
+                        callback = this.callbacks[command.domain];
+                        if (callback) {
+                            callback(command);
+                        }
+                    }
+                    return [2];
+                });
+            }); });
+        };
+        Control.prototype.send = function (command, target) {
+            if (!this.interop) {
+                throw new Error("Control not started");
+            }
+            this.logger.info("sending control command " + JSON.stringify(command) + " to " + JSON.stringify(target) + "}");
+            return this.interop.invoke(Control.CONTROL_METHOD, command, target);
+        };
+        Control.prototype.subscribe = function (domain, callback) {
+            this.callbacks[domain] = callback;
+        };
+        Control.prototype.setLocalWindow = function (window) {
+            this.myWindow = window;
+        };
+        Control.CONTROL_METHOD = "GC.Control";
+        return Control;
+    }());
+
+    function createRegistry(options) {
+        if (options && options.errorHandling
+            && typeof options.errorHandling !== "function"
+            && options.errorHandling !== "log"
+            && options.errorHandling !== "silent"
+            && options.errorHandling !== "throw") {
+            throw new Error("Invalid options passed to createRegistry. Prop errorHandling should be [\"log\" | \"silent\" | \"throw\" | (err) => void], but " + typeof options.errorHandling + " was passed");
+        }
+        var _userErrorHandler = options && typeof options.errorHandling === "function" && options.errorHandling;
+        var callbacks = {};
+        function add(key, callback) {
+            var callbacksForKey = callbacks[key];
+            if (!callbacksForKey) {
+                callbacksForKey = [];
+                callbacks[key] = callbacksForKey;
+            }
+            callbacksForKey.push(callback);
+            return function () {
+                var allForKey = callbacks[key];
+                if (!allForKey) {
+                    return;
+                }
+                allForKey = allForKey.reduce(function (acc, element, index) {
+                    if (!(element === callback && acc.length === index)) {
+                        acc.push(element);
+                    }
+                    return acc;
+                }, []);
+                callbacks[key] = allForKey;
+            };
+        }
+        function execute(key) {
+            var argumentsArr = [];
+            for (var _i = 1; _i < arguments.length; _i++) {
+                argumentsArr[_i - 1] = arguments[_i];
+            }
+            var callbacksForKey = callbacks[key];
+            if (!callbacksForKey || callbacksForKey.length === 0) {
+                return [];
+            }
+            var results = [];
+            callbacksForKey.forEach(function (callback) {
+                try {
+                    var result = callback.apply(undefined, argumentsArr);
+                    results.push(result);
+                }
+                catch (err) {
+                    results.push(undefined);
+                    _handleError(err, key);
+                }
+            });
+            return results;
+        }
+        function _handleError(exceptionArtifact, key) {
+            var errParam = exceptionArtifact instanceof Error ? exceptionArtifact : new Error(exceptionArtifact);
+            if (_userErrorHandler) {
+                _userErrorHandler(errParam);
+                return;
+            }
+            var msg = "[ERROR] callback-registry: User callback for key \"" + key + "\" failed: " + errParam.stack;
+            if (options) {
+                switch (options.errorHandling) {
+                    case "log":
+                        return console.error(msg);
+                    case "silent":
+                        return;
+                    case "throw":
+                        throw new Error(msg);
+                }
+            }
+            console.error(msg);
+        }
+        function clear() {
+            callbacks = {};
+        }
+        function clearKey(key) {
+            var callbacksForKey = callbacks[key];
+            if (!callbacksForKey) {
+                return;
+            }
+            delete callbacks[key];
+        }
+        return {
+            add: add,
+            execute: execute,
+            clear: clear,
+            clearKey: clearKey
+        };
+    }
+    createRegistry.default = createRegistry;
+    var lib$1 = createRegistry;
+
+    var LocalWebWindow = (function () {
+        function LocalWebWindow(id, name, window, control, interop) {
+            this.id = id;
+            this.name = name;
+            this.window = window;
+            this.control = control;
+            this.interop = interop;
+            this.context = {};
+            this.registry = lib$1();
+            control.setLocalWindow(this);
+        }
+        LocalWebWindow.prototype.getURL = function () {
+            return __awaiter(this, void 0, void 0, function () {
+                return __generator(this, function (_a) {
+                    return [2, this.window.location.href];
+                });
+            });
+        };
+        LocalWebWindow.prototype.moveResize = function (_a) {
+            var left = _a.left, top = _a.top, width = _a.width, height = _a.height;
+            return __awaiter(this, void 0, void 0, function () {
+                return __generator(this, function (_b) {
+                    left = (left !== null && left !== void 0 ? left : window.screenLeft);
+                    top = (top !== null && top !== void 0 ? top : window.screenTop);
+                    width = (width !== null && width !== void 0 ? width : window.outerWidth);
+                    height = (height !== null && height !== void 0 ? height : window.outerHeight);
+                    window.moveTo(left, top);
+                    window.resizeTo(width, height);
+                    return [2, this];
+                });
+            });
+        };
+        LocalWebWindow.prototype.close = function () {
+            return __awaiter(this, void 0, void 0, function () {
+                return __generator(this, function (_a) {
+                    if (!this.parent) {
+                        throw new Error("can not close that is not opened by script");
+                    }
+                    try {
+                        window.close();
+                    }
+                    catch (_b) {
+                        console.log("what");
+                    }
+                    return [2, this];
+                });
+            });
+        };
+        LocalWebWindow.prototype.setTitle = function (title) {
+            return __awaiter(this, void 0, void 0, function () {
+                return __generator(this, function (_a) {
+                    if (typeof title === "object" && title !== null) {
+                        title = title.title;
+                    }
+                    document.title = title;
+                    return [2, this];
+                });
+            });
+        };
+        LocalWebWindow.prototype.resizeTo = function (width, height) {
+            return __awaiter(this, void 0, void 0, function () {
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4, this.moveResize({ width: width, height: height })];
+                        case 1:
+                            _a.sent();
+                            return [2, this];
+                    }
+                });
+            });
+        };
+        LocalWebWindow.prototype.moveTo = function (top, left) {
+            return __awaiter(this, void 0, void 0, function () {
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4, this.moveResize({ top: top, left: left })];
+                        case 1:
+                            _a.sent();
+                            return [2, this];
+                    }
+                });
+            });
+        };
+        LocalWebWindow.prototype.getBounds = function () {
+            return __awaiter(this, void 0, void 0, function () {
+                return __generator(this, function (_a) {
+                    return [2, this.getBoundsSync()];
+                });
+            });
+        };
+        LocalWebWindow.prototype.getContext = function () {
+            return __awaiter(this, void 0, void 0, function () {
+                return __generator(this, function (_a) {
+                    return [2, this.getContextSync()];
+                });
+            });
+        };
+        LocalWebWindow.prototype.getContextSync = function () {
+            return this.context;
+        };
+        LocalWebWindow.prototype.getTitle = function () {
+            return __awaiter(this, void 0, void 0, function () {
+                return __generator(this, function (_a) {
+                    return [2, this.window.document.title];
+                });
+            });
+        };
+        LocalWebWindow.prototype.onContextUpdated = function (callback) {
+            return this.registry.add("context-updated", callback);
+        };
+        LocalWebWindow.prototype.updateContext = function (context) {
+            var oldContext = this.context;
+            this.context = Object.assign({}, context, oldContext);
+            this.registry.execute("context-updated", context, oldContext);
+            return Promise.resolve(this);
+        };
+        LocalWebWindow.prototype.setContext = function (context) {
+            return __awaiter(this, void 0, void 0, function () {
+                var oldContext;
+                return __generator(this, function (_a) {
+                    oldContext = this.context;
+                    this.context = Object.assign({}, context);
+                    this.registry.execute("context-updated", context, oldContext);
+                    return [2, Promise.resolve(this)];
+                });
+            });
+        };
+        LocalWebWindow.prototype.getBoundsSync = function () {
+            return {
+                left: this.window.screenLeft,
+                top: this.window.screenTop,
+                width: this.window.outerWidth,
+                height: this.window.outerHeight
+            };
+        };
+        return LocalWebWindow;
+    }());
+
+    var ChildWebWindow = (function (_super) {
+        __extends(ChildWebWindow, _super);
+        function ChildWebWindow(window, id, name, control, windows) {
+            var _this = _super.call(this, id, name, control, windows) || this;
+            _this.window = window;
+            _this.id = id;
+            _this.name = name;
+            return _this;
+        }
+        return ChildWebWindow;
+    }(RemoteWebWindow));
+
+    var registerChildStartupContext = function (interop, parent, id, name, options) {
+        var _a, _b;
+        var methodName = createMethodName(id);
+        var startingContext = {
+            context: (_b = (_a = options) === null || _a === void 0 ? void 0 : _a.context, (_b !== null && _b !== void 0 ? _b : {})),
+            name: name,
+            parent: parent
+        };
+        interop.register(methodName, function () { return startingContext; });
+    };
+    var initStartupContext = function (my, interop) { return __awaiter(void 0, void 0, void 0, function () {
+        var methodName, result;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    methodName = createMethodName(my.id);
+                    if (!interop.methods().find(function (m) { return m.name === methodName; })) return [3, 2];
+                    return [4, interop.invoke(methodName)];
+                case 1:
+                    result = _a.sent();
+                    if (my) {
+                        my.setContext(result.returned.context);
+                        my.name = result.returned.name;
+                        my.parent = result.returned.parent;
+                    }
+                    _a.label = 2;
+                case 2: return [2];
+            }
+        });
+    }); };
+    var createMethodName = function (id) { return "\"GC.Wnd.\"" + id; };
+
+    var Windows = (function () {
+        function Windows(interop, control) {
+            this.interop = interop;
+            this.control = control;
+            this.registry = lib$1();
+            this.childWindows = [];
+            var id = interop.instance.windowId;
+            var name = "document.title (" + shortid() + ")";
+            this.myWindow = new LocalWebWindow(id, name, window, this.control, this.interop);
+            this.trackWindowsLifetime();
+        }
+        Windows.prototype.list = function () {
+            var _this = this;
+            var method = this.interop.methods({ name: Control.CONTROL_METHOD })[0];
+            if (!method) {
+                return [];
+            }
+            var servers = method.getServers ? method.getServers() : [];
+            return servers.reduce(function (prev, current) {
+                var remoteWindow = _this.remoteFromServer(current);
+                if (remoteWindow) {
+                    prev.push(remoteWindow);
+                }
+                return prev;
+            }, []);
+        };
+        Windows.prototype.findById = function (id) {
+            return this.list().find(function (w) { return w.id === id; });
+        };
+        Windows.prototype.my = function () {
+            return this.myWindow;
+        };
+        Windows.prototype.open = function (name, url, options) {
+            var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
+            return __awaiter(this, void 0, void 0, function () {
+                var width, height, left, top, id, relativeWindowId_1, relativeWindow, relativeWindowBounds, relativeDir, newBounds, optionsString, newWindow, remoteWindow;
+                return __generator(this, function (_l) {
+                    switch (_l.label) {
+                        case 0:
+                            width = (_b = (_a = options) === null || _a === void 0 ? void 0 : _a.width, (_b !== null && _b !== void 0 ? _b : 400));
+                            height = (_d = (_c = options) === null || _c === void 0 ? void 0 : _c.height, (_d !== null && _d !== void 0 ? _d : 400));
+                            left = (_f = (_e = options) === null || _e === void 0 ? void 0 : _e.left, (_f !== null && _f !== void 0 ? _f : window.screen.availWidth - window.screenLeft));
+                            top = (_h = (_g = options) === null || _g === void 0 ? void 0 : _g.top, (_h !== null && _h !== void 0 ? _h : 0));
+                            id = shortid();
+                            registerChildStartupContext(this.interop, this.my().id, id, name, options);
+                            if (!((_j = options) === null || _j === void 0 ? void 0 : _j.relativeTo)) return [3, 2];
+                            relativeWindowId_1 = options.relativeTo;
+                            relativeWindow = this.list().find(function (w) { return w.id === relativeWindowId_1; });
+                            if (!relativeWindow) return [3, 2];
+                            return [4, relativeWindow.getBounds()];
+                        case 1:
+                            relativeWindowBounds = _l.sent();
+                            relativeDir = (_k = options.relativeDirection, (_k !== null && _k !== void 0 ? _k : "right"));
+                            newBounds = this.getRelativeBounds({ width: width, height: height, left: left, top: top }, relativeWindowBounds, relativeDir);
+                            width = newBounds.width;
+                            height = newBounds.height;
+                            left = newBounds.left;
+                            top = newBounds.top;
+                            _l.label = 2;
+                        case 2:
+                            optionsString = "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top + ",scrollbars=none,location=no,status=no,menubar=no";
+                            newWindow = window.open(url, id, optionsString);
+                            if (!newWindow) {
+                                throw new Error("failed to open a window with url=" + url + " and options=" + optionsString);
+                            }
+                            newWindow.moveTo(left, top);
+                            newWindow.resizeTo(width, height);
+                            remoteWindow = new ChildWebWindow(newWindow, id, name, this.control, this);
+                            this.childWindows.push(remoteWindow);
+                            return [2, remoteWindow];
+                    }
+                });
+            });
+        };
+        Windows.prototype.onWindowAdded = function (callback) {
+            return this.registry.add("window-added", callback);
+        };
+        Windows.prototype.onWindowRemoved = function (callback) {
+            return this.registry.add("window-removed", callback);
+        };
+        Windows.prototype.getChildWindows = function () {
+            this.childWindows = this.childWindows.filter(function (cw) { return !cw.window.closed; });
+            return this.childWindows;
+        };
+        Windows.prototype.remoteFromServer = function (server) {
+            var _a;
+            if (!server.windowId) {
+                return undefined;
+            }
+            return new RemoteWebWindow(server.windowId, (_a = server.application, (_a !== null && _a !== void 0 ? _a : "")), this.control, this);
+        };
+        Windows.prototype.getRelativeBounds = function (rect, relativeTo, relativeDirection) {
+            var edgeDistance = 0;
+            switch (relativeDirection) {
+                case "bottom":
+                    return {
+                        left: relativeTo.left,
+                        top: relativeTo.top + relativeTo.height + edgeDistance,
+                        width: relativeTo.width,
+                        height: rect.height
+                    };
+                case "top":
+                    return {
+                        left: relativeTo.left,
+                        top: relativeTo.top - rect.height - edgeDistance,
+                        width: relativeTo.width,
+                        height: rect.height
+                    };
+                case "right":
+                    return {
+                        left: relativeTo.left + relativeTo.width + edgeDistance,
+                        top: relativeTo.top,
+                        width: rect.width,
+                        height: relativeTo.height
+                    };
+                case "left":
+                    return {
+                        left: relativeTo.left - rect.width - edgeDistance,
+                        top: relativeTo.top,
+                        width: rect.width,
+                        height: relativeTo.height
+                    };
+            }
+            throw new Error("invalid relativeDirection");
+        };
+        Windows.prototype.trackWindowsLifetime = function () {
+            var _this = this;
+            this.interop.serverMethodAdded(function (_a) {
+                var server = _a.server, method = _a.method;
+                if (method.name !== Control.CONTROL_METHOD) {
+                    return;
+                }
+                var remoteWindow = _this.remoteFromServer(server);
+                if (remoteWindow) {
+                    _this.registry.execute("window-added", remoteWindow);
+                }
+            });
+            this.interop.serverRemoved(function (server) {
+                var remoteWindow = _this.remoteFromServer(server);
+                if (remoteWindow) {
+                    _this.registry.execute("window-removed", remoteWindow);
+                }
+            });
+        };
+        return Windows;
+    }());
+
+    var LocalStorage = (function () {
+        function LocalStorage() {
+        }
+        LocalStorage.prototype.getAll = function () {
+            var obj = this.getObjectFromLocalStorage();
+            return Object.values(obj);
+        };
+        LocalStorage.prototype.get = function (name, type) {
+            var obj = this.getObjectFromLocalStorage();
+            var key = this.getKey(name, type);
+            return obj[key];
+        };
+        LocalStorage.prototype.save = function (layout) {
+            var obj = this.getObjectFromLocalStorage();
+            var key = this.getKey(layout.name, layout.type);
+            obj[key] = layout;
+            this.setObjectToLocalStorage(obj);
+            return Promise.resolve(layout);
+        };
+        LocalStorage.prototype.remove = function (name, type) {
+            var obj = this.getObjectFromLocalStorage();
+            var key = this.getKey(name, type);
+            delete obj[key];
+            return Promise.resolve();
+        };
+        LocalStorage.prototype.clear = function () {
+            this.setObjectToLocalStorage({});
+            return Promise.resolve();
+        };
+        LocalStorage.prototype.getObjectFromLocalStorage = function () {
+            var values = window.localStorage.getItem(LocalStorage.KEY);
+            if (values) {
+                return JSON.parse(values);
+            }
+            return {};
+        };
+        LocalStorage.prototype.setObjectToLocalStorage = function (obj) {
+            window.localStorage.setItem(LocalStorage.KEY, JSON.stringify(obj));
+        };
+        LocalStorage.prototype.getKey = function (name, type) {
+            return type + "_" + name;
+        };
+        LocalStorage.KEY = "G0_layouts";
+        return LocalStorage;
+    }());
+
+    var Layouts = (function () {
+        function Layouts(windows, interop, logger, control, config) {
+            var _a, _b, _c;
+            this.windows = windows;
+            this.interop = interop;
+            this.logger = logger;
+            this.control = control;
+            this.storage = new LocalStorage();
+            this.registerRequestMethods();
+            this.control.subscribe("layouts", this.handleControlMessage.bind(this));
+            this.autoSaveContext = (_c = (_b = (_a = config) === null || _a === void 0 ? void 0 : _a.layouts) === null || _b === void 0 ? void 0 : _b.autoSaveWindowContext, (_c !== null && _c !== void 0 ? _c : false));
+        }
+        Layouts.prototype.list = function () {
+            return this.storage.getAll();
+        };
+        Layouts.prototype.save = function (layoutOptions) {
+            return __awaiter(this, void 0, void 0, function () {
+                var openedWindows, components;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0:
+                            if (!layoutOptions.name) {
+                                return [2, Promise.reject("missing name for layout " + JSON.stringify(layoutOptions))];
+                            }
+                            openedWindows = this.windows.getChildWindows().map(function (w) { return w.id; });
+                            return [4, this.getRemoteWindowsInfo(openedWindows)];
+                        case 1:
+                            components = _a.sent();
+                            components.push(this.getLocalLayoutComponent(layoutOptions.context, true));
+                            return [2, this.storage.save({
+                                    type: "Global",
+                                    name: layoutOptions.name,
+                                    components: components,
+                                    context: layoutOptions.context || {},
+                                    metadata: layoutOptions.metadata || {}
+                                })];
+                    }
+                });
+            });
+        };
+        Layouts.prototype.restore = function (options) {
+            return __awaiter(this, void 0, void 0, function () {
+                var layout;
+                var _this = this;
+                return __generator(this, function (_a) {
+                    layout = this.list().find(function (l) { return l.name === options.name && l.type === "Global"; });
+                    if (!layout) {
+                        throw new Error("can not find layout with name " + options.name);
+                    }
+                    layout.components.forEach(function (c) {
+                        if (c.type === "window") {
+                            var state = c.state;
+                            if (state.main) {
+                                return;
+                            }
+                            var newWindowOptions = __assign(__assign({}, state.bounds), { context: state.context });
+                            _this.windows.open(state.name, state.url, newWindowOptions);
+                        }
+                    });
+                    return [2];
+                });
+            });
+        };
+        Layouts.prototype.remove = function (type, name) {
+            this.storage.remove(name, type);
+            return Promise.resolve();
+        };
+        Layouts.prototype.onSaveRequested = function (callback) {
+            var _this = this;
+            this.getLocalInfoCallback = callback;
+            return function () {
+                _this.getLocalInfoCallback = undefined;
+            };
+        };
+        Layouts.prototype.getLocalLayoutComponent = function (context, main) {
+            if (main === void 0) { main = false; }
+            var _a;
+            var requestResult;
+            var my = this.windows.my();
+            try {
+                if (this.autoSaveContext) {
+                    requestResult = {
+                        windowContext: my.getContextSync()
+                    };
+                }
+                if (this.getLocalInfoCallback) {
+                    requestResult = this.getLocalInfoCallback(context);
+                }
+            }
+            catch (err) {
+                this.logger.warn("onSaveRequested - error getting data from user function - " + err);
+            }
+            return {
+                type: "window",
+                componentType: "application",
+                state: {
+                    name: my.name,
+                    context: ((_a = requestResult) === null || _a === void 0 ? void 0 : _a.windowContext) || {},
+                    bounds: my.getBoundsSync(),
+                    url: window.document.location.href,
+                    id: my.id,
+                    parentId: my.parent,
+                    main: main
+                }
+            };
+        };
+        Layouts.prototype.registerRequestMethods = function () {
+            var _this = this;
+            this.interop.register(Layouts.SaveContextMethodName, function (args) {
+                return _this.getLocalLayoutComponent(args);
+            });
+        };
+        Layouts.prototype.handleControlMessage = function (command) {
+            return __awaiter(this, void 0, void 0, function () {
+                var layoutCommand, args, components;
+                var _this = this;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0:
+                            layoutCommand = command;
+                            if (!(layoutCommand.command === "saveLayoutAndClose")) return [3, 3];
+                            args = layoutCommand.args;
+                            return [4, this.getRemoteWindowsInfo(args.childWindows)];
+                        case 1:
+                            components = _a.sent();
+                            components.push(args.parentInfo);
+                            return [4, this.storage.save({
+                                    type: "Global",
+                                    name: args.layoutName,
+                                    components: components,
+                                    context: args.context || {},
+                                    metadata: args.metadata || {}
+                                })];
+                        case 2:
+                            _a.sent();
+                            args.childWindows.forEach(function (cw) {
+                                var _a;
+                                (_a = _this.windows.findById(cw)) === null || _a === void 0 ? void 0 : _a.close();
+                            });
+                            _a.label = 3;
+                        case 3: return [2];
+                    }
+                });
+            });
+        };
+        Layouts.prototype.getRemoteWindowsInfo = function (windows) {
+            return __awaiter(this, void 0, void 0, function () {
+                var promises, _loop_1, this_1, _i, windows_1, id, responses;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0:
+                            promises = [];
+                            _loop_1 = function (id) {
+                                var interopServer = this_1.interop.servers().find(function (s) { return s.windowId === id; });
+                                if (!interopServer || !interopServer.getMethods) {
+                                    return "continue";
+                                }
+                                var methods = interopServer.getMethods();
+                                if (methods.find(function (m) { return m.name === Layouts.SaveContextMethodName; })) {
+                                    try {
+                                        promises.push(this_1.interop.invoke(Layouts.SaveContextMethodName, {}, { windowId: id }));
+                                    }
+                                    catch (_a) {
+                                    }
+                                }
+                            };
+                            this_1 = this;
+                            for (_i = 0, windows_1 = windows; _i < windows_1.length; _i++) {
+                                id = windows_1[_i];
+                                _loop_1(id);
+                            }
+                            return [4, Promise.all(promises)];
+                        case 1:
+                            responses = _a.sent();
+                            return [2, responses.map(function (response) { return response.returned; })];
+                    }
+                });
+            });
+        };
+        Layouts.SaveContextMethodName = "T42.HC.GetSaveContext";
+        return Layouts;
+    }());
+
+    var Notifications = (function () {
+        function Notifications(interop) {
+            this.interop = interop;
+        }
+        Notifications.prototype.raise = function (options) {
+            return __awaiter(this, void 0, void 0, function () {
+                var permissionPromise, notification, interopOptions_1;
+                var _this = this;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0:
+                            if (!("Notification" in window)) {
+                                throw new Error("this browser does not support desktop notification");
+                            }
+                            if (Notification.permission === "granted") {
+                                permissionPromise = Promise.resolve("granted");
+                            }
+                            else if (Notification.permission === "denied") {
+                                permissionPromise = Promise.reject("no permissions from user");
+                            }
+                            else {
+                                permissionPromise = Notification.requestPermission();
+                            }
+                            return [4, permissionPromise];
+                        case 1:
+                            _a.sent();
+                            notification = this.raiseUsingWebApi(options);
+                            if (options.clickInterop) {
+                                interopOptions_1 = options.clickInterop;
+                                notification.onclick = function () {
+                                    var _a, _b, _c, _d;
+                                    _this.interop.invoke(interopOptions_1.method, (_b = (_a = interopOptions_1) === null || _a === void 0 ? void 0 : _a.arguments, (_b !== null && _b !== void 0 ? _b : {})), (_d = (_c = interopOptions_1) === null || _c === void 0 ? void 0 : _c.target, (_d !== null && _d !== void 0 ? _d : "best")));
+                                };
+                            }
+                            return [2, notification];
+                    }
+                });
+            });
+        };
+        Notifications.prototype.raiseUsingWebApi = function (options) {
+            return new Notification(options.title, options);
+        };
+        return Notifications;
+    }());
+
+    var defaultSharedLocation = "/glue/";
+    var defaultConfigName = "glue.config.json";
+    var defaultWorkerName = "worker.js";
+    var defaultConfigLocation = "" + defaultSharedLocation + defaultConfigName;
+    var defaultWorkerLocation = "" + defaultSharedLocation + defaultWorkerName;
+    var defaultConfig = {
+        worker: defaultWorkerLocation,
+        extends: defaultConfigLocation,
+        layouts: {
+            autoRestore: false,
+            autoSaveWindowContext: false
+        },
+        logger: "error",
+    };
+
+    var fetchTimeout = function (url, timeoutMilliseconds) {
+        if (timeoutMilliseconds === void 0) { timeoutMilliseconds = 1000; }
+        return new Promise(function (resolve, reject) {
+            var timeoutHit = false;
+            var timeout = setTimeout(function () {
+                timeoutHit = true;
+                reject(new Error("Fetch request for: " + url + " timed out at: " + timeoutMilliseconds + " milliseconds"));
+            }, timeoutMilliseconds);
+            fetch(url)
+                .then(function (response) {
+                if (!timeoutHit) {
+                    clearTimeout(timeout);
+                    resolve(response);
+                }
+            })
+                .catch(function (err) {
+                if (!timeoutHit) {
+                    clearTimeout(timeout);
+                    reject(err);
+                }
+            });
+        });
+    };
+    var getRemoteConfig = function (userConfig) { return __awaiter(void 0, void 0, void 0, function () {
+        var extend, response, json, _a;
+        var _b, _c, _d, _e;
+        return __generator(this, function (_f) {
+            switch (_f.label) {
+                case 0:
+                    extend = (_c = (_b = userConfig.extends, (_b !== null && _b !== void 0 ? _b : defaultConfig.extends)), (_c !== null && _c !== void 0 ? _c : defaultConfigLocation));
+                    if (extend === false) {
+                        return [2, {}];
+                    }
+                    _f.label = 1;
+                case 1:
+                    _f.trys.push([1, 4, , 5]);
+                    return [4, fetchTimeout(extend)];
+                case 2:
+                    response = _f.sent();
+                    if (!response.ok) {
+                        return [2, {}];
+                    }
+                    return [4, response.json()];
+                case 3:
+                    json = _f.sent();
+                    return [2, (_e = (_d = json) === null || _d === void 0 ? void 0 : _d.glue, (_e !== null && _e !== void 0 ? _e : {}))];
+                case 4:
+                    _a = _f.sent();
+                    return [2, {}];
+                case 5: return [2];
+            }
+        });
+    }); };
+    var buildConfig = function (userConfig) { return __awaiter(void 0, void 0, void 0, function () {
+        var remoteConfig, result, lastIndex, worker;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    userConfig = (userConfig !== null && userConfig !== void 0 ? userConfig : {});
+                    return [4, getRemoteConfig(userConfig)];
+                case 1:
+                    remoteConfig = _a.sent();
+                    result = Object.assign({}, defaultConfig, remoteConfig, userConfig);
+                    if (result.extends) {
+                        lastIndex = result.extends.lastIndexOf("/");
+                        worker = result.extends.substr(0, lastIndex + 1) + defaultWorkerName;
+                        result.worker = worker;
+                    }
+                    return [2, result];
+            }
+        });
+    }); };
+
+    var restoreAutoSavedLayout = function (api) {
+        var _a;
+        var layoutName = "_auto_" + document.location.href;
+        var layout = api.layouts.list().find(function (l) { return l.name === layoutName; });
+        if (!layout) {
+            return Promise.resolve();
+        }
+        var my = api.windows.my();
+        if (my.parent) {
+            return Promise.resolve();
+        }
+        api.logger.info("restoring layout " + layoutName);
+        var mainComponent = layout.components.find(function (c) { return c.state.main; });
+        my.setContext((_a = mainComponent) === null || _a === void 0 ? void 0 : _a.state.context);
+        try {
+            return api.layouts.restore({
+                name: layoutName,
+                closeRunningInstance: false,
+            });
+        }
+        catch (e) {
+            api.logger.error(e);
+            return Promise.resolve();
+        }
+    };
+
+    var createFactoryFunction = function (coreFactoryFunction) {
+        return function (config) { return __awaiter(void 0, void 0, void 0, function () {
+            var gdWindowContext, control, windows, ext, coreConfig, core;
+            var _a, _b, _c, _d, _e, _f;
+            return __generator(this, function (_g) {
+                switch (_g.label) {
+                    case 0: return [4, buildConfig(config)];
+                    case 1:
+                        config = _g.sent();
+                        if (typeof window !== "undefined") {
+                            gdWindowContext = window;
+                            if (((_a = gdWindowContext) === null || _a === void 0 ? void 0 : _a.glue42gd) && ((_b = gdWindowContext) === null || _b === void 0 ? void 0 : _b.Glue)) {
+                                return [2, gdWindowContext.Glue({
+                                        windows: true,
+                                        logger: config.logger
+                                    })];
+                            }
+                        }
+                        control = new Control();
+                        ext = {
+                            libs: [
+                                {
+                                    name: "windows",
+                                    create: function (coreLib) {
+                                        windows = new Windows(coreLib.interop, control);
+                                        return windows;
+                                    }
+                                },
+                                {
+                                    name: "notifications",
+                                    create: function (coreLib) { return new Notifications(coreLib.interop); }
+                                },
+                                {
+                                    name: "layouts",
+                                    create: function (coreLib) { return new Layouts(windows, coreLib.interop, coreLib.logger.subLogger("layouts"), control, config); }
+                                }
+                            ],
+                            version: version
+                        };
+                        coreConfig = {
+                            gateway: {
+                                sharedWorker: (_d = (_c = config) === null || _c === void 0 ? void 0 : _c.worker, (_d !== null && _d !== void 0 ? _d : defaultWorkerLocation))
+                            },
+                            logger: (_e = config) === null || _e === void 0 ? void 0 : _e.logger
+                        };
+                        return [4, coreFactoryFunction(coreConfig, ext)];
+                    case 2:
+                        core = _g.sent();
+                        control.start(core.interop, core.logger.subLogger("control"));
+                        return [4, initStartupContext(core.windows.my(), core.interop)];
+                    case 3:
+                        _g.sent();
+                        if (!((_f = config.layouts) === null || _f === void 0 ? void 0 : _f.autoRestore)) return [3, 5];
+                        return [4, restoreAutoSavedLayout(core)];
+                    case 4:
+                        _g.sent();
+                        _g.label = 5;
+                    case 5: return [4, hookCloseEvents(core, config, control)];
+                    case 6:
+                        _g.sent();
+                        return [2, core];
+                }
+            });
+        }); };
+    };
+    var hookCloseEvents = function (api, config, control) {
+        var done = false;
+        var doneFn = function () { return __awaiter(void 0, void 0, void 0, function () {
+            var shouldSave, allChildren, firstChild, layoutName, layouts, command;
+            var _a, _b;
+            return __generator(this, function (_c) {
+                if (!done) {
+                    done = true;
+                    shouldSave = (_b = (_a = config) === null || _a === void 0 ? void 0 : _a.layouts) === null || _b === void 0 ? void 0 : _b.autoRestore;
+                    if (shouldSave) {
+                        allChildren = api.windows.getChildWindows().map(function (w) { return w.id; });
+                        firstChild = allChildren[0];
+                        layoutName = "_auto_" + document.location.href;
+                        if (allChildren.length > 0) {
+                            layouts = api.layouts;
+                            command = {
+                                domain: "layouts",
+                                command: "saveLayoutAndClose",
+                                args: {
+                                    childWindows: allChildren,
+                                    closeEveryone: true,
+                                    layoutName: layoutName,
+                                    context: {},
+                                    metadata: {},
+                                    parentInfo: layouts.getLocalLayoutComponent({}, true)
+                                }
+                            };
+                            control.send(command, { windowId: firstChild });
+                        }
+                        else {
+                            api.layouts.save({ name: layoutName });
+                        }
+                    }
+                    api.done();
+                }
+                return [2];
+            });
+        }); };
+        window.addEventListener("beforeunload", function (event) { return __awaiter(void 0, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                doneFn();
+                return [2];
+            });
+        }); });
+    };
+
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation. All rights reserved.
     Licensed under the Apache License, Version 2.0 (the "License"); you may not use
@@ -857,7 +2319,7 @@
         return system;
     }
 
-    function createRegistry(options) {
+    function createRegistry$1(options) {
         if (options && options.errorHandling
             && typeof options.errorHandling !== "function"
             && options.errorHandling !== "log"
@@ -946,13 +2408,13 @@
             clearKey: clearKey
         };
     }
-    createRegistry.default = createRegistry;
-    var lib = createRegistry;
+    createRegistry$1.default = createRegistry$1;
+    var lib$2 = createRegistry$1;
 
     var InProcTransport = (function () {
         function InProcTransport(settings, logger) {
             var _this = this;
-            this.registry = lib();
+            this.registry = lib$2();
             this.gw = settings.facade;
             this.gw.connect(function (_client, message) {
                 _this.messageHandler(message);
@@ -1007,7 +2469,7 @@
         function SharedWorkerTransport(workerFile, logger) {
             var _this = this;
             this.logger = logger;
-            this.registry = lib();
+            this.registry = lib$2();
             this.worker = new SharedWorker(workerFile);
             this.worker.port.onmessage = function (e) {
                 _this.messageHandler(e.data);
@@ -1115,7 +2577,7 @@
     var WS = (function () {
         function WS(settings, logger) {
             this._running = true;
-            this._registry = lib();
+            this._registry = lib$2();
             this.wsRequests = [];
             this.settings = settings;
             this.logger = logger;
@@ -1286,59 +2748,59 @@
         return WS;
     }());
 
-    function createCommonjsModule(fn, module) {
+    function createCommonjsModule$1(fn, module) {
     	return module = { exports: {} }, fn(module, module.exports), module.exports;
     }
 
     // Found this seed-based random generator somewhere
     // Based on The Central Randomizer 1.3 (C) 1997 by Paul Houle (houle@msc.cornell.edu)
 
-    var seed = 1;
+    var seed$1 = 1;
 
     /**
      * return a random number based on a seed
      * @param seed
      * @returns {number}
      */
-    function getNextValue() {
-        seed = (seed * 9301 + 49297) % 233280;
-        return seed/(233280.0);
+    function getNextValue$1() {
+        seed$1 = (seed$1 * 9301 + 49297) % 233280;
+        return seed$1/(233280.0);
     }
 
-    function setSeed(_seed_) {
-        seed = _seed_;
+    function setSeed$2(_seed_) {
+        seed$1 = _seed_;
     }
 
-    var randomFromSeed = {
-        nextValue: getNextValue,
-        seed: setSeed
+    var randomFromSeed$1 = {
+        nextValue: getNextValue$1,
+        seed: setSeed$2
     };
 
-    var ORIGINAL = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-';
-    var alphabet;
-    var previousSeed;
+    var ORIGINAL$1 = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-';
+    var alphabet$1;
+    var previousSeed$1;
 
-    var shuffled;
+    var shuffled$1;
 
-    function reset() {
-        shuffled = false;
+    function reset$1() {
+        shuffled$1 = false;
     }
 
-    function setCharacters(_alphabet_) {
+    function setCharacters$1(_alphabet_) {
         if (!_alphabet_) {
-            if (alphabet !== ORIGINAL) {
-                alphabet = ORIGINAL;
-                reset();
+            if (alphabet$1 !== ORIGINAL$1) {
+                alphabet$1 = ORIGINAL$1;
+                reset$1();
             }
             return;
         }
 
-        if (_alphabet_ === alphabet) {
+        if (_alphabet_ === alphabet$1) {
             return;
         }
 
-        if (_alphabet_.length !== ORIGINAL.length) {
-            throw new Error('Custom alphabet for shortid must be ' + ORIGINAL.length + ' unique characters. You submitted ' + _alphabet_.length + ' characters: ' + _alphabet_);
+        if (_alphabet_.length !== ORIGINAL$1.length) {
+            throw new Error('Custom alphabet for shortid must be ' + ORIGINAL$1.length + ' unique characters. You submitted ' + _alphabet_.length + ' characters: ' + _alphabet_);
         }
 
         var unique = _alphabet_.split('').filter(function(item, ind, arr){
@@ -1346,50 +2808,50 @@
         });
 
         if (unique.length) {
-            throw new Error('Custom alphabet for shortid must be ' + ORIGINAL.length + ' unique characters. These characters were not unique: ' + unique.join(', '));
+            throw new Error('Custom alphabet for shortid must be ' + ORIGINAL$1.length + ' unique characters. These characters were not unique: ' + unique.join(', '));
         }
 
-        alphabet = _alphabet_;
-        reset();
+        alphabet$1 = _alphabet_;
+        reset$1();
     }
 
-    function characters(_alphabet_) {
-        setCharacters(_alphabet_);
-        return alphabet;
+    function characters$1(_alphabet_) {
+        setCharacters$1(_alphabet_);
+        return alphabet$1;
     }
 
-    function setSeed$1(seed) {
-        randomFromSeed.seed(seed);
-        if (previousSeed !== seed) {
-            reset();
-            previousSeed = seed;
+    function setSeed$1$1(seed) {
+        randomFromSeed$1.seed(seed);
+        if (previousSeed$1 !== seed) {
+            reset$1();
+            previousSeed$1 = seed;
         }
     }
 
-    function shuffle() {
-        if (!alphabet) {
-            setCharacters(ORIGINAL);
+    function shuffle$1() {
+        if (!alphabet$1) {
+            setCharacters$1(ORIGINAL$1);
         }
 
-        var sourceArray = alphabet.split('');
+        var sourceArray = alphabet$1.split('');
         var targetArray = [];
-        var r = randomFromSeed.nextValue();
+        var r = randomFromSeed$1.nextValue();
         var characterIndex;
 
         while (sourceArray.length > 0) {
-            r = randomFromSeed.nextValue();
+            r = randomFromSeed$1.nextValue();
             characterIndex = Math.floor(r * sourceArray.length);
             targetArray.push(sourceArray.splice(characterIndex, 1)[0]);
         }
         return targetArray.join('');
     }
 
-    function getShuffled() {
-        if (shuffled) {
-            return shuffled;
+    function getShuffled$1() {
+        if (shuffled$1) {
+            return shuffled$1;
         }
-        shuffled = shuffle();
-        return shuffled;
+        shuffled$1 = shuffle$1();
+        return shuffled$1;
     }
 
     /**
@@ -1397,30 +2859,30 @@
      * @param index
      * @returns {string}
      */
-    function lookup(index) {
-        var alphabetShuffled = getShuffled();
+    function lookup$1(index) {
+        var alphabetShuffled = getShuffled$1();
         return alphabetShuffled[index];
     }
 
-    var alphabet_1 = {
-        characters: characters,
-        seed: setSeed$1,
-        lookup: lookup,
-        shuffled: getShuffled
+    var alphabet_1$1 = {
+        characters: characters$1,
+        seed: setSeed$1$1,
+        lookup: lookup$1,
+        shuffled: getShuffled$1
     };
 
-    var crypto = typeof window === 'object' && (window.crypto || window.msCrypto); // IE 11 uses window.msCrypto
+    var crypto$1 = typeof window === 'object' && (window.crypto || window.msCrypto); // IE 11 uses window.msCrypto
 
-    function randomByte() {
-        if (!crypto || !crypto.getRandomValues) {
+    function randomByte$1() {
+        if (!crypto$1 || !crypto$1.getRandomValues) {
             return Math.floor(Math.random() * 256) & 0x30;
         }
         var dest = new Uint8Array(1);
-        crypto.getRandomValues(dest);
+        crypto$1.getRandomValues(dest);
         return dest[0] & 0x30;
     }
 
-    var randomByteBrowser = randomByte;
+    var randomByteBrowser$1 = randomByte$1;
 
     function encode(lookup, number) {
         var loopCounter = 0;
@@ -1429,7 +2891,7 @@
         var str = '';
 
         while (!done) {
-            str = str + lookup( ( (number >> (4 * loopCounter)) & 0x0f ) | randomByteBrowser() );
+            str = str + lookup( ( (number >> (4 * loopCounter)) & 0x0f ) | randomByteBrowser$1() );
             done = number < (Math.pow(16, loopCounter + 1 ) );
             loopCounter++;
         }
@@ -1444,7 +2906,7 @@
      * @param id - the shortid-generated id.
      */
     function decode(id) {
-        var characters = alphabet_1.shuffled();
+        var characters = alphabet_1$1.shuffled();
         return {
             version: characters.indexOf(id.substr(0, 1)) & 0x0f,
             worker: characters.indexOf(id.substr(1, 1)) & 0x0f
@@ -1453,12 +2915,12 @@
 
     var decode_1 = decode;
 
-    function isShortId(id) {
+    function isShortId$1(id) {
         if (!id || typeof id !== 'string' || id.length < 6 ) {
             return false;
         }
 
-        var characters = alphabet_1.characters();
+        var characters = alphabet_1$1.characters();
         var len = id.length;
         for(var i = 0; i < len;i++) {
             if (characters.indexOf(id[i]) === -1) {
@@ -1468,9 +2930,9 @@
         return true;
     }
 
-    var isValid = isShortId;
+    var isValid$1 = isShortId$1;
 
-    var lib$1 = createCommonjsModule(function (module) {
+    var lib$1$1 = createCommonjsModule$1(function (module) {
 
 
 
@@ -1515,12 +2977,12 @@
             previousSeconds = seconds;
         }
 
-        str = str + encode_1(alphabet_1.lookup, version);
-        str = str + encode_1(alphabet_1.lookup, clusterWorkerId);
+        str = str + encode_1(alphabet_1$1.lookup, version);
+        str = str + encode_1(alphabet_1$1.lookup, clusterWorkerId);
         if (counter > 0) {
-            str = str + encode_1(alphabet_1.lookup, counter);
+            str = str + encode_1(alphabet_1$1.lookup, counter);
         }
-        str = str + encode_1(alphabet_1.lookup, seconds);
+        str = str + encode_1(alphabet_1$1.lookup, seconds);
 
         return str;
     }
@@ -1533,7 +2995,7 @@
      * @param seed Integer value to seed the random alphabet.  ALWAYS USE THE SAME SEED or you might get overlaps.
      */
     function seed(seedValue) {
-        alphabet_1.seed(seedValue);
+        alphabet_1$1.seed(seedValue);
         return module.exports;
     }
 
@@ -1555,10 +3017,10 @@
      */
     function characters(newCharacters) {
         if (newCharacters !== undefined) {
-            alphabet_1.characters(newCharacters);
+            alphabet_1$1.characters(newCharacters);
         }
 
-        return alphabet_1.shuffled();
+        return alphabet_1$1.shuffled();
     }
 
 
@@ -1569,16 +3031,16 @@
     module.exports.worker = worker;
     module.exports.characters = characters;
     module.exports.decode = decode_1;
-    module.exports.isValid = isValid;
+    module.exports.isValid = isValid$1;
     });
-    var lib_1 = lib$1.generate;
-    var lib_2 = lib$1.seed;
-    var lib_3 = lib$1.worker;
-    var lib_4 = lib$1.characters;
-    var lib_5 = lib$1.decode;
-    var lib_6 = lib$1.isValid;
+    var lib_1$1 = lib$1$1.generate;
+    var lib_2$1 = lib$1$1.seed;
+    var lib_3$1 = lib$1$1.worker;
+    var lib_4$1 = lib$1$1.characters;
+    var lib_5$1 = lib$1$1.decode;
+    var lib_6 = lib$1$1.isValid;
 
-    var shortid = lib$1;
+    var shortid$1 = lib$1$1;
 
     function domainSession (domain, connection, logger, successMessages, errorMessages) {
         if (domain == null) {
@@ -1590,7 +3052,7 @@
         var tryReconnecting = false;
         var _latestOptions;
         var _connectionOn = false;
-        var callbacks = lib();
+        var callbacks = lib$2();
         connection.disconnected(handleConnectionDisconnected);
         connection.loggedIn(handleConnectionLoggedIn);
         connection.on("success", function (msg) { return handleSuccessMessage(msg); });
@@ -1717,7 +3179,7 @@
             entry.success(msg);
         }
         function getNextRequestId() {
-            return shortid();
+            return shortid$1();
         }
         function send(msg, tag, options) {
             options = options || {};
@@ -1770,7 +3232,7 @@
                         callback(msg);
                     }
                     catch (e) {
-                        logger.error("Callback  failed: " + e + " \n " + e.stack + " \n msg was: " + JSON.stringify(msg));
+                        logger.error("Callback  failed: " + e + " \n " + e.stack + " \n msg was: " + JSON.stringify(msg), e);
                     }
                 });
             },
@@ -1797,7 +3259,7 @@
             this.datePrefixLen = this.datePrefix.length;
             this.dateMinLen = this.datePrefixLen + 1;
             this.datePrefixFirstChar = this.datePrefix[0];
-            this.registry = lib();
+            this.registry = lib$2();
             this._isLoggedIn = false;
             this.shouldTryLogin = true;
             this.initialLogin = true;
@@ -2003,7 +3465,7 @@
                             return [2, welcomeMsg.resolved_identity];
                         case 19:
                             err_1 = _d.sent();
-                            this.logger.error("error sending hello message - " + (err_1.message || err_1.msg || err_1.reason || err_1));
+                            this.logger.error("error sending hello message - " + (err_1.message || err_1.msg || err_1.reason || err_1), err_1);
                             throw err_1;
                         case 20:
                             if (config && config.flowCallback && config.sessionId) {
@@ -2194,7 +3656,7 @@
             this.logger = logger;
             this.messageHandlers = {};
             this.ids = 1;
-            this.registry = lib();
+            this.registry = lib$2();
             this._connected = false;
             this.isTrace = false;
             settings = settings || {};
@@ -2330,7 +3792,7 @@
                             handler(message);
                         }
                         catch (error) {
-                            _this.logger.error("Message handler failed with " + error.stack);
+                            _this.logger.error("Message handler failed with " + error.stack, error);
                         }
                     }
                 });
@@ -2416,8 +3878,8 @@
             }
             return this._consoleLevel || ((_a = this.parent) === null || _a === void 0 ? void 0 : _a.consoleLevel());
         };
-        Logger.prototype.log = function (message, level) {
-            this.publishMessage(level || "info", message);
+        Logger.prototype.log = function (message, level, error) {
+            this.publishMessage(level || "info", message, error);
         };
         Logger.prototype.trace = function (message) {
             this.log(message, "trace");
@@ -2431,7 +3893,7 @@
         Logger.prototype.warn = function (message) {
             this.log(message, "warn");
         };
-        Logger.prototype.error = function (message) {
+        Logger.prototype.error = function (message, err) {
             this.log(message, "error");
         };
         Logger.prototype.canPublish = function (level, compareWith) {
@@ -2439,10 +3901,10 @@
             var restrictionIdx = order.indexOf(compareWith || this.consoleLevel() || "trace");
             return levelIdx >= restrictionIdx;
         };
-        Logger.prototype.publishMessage = function (level, message) {
+        Logger.prototype.publishMessage = function (level, message, error) {
             var _a, _b;
             var loggerName = this.loggerFullName;
-            if (level === "error") {
+            if (level === "error" && !error) {
                 var e = new Error();
                 if (e.stack) {
                     message =
@@ -2490,7 +3952,7 @@
                         this.logFn.warn(toPrint);
                         break;
                     case "error":
-                        this.logFn.error(toPrint);
+                        this.logFn.error(toPrint, error);
                         break;
                 }
             }
@@ -2536,7 +3998,7 @@
         }
     };
 
-    var version = "5.0.0-beta.12";
+    var version$2 = "5.0.0-beta.12";
 
     function prepareConfig (configuration, ext, glue42gd) {
         var _a, _b, _c, _d;
@@ -2596,7 +4058,7 @@
                 }
             }
             else {
-                windowId = window.name || shortid();
+                windowId = window.name || shortid$1();
             }
             var replaySpecs = (_k = (_j = configuration.gateway) === null || _j === void 0 ? void 0 : _j.replaySpecs, (_k !== null && _k !== void 0 ? _k : []));
             replaySpecs.push(ContextMessageReplaySpec);
@@ -2609,7 +4071,7 @@
                     process: pid,
                     region: region,
                     environment: environment,
-                    api: ext.version || version
+                    api: ext.version || version$2
                 },
                 reconnectInterval: reconnectInterval,
                 ws: ws,
@@ -2627,7 +4089,7 @@
             if (glue42gd) {
                 return glue42gd.applicationName;
             }
-            var uid = shortid();
+            var uid = shortid$1();
             if (Utils.isNode()) {
                 if (nodeStartingContext) {
                     return nodeStartingContext.applicationConfig.name;
@@ -2683,7 +4145,7 @@
             connection: connection,
             metrics: (_b = configuration.metrics, (_b !== null && _b !== void 0 ? _b : true)),
             contexts: (_c = configuration.contexts, (_c !== null && _c !== void 0 ? _c : true)),
-            version: ext.version || version,
+            version: ext.version || version$2,
             libs: (_d = ext.libs, (_d !== null && _d !== void 0 ? _d : [])),
             customLogger: configuration.customLogger
         };
@@ -3566,7 +5028,7 @@
                                     timeout = additionalOptions.methodResponseTimeoutMs;
                                     additionalOptionsCopy = additionalOptions;
                                     invokePromises = serversMethodMap.map(function (serversMethodPair) {
-                                        var invId = shortid();
+                                        var invId = shortid$1();
                                         return Promise.race([
                                             _this.protocol.client.invoke(invId, serversMethodPair.methods[0], argumentObj, serversMethodPair.server, additionalOptionsCopy),
                                             rejectAfter(timeout, {
@@ -4356,7 +5818,7 @@
             var _a, _b, _c;
             this.wrapped.user = resolvedIdentity.user;
             this.wrapped.instance = resolvedIdentity.instance;
-            this.wrapped.application = (_a = resolvedIdentity.application, (_a !== null && _a !== void 0 ? _a : shortid()));
+            this.wrapped.application = (_a = resolvedIdentity.application, (_a !== null && _a !== void 0 ? _a : shortid$1()));
             this.wrapped.applicationName = resolvedIdentity.applicationName;
             this.wrapped.pid = (_c = (_b = resolvedIdentity.pid, (_b !== null && _b !== void 0 ? _b : resolvedIdentity.process)), (_c !== null && _c !== void 0 ? _c : Math.floor(Math.random() * 10000000000)));
             this.wrapped.machine = resolvedIdentity.machine;
@@ -4384,7 +5846,7 @@
             this.logger = logger;
             this.servers = {};
             this.methodsCount = {};
-            this.callbacks = lib();
+            this.callbacks = lib$2();
         }
         ClientRepository.prototype.addServer = function (info, serverId) {
             this.logger.debug("adding server " + serverId);
@@ -4635,7 +6097,7 @@
             this.repository = repository;
             this.serverRepository = serverRepository;
             this.ERR_URI_SUBSCRIPTION_FAILED = "com.tick42.agm.errors.subscription.failure";
-            this.callbacks = lib();
+            this.callbacks = lib$2();
             this.nextStreamId = 0;
             session.on("add-interest", function (msg) {
                 _this.handleAddInterest(msg);
@@ -4897,7 +6359,7 @@
             this.clientRepository = clientRepository;
             this.serverRepository = serverRepository;
             this.logger = logger;
-            this.callbacks = lib();
+            this.callbacks = lib$2();
             this.streaming = new ServerStreaming$1(session, clientRepository, serverRepository);
             this.session.on("invoke", function (msg) { return _this.handleInvokeMessage(msg); });
         }
@@ -5283,7 +6745,7 @@
                 var serverId = target.server.id;
                 var method = target.methods.find(function (m) { return m.name === streamingMethod.name; });
                 if (!method) {
-                    _this.logger.error("can not find method " + streamingMethod.name + " for target " + target.server.id + " ");
+                    _this.logger.error("can not find method " + streamingMethod.name + " for target " + target.server.id);
                     return;
                 }
                 pendingSub.trackedServers.push({
@@ -5967,7 +7429,7 @@
                 _interop.invoke("T42.ACS.Feedback", feedbackInfo, "best");
             };
             var info = {
-                coreVersion: version,
+                coreVersion: version$2,
                 version: internalConfig.version
             };
             glueInitTimer.stop();
@@ -6070,1435 +7532,17 @@
     if (typeof window !== "undefined") {
         window.GlueCore = GlueCore;
     }
-    GlueCore.version = version;
+    GlueCore.version = version$2;
     GlueCore.default = GlueCore;
 
-    var version$1 = "0.0.1-alpha.0";
-
-    function createCommonjsModule$1(fn, module) {
-    	return module = { exports: {} }, fn(module, module.exports), module.exports;
-    }
-
-    // Found this seed-based random generator somewhere
-    // Based on The Central Randomizer 1.3 (C) 1997 by Paul Houle (houle@msc.cornell.edu)
-
-    var seed$1 = 1;
-
-    /**
-     * return a random number based on a seed
-     * @param seed
-     * @returns {number}
-     */
-    function getNextValue$1() {
-        seed$1 = (seed$1 * 9301 + 49297) % 233280;
-        return seed$1/(233280.0);
-    }
-
-    function setSeed$2(_seed_) {
-        seed$1 = _seed_;
-    }
-
-    var randomFromSeed$1 = {
-        nextValue: getNextValue$1,
-        seed: setSeed$2
-    };
-
-    var ORIGINAL$1 = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-';
-    var alphabet$1;
-    var previousSeed$1;
-
-    var shuffled$1;
-
-    function reset$1() {
-        shuffled$1 = false;
-    }
-
-    function setCharacters$1(_alphabet_) {
-        if (!_alphabet_) {
-            if (alphabet$1 !== ORIGINAL$1) {
-                alphabet$1 = ORIGINAL$1;
-                reset$1();
-            }
-            return;
-        }
-
-        if (_alphabet_ === alphabet$1) {
-            return;
-        }
-
-        if (_alphabet_.length !== ORIGINAL$1.length) {
-            throw new Error('Custom alphabet for shortid must be ' + ORIGINAL$1.length + ' unique characters. You submitted ' + _alphabet_.length + ' characters: ' + _alphabet_);
-        }
-
-        var unique = _alphabet_.split('').filter(function(item, ind, arr){
-           return ind !== arr.lastIndexOf(item);
-        });
-
-        if (unique.length) {
-            throw new Error('Custom alphabet for shortid must be ' + ORIGINAL$1.length + ' unique characters. These characters were not unique: ' + unique.join(', '));
-        }
-
-        alphabet$1 = _alphabet_;
-        reset$1();
-    }
-
-    function characters$1(_alphabet_) {
-        setCharacters$1(_alphabet_);
-        return alphabet$1;
-    }
-
-    function setSeed$3(seed) {
-        randomFromSeed$1.seed(seed);
-        if (previousSeed$1 !== seed) {
-            reset$1();
-            previousSeed$1 = seed;
-        }
-    }
-
-    function shuffle$1() {
-        if (!alphabet$1) {
-            setCharacters$1(ORIGINAL$1);
-        }
-
-        var sourceArray = alphabet$1.split('');
-        var targetArray = [];
-        var r = randomFromSeed$1.nextValue();
-        var characterIndex;
-
-        while (sourceArray.length > 0) {
-            r = randomFromSeed$1.nextValue();
-            characterIndex = Math.floor(r * sourceArray.length);
-            targetArray.push(sourceArray.splice(characterIndex, 1)[0]);
-        }
-        return targetArray.join('');
-    }
-
-    function getShuffled$1() {
-        if (shuffled$1) {
-            return shuffled$1;
-        }
-        shuffled$1 = shuffle$1();
-        return shuffled$1;
-    }
-
-    /**
-     * lookup shuffled letter
-     * @param index
-     * @returns {string}
-     */
-    function lookup$1(index) {
-        var alphabetShuffled = getShuffled$1();
-        return alphabetShuffled[index];
-    }
-
-    function get () {
-      return alphabet$1 || ORIGINAL$1;
-    }
-
-    var alphabet_1$1 = {
-        get: get,
-        characters: characters$1,
-        seed: setSeed$3,
-        lookup: lookup$1,
-        shuffled: getShuffled$1
-    };
-
-    var crypto$1 = typeof window === 'object' && (window.crypto || window.msCrypto); // IE 11 uses window.msCrypto
-
-    var randomByte$1;
-
-    if (!crypto$1 || !crypto$1.getRandomValues) {
-        randomByte$1 = function(size) {
-            var bytes = [];
-            for (var i = 0; i < size; i++) {
-                bytes.push(Math.floor(Math.random() * 256));
-            }
-            return bytes;
-        };
-    } else {
-        randomByte$1 = function(size) {
-            return crypto$1.getRandomValues(new Uint8Array(size));
-        };
-    }
-
-    var randomByteBrowser$1 = randomByte$1;
-
-    var format_browser = function (random, alphabet, size) {
-      var mask = (2 << Math.log(alphabet.length - 1) / Math.LN2) - 1;
-      var step = -~(1.6 * mask * size / alphabet.length);
-      var id = '';
-
-      while (true) {
-        var i = step;
-        var bytes = random(i);
-        while (i--) {
-          id += alphabet[bytes[i] & mask] || '';
-          if (id.length === +size) return id
-        }
-      }
-    };
-
-    function generate(number) {
-        var loopCounter = 0;
-        var done;
-
-        var str = '';
-
-        while (!done) {
-            str = str + format_browser(randomByteBrowser$1, alphabet_1$1.get(), 1);
-            done = number < (Math.pow(16, loopCounter + 1 ) );
-            loopCounter++;
-        }
-        return str;
-    }
-
-    var generate_1 = generate;
-
-    // Ignore all milliseconds before a certain time to reduce the size of the date entropy without sacrificing uniqueness.
-    // This number should be updated every year or so to keep the generated id short.
-    // To regenerate `new Date() - 0` and bump the version. Always bump the version!
-    var REDUCE_TIME = 1567752802062;
-
-    // don't change unless we change the algos or REDUCE_TIME
-    // must be an integer and less than 16
-    var version$2 = 7;
-
-    // Counter is used when shortid is called multiple times in one second.
-    var counter;
-
-    // Remember the last time shortid was called in case counter is needed.
-    var previousSeconds;
-
-    /**
-     * Generate unique id
-     * Returns string id
-     */
-    function build(clusterWorkerId) {
-        var str = '';
-
-        var seconds = Math.floor((Date.now() - REDUCE_TIME) * 0.001);
-
-        if (seconds === previousSeconds) {
-            counter++;
-        } else {
-            counter = 0;
-            previousSeconds = seconds;
-        }
-
-        str = str + generate_1(version$2);
-        str = str + generate_1(clusterWorkerId);
-        if (counter > 0) {
-            str = str + generate_1(counter);
-        }
-        str = str + generate_1(seconds);
-        return str;
-    }
-
-    var build_1 = build;
-
-    function isShortId$1(id) {
-        if (!id || typeof id !== 'string' || id.length < 6 ) {
-            return false;
-        }
-
-        var nonAlphabetic = new RegExp('[^' +
-          alphabet_1$1.get().replace(/[|\\{}()[\]^$+*?.-]/g, '\\$&') +
-        ']');
-        return !nonAlphabetic.test(id);
-    }
-
-    var isValid$1 = isShortId$1;
-
-    var lib$2 = createCommonjsModule$1(function (module) {
-
-
-
-
-
-    // if you are using cluster or multiple servers use this to make each instance
-    // has a unique value for worker
-    // Note: I don't know if this is automatically set when using third
-    // party cluster solutions such as pm2.
-    var clusterWorkerId =  0;
-
-    /**
-     * Set the seed.
-     * Highly recommended if you don't want people to try to figure out your id schema.
-     * exposed as shortid.seed(int)
-     * @param seed Integer value to seed the random alphabet.  ALWAYS USE THE SAME SEED or you might get overlaps.
-     */
-    function seed(seedValue) {
-        alphabet_1$1.seed(seedValue);
-        return module.exports;
-    }
-
-    /**
-     * Set the cluster worker or machine id
-     * exposed as shortid.worker(int)
-     * @param workerId worker must be positive integer.  Number less than 16 is recommended.
-     * returns shortid module so it can be chained.
-     */
-    function worker(workerId) {
-        clusterWorkerId = workerId;
-        return module.exports;
-    }
-
-    /**
-     *
-     * sets new characters to use in the alphabet
-     * returns the shuffled alphabet
-     */
-    function characters(newCharacters) {
-        if (newCharacters !== undefined) {
-            alphabet_1$1.characters(newCharacters);
-        }
-
-        return alphabet_1$1.shuffled();
-    }
-
-    /**
-     * Generate unique id
-     * Returns string id
-     */
-    function generate() {
-      return build_1(clusterWorkerId);
-    }
-
-    // Export all other functions as properties of the generate function
-    module.exports = generate;
-    module.exports.generate = generate;
-    module.exports.seed = seed;
-    module.exports.worker = worker;
-    module.exports.characters = characters;
-    module.exports.isValid = isValid$1;
-    });
-    var lib_1$1 = lib$2.generate;
-    var lib_2$1 = lib$2.seed;
-    var lib_3$1 = lib$2.worker;
-    var lib_4$1 = lib$2.characters;
-    var lib_5$1 = lib$2.isValid;
-
-    var shortid$1 = lib$2;
-
-    var RemoteWebWindow = (function () {
-        function RemoteWebWindow(id, name, control) {
-            this.id = id;
-            this.name = name;
-            this.control = control;
-        }
-        RemoteWebWindow.prototype.getURL = function () {
-            var _a, _b;
-            return __awaiter(this, void 0, void 0, function () {
-                var result;
-                return __generator(this, function (_c) {
-                    switch (_c.label) {
-                        case 0: return [4, this.callControl("getURL", {})];
-                        case 1:
-                            result = _c.sent();
-                            return [2, (_b = (_a = result) === null || _a === void 0 ? void 0 : _a.returned) === null || _b === void 0 ? void 0 : _b._value];
-                    }
-                });
-            });
-        };
-        RemoteWebWindow.prototype.moveResize = function (bounds) {
-            return __awaiter(this, void 0, void 0, function () {
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0: return [4, this.callControl("moveResize", bounds)];
-                        case 1:
-                            _a.sent();
-                            return [2, this];
-                    }
-                });
-            });
-        };
-        RemoteWebWindow.prototype.close = function () {
-            return __awaiter(this, void 0, void 0, function () {
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0: return [4, this.callControl("close", {})];
-                        case 1:
-                            _a.sent();
-                            return [2, this];
-                    }
-                });
-            });
-        };
-        RemoteWebWindow.prototype.setTitle = function (title) {
-            return __awaiter(this, void 0, void 0, function () {
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0:
-                            if (typeof title === "string") {
-                                title = { title: title };
-                            }
-                            return [4, this.callControl("setTitle", title)];
-                        case 1:
-                            _a.sent();
-                            return [2, this];
-                    }
-                });
-            });
-        };
-        RemoteWebWindow.prototype.resizeTo = function (width, height) {
-            return __awaiter(this, void 0, void 0, function () {
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0: return [4, this.callControl("moveResize", { width: width, height: height })];
-                        case 1:
-                            _a.sent();
-                            return [2, this];
-                    }
-                });
-            });
-        };
-        RemoteWebWindow.prototype.moveTo = function (top, left) {
-            return __awaiter(this, void 0, void 0, function () {
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0: return [4, this.callControl("moveResize", { top: top, left: left })];
-                        case 1:
-                            _a.sent();
-                            return [2, this];
-                    }
-                });
-            });
-        };
-        RemoteWebWindow.prototype.getBounds = function () {
-            return __awaiter(this, void 0, void 0, function () {
-                var result;
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0: return [4, this.callControl("getBounds", {})];
-                        case 1:
-                            result = _a.sent();
-                            return [2, result.returned];
-                    }
-                });
-            });
-        };
-        RemoteWebWindow.prototype.getContext = function () {
-            return __awaiter(this, void 0, void 0, function () {
-                var result;
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0: return [4, this.callControl("getContext", {})];
-                        case 1:
-                            result = _a.sent();
-                            return [2, result.returned];
-                    }
-                });
-            });
-        };
-        RemoteWebWindow.prototype.getTitle = function () {
-            return __awaiter(this, void 0, void 0, function () {
-                var result;
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0: return [4, this.callControl("getTitle", {})];
-                        case 1:
-                            result = _a.sent();
-                            return [2, result.returned._value];
-                    }
-                });
-            });
-        };
-        RemoteWebWindow.prototype.onContextUpdated = function (callback) {
-            throw new Error("Method not implemented.");
-        };
-        RemoteWebWindow.prototype.updateContext = function (context) {
-            return __awaiter(this, void 0, void 0, function () {
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0: return [4, this.callControl("updateContext", context)];
-                        case 1:
-                            _a.sent();
-                            return [2, this];
-                    }
-                });
-            });
-        };
-        RemoteWebWindow.prototype.setContext = function (context) {
-            return __awaiter(this, void 0, void 0, function () {
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0: return [4, this.callControl("setContext", context)];
-                        case 1:
-                            _a.sent();
-                            return [2, this];
-                    }
-                });
-            });
-        };
-        RemoteWebWindow.prototype.callControl = function (command, args) {
-            return __awaiter(this, void 0, void 0, function () {
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0: return [4, this.control.send({ command: command, domain: "windows", args: args }, { windowId: this.id })];
-                        case 1: return [2, _a.sent()];
-                    }
-                });
-            });
-        };
-        return RemoteWebWindow;
-    }());
-
-    var Control = (function () {
-        function Control() {
-            this.callbacks = {};
-        }
-        Control.prototype.start = function (interop, logger) {
-            var _this = this;
-            this.interop = interop;
-            this.logger = logger;
-            this.interop.register(Control.CONTROL_METHOD, function (arg) { return __awaiter(_this, void 0, void 0, function () {
-                var command, callback;
-                return __generator(this, function (_a) {
-                    command = arg;
-                    logger.info("received control command " + JSON.stringify(command));
-                    if (command.domain === "windows") {
-                        if (!this.myWindow) {
-                            return [2];
-                        }
-                        return [2, this.myWindow[command.command].call(this.myWindow, command.args)];
-                    }
-                    if (command.domain === "layouts") {
-                        callback = this.callbacks[command.domain];
-                        if (callback) {
-                            callback(command);
-                        }
-                    }
-                    return [2];
-                });
-            }); });
-        };
-        Control.prototype.send = function (command, target) {
-            if (!this.interop) {
-                throw new Error("Control not started");
-            }
-            this.logger.info("sending control command " + JSON.stringify(command) + " to " + JSON.stringify(target) + "}");
-            return this.interop.invoke(Control.CONTROL_METHOD, command, target);
-        };
-        Control.prototype.subscribe = function (domain, callback) {
-            this.callbacks[domain] = callback;
-        };
-        Control.prototype.setLocalWindow = function (window) {
-            this.myWindow = window;
-        };
-        Control.CONTROL_METHOD = "GC.Control";
-        return Control;
-    }());
-
-    function createRegistry$1(options) {
-        if (options && options.errorHandling
-            && typeof options.errorHandling !== "function"
-            && options.errorHandling !== "log"
-            && options.errorHandling !== "silent"
-            && options.errorHandling !== "throw") {
-            throw new Error("Invalid options passed to createRegistry. Prop errorHandling should be [\"log\" | \"silent\" | \"throw\" | (err) => void], but " + typeof options.errorHandling + " was passed");
-        }
-        var _userErrorHandler = options && typeof options.errorHandling === "function" && options.errorHandling;
-        var callbacks = {};
-        function add(key, callback) {
-            var callbacksForKey = callbacks[key];
-            if (!callbacksForKey) {
-                callbacksForKey = [];
-                callbacks[key] = callbacksForKey;
-            }
-            callbacksForKey.push(callback);
-            return function () {
-                var allForKey = callbacks[key];
-                if (!allForKey) {
-                    return;
-                }
-                allForKey = allForKey.reduce(function (acc, element, index) {
-                    if (!(element === callback && acc.length === index)) {
-                        acc.push(element);
-                    }
-                    return acc;
-                }, []);
-                callbacks[key] = allForKey;
-            };
-        }
-        function execute(key) {
-            var argumentsArr = [];
-            for (var _i = 1; _i < arguments.length; _i++) {
-                argumentsArr[_i - 1] = arguments[_i];
-            }
-            var callbacksForKey = callbacks[key];
-            if (!callbacksForKey || callbacksForKey.length === 0) {
-                return [];
-            }
-            var results = [];
-            callbacksForKey.forEach(function (callback) {
-                try {
-                    var result = callback.apply(undefined, argumentsArr);
-                    results.push(result);
-                }
-                catch (err) {
-                    results.push(undefined);
-                    _handleError(err, key);
-                }
-            });
-            return results;
-        }
-        function _handleError(exceptionArtifact, key) {
-            var errParam = exceptionArtifact instanceof Error ? exceptionArtifact : new Error(exceptionArtifact);
-            if (_userErrorHandler) {
-                _userErrorHandler(errParam);
-                return;
-            }
-            var msg = "[ERROR] callback-registry: User callback for key \"" + key + "\" failed: " + errParam.stack;
-            if (options) {
-                switch (options.errorHandling) {
-                    case "log":
-                        return console.error(msg);
-                    case "silent":
-                        return;
-                    case "throw":
-                        throw new Error(msg);
-                }
-            }
-            console.error(msg);
-        }
-        function clear() {
-            callbacks = {};
-        }
-        function clearKey(key) {
-            var callbacksForKey = callbacks[key];
-            if (!callbacksForKey) {
-                return;
-            }
-            delete callbacks[key];
-        }
-        return {
-            add: add,
-            execute: execute,
-            clear: clear,
-            clearKey: clearKey
-        };
-    }
-    createRegistry$1.default = createRegistry$1;
-    var lib$3 = createRegistry$1;
-
-    var LocalWebWindow = (function () {
-        function LocalWebWindow(id, name, window, control, interop) {
-            this.id = id;
-            this.name = name;
-            this.window = window;
-            this.control = control;
-            this.interop = interop;
-            this.context = {};
-            this.registry = lib$3();
-            control.setLocalWindow(this);
-        }
-        LocalWebWindow.prototype.getURL = function () {
-            return __awaiter(this, void 0, void 0, function () {
-                return __generator(this, function (_a) {
-                    return [2, this.window.location.href];
-                });
-            });
-        };
-        LocalWebWindow.prototype.moveResize = function (_a) {
-            var left = _a.left, top = _a.top, width = _a.width, height = _a.height;
-            return __awaiter(this, void 0, void 0, function () {
-                return __generator(this, function (_b) {
-                    left = (left !== null && left !== void 0 ? left : window.screenLeft);
-                    top = (top !== null && top !== void 0 ? top : window.screenTop);
-                    width = (width !== null && width !== void 0 ? width : window.outerWidth);
-                    height = (height !== null && height !== void 0 ? height : window.outerHeight);
-                    window.moveTo(left, top);
-                    window.resizeTo(width, height);
-                    return [2, this];
-                });
-            });
-        };
-        LocalWebWindow.prototype.close = function () {
-            try {
-                window.close();
-            }
-            catch (e) {
-                return Promise.reject(e);
-            }
-            return Promise.resolve(this);
-        };
-        LocalWebWindow.prototype.setTitle = function (title) {
-            return __awaiter(this, void 0, void 0, function () {
-                return __generator(this, function (_a) {
-                    if (typeof title === "object" && title !== null) {
-                        title = title.title;
-                    }
-                    document.title = title;
-                    return [2, this];
-                });
-            });
-        };
-        LocalWebWindow.prototype.resizeTo = function (width, height) {
-            return __awaiter(this, void 0, void 0, function () {
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0: return [4, this.moveResize({ width: width, height: height })];
-                        case 1:
-                            _a.sent();
-                            return [2, this];
-                    }
-                });
-            });
-        };
-        LocalWebWindow.prototype.moveTo = function (top, left) {
-            return __awaiter(this, void 0, void 0, function () {
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0: return [4, this.moveResize({ top: top, left: left })];
-                        case 1:
-                            _a.sent();
-                            return [2, this];
-                    }
-                });
-            });
-        };
-        LocalWebWindow.prototype.getBounds = function () {
-            return __awaiter(this, void 0, void 0, function () {
-                return __generator(this, function (_a) {
-                    return [2, this.getBoundsSync()];
-                });
-            });
-        };
-        LocalWebWindow.prototype.getContext = function () {
-            return __awaiter(this, void 0, void 0, function () {
-                return __generator(this, function (_a) {
-                    return [2, this.getContextSync()];
-                });
-            });
-        };
-        LocalWebWindow.prototype.getContextSync = function () {
-            return this.context;
-        };
-        LocalWebWindow.prototype.getTitle = function () {
-            return __awaiter(this, void 0, void 0, function () {
-                return __generator(this, function (_a) {
-                    return [2, this.window.document.title];
-                });
-            });
-        };
-        LocalWebWindow.prototype.onContextUpdated = function (callback) {
-            return this.registry.add("context-updated", callback);
-        };
-        LocalWebWindow.prototype.updateContext = function (context) {
-            var oldContext = this.context;
-            this.context = Object.assign({}, context, oldContext);
-            this.registry.execute("context-updated", context, oldContext);
-            return Promise.resolve(this);
-        };
-        LocalWebWindow.prototype.setContext = function (context) {
-            return __awaiter(this, void 0, void 0, function () {
-                var oldContext;
-                return __generator(this, function (_a) {
-                    oldContext = this.context;
-                    this.context = Object.assign({}, context);
-                    this.registry.execute("context-updated", context, oldContext);
-                    return [2, Promise.resolve(this)];
-                });
-            });
-        };
-        LocalWebWindow.prototype.getBoundsSync = function () {
-            return {
-                left: this.window.screenLeft,
-                top: this.window.screenTop,
-                width: this.window.outerWidth,
-                height: this.window.outerHeight
-            };
-        };
-        return LocalWebWindow;
-    }());
-
-    var ChildWebWindow = (function (_super) {
-        __extends(ChildWebWindow, _super);
-        function ChildWebWindow(window, id, name, control) {
-            var _this = _super.call(this, id, name, control) || this;
-            _this.window = window;
-            _this.id = id;
-            _this.name = name;
-            return _this;
-        }
-        return ChildWebWindow;
-    }(RemoteWebWindow));
-
-    var registerChildStartupContext = function (interop, parent, id, name, options) {
-        var _a, _b;
-        var methodName = createMethodName(id);
-        var startingContext = {
-            context: (_b = (_a = options) === null || _a === void 0 ? void 0 : _a.context, (_b !== null && _b !== void 0 ? _b : {})),
-            name: name,
-            parent: parent
-        };
-        interop.register(methodName, function () { return startingContext; });
-    };
-    var initStartupContext = function (core) { return __awaiter(void 0, void 0, void 0, function () {
-        var my, methodName, result;
-        var _a;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
-                case 0:
-                    my = (_a = core.windows) === null || _a === void 0 ? void 0 : _a.my();
-                    methodName = createMethodName(my.id);
-                    if (!core.interop.methods().find(function (m) { return m.name === methodName; })) return [3, 2];
-                    return [4, core.interop.invoke(methodName)];
-                case 1:
-                    result = _b.sent();
-                    if (my) {
-                        my.setContext(result.returned.context);
-                        my.name = result.returned.name;
-                        my.parent = result.returned.parent;
-                    }
-                    _b.label = 2;
-                case 2: return [2];
-            }
-        });
-    }); };
-    var createMethodName = function (id) { return "\"GC.Wnd.\"" + id; };
-
-    var Windows = (function () {
-        function Windows(interop, control) {
-            var _a, _b;
-            this.interop = interop;
-            this.control = control;
-            this.registry = lib$3();
-            this.childWindows = [];
-            var windowAsAny = window;
-            var id = interop.instance.windowId;
-            var name = (_b = (_a = windowAsAny.glue0) === null || _a === void 0 ? void 0 : _a.name, (_b !== null && _b !== void 0 ? _b : "document.title (" + shortid$1() + ")"));
-            this.myWindow = new LocalWebWindow(id, name, window, this.control, this.interop);
-            this.trackWindowsLifetime();
-        }
-        Windows.prototype.list = function () {
-            var _this = this;
-            var method = this.interop.methods({ name: Control.CONTROL_METHOD })[0];
-            if (!method) {
-                return [];
-            }
-            var servers = method.getServers ? method.getServers() : [];
-            return servers.reduce(function (prev, current) {
-                var remoteWindow = _this.remoteFromServer(current);
-                if (remoteWindow) {
-                    prev.push(remoteWindow);
-                }
-                return prev;
-            }, []);
-        };
-        Windows.prototype.findById = function (id) {
-            return this.list().find(function (w) { return w.id === id; });
-        };
-        Windows.prototype.my = function () {
-            return this.myWindow;
-        };
-        Windows.prototype.open = function (name, url, options) {
-            var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
-            return __awaiter(this, void 0, void 0, function () {
-                var width, height, left, top, id, relativeWindowId_1, relativeWindow, relativeWindowBounds, relativeDir, newBounds, optionsString, newWindow, remoteWindow;
-                return __generator(this, function (_l) {
-                    switch (_l.label) {
-                        case 0:
-                            width = (_b = (_a = options) === null || _a === void 0 ? void 0 : _a.width, (_b !== null && _b !== void 0 ? _b : 400));
-                            height = (_d = (_c = options) === null || _c === void 0 ? void 0 : _c.height, (_d !== null && _d !== void 0 ? _d : 400));
-                            left = (_f = (_e = options) === null || _e === void 0 ? void 0 : _e.left, (_f !== null && _f !== void 0 ? _f : window.screen.availWidth - window.screenLeft));
-                            top = (_h = (_g = options) === null || _g === void 0 ? void 0 : _g.top, (_h !== null && _h !== void 0 ? _h : 0));
-                            id = shortid$1();
-                            registerChildStartupContext(this.interop, this.my().id, id, name, options);
-                            if (!((_j = options) === null || _j === void 0 ? void 0 : _j.relativeTo)) return [3, 2];
-                            relativeWindowId_1 = options.relativeTo;
-                            relativeWindow = this.list().find(function (w) { return w.id === relativeWindowId_1; });
-                            if (!relativeWindow) return [3, 2];
-                            return [4, relativeWindow.getBounds()];
-                        case 1:
-                            relativeWindowBounds = _l.sent();
-                            relativeDir = (_k = options.relativeDirection, (_k !== null && _k !== void 0 ? _k : "right"));
-                            newBounds = this.getRelativeBounds({ width: width, height: height, left: left, top: top }, relativeWindowBounds, relativeDir);
-                            width = newBounds.width;
-                            height = newBounds.height;
-                            left = newBounds.left;
-                            top = newBounds.top;
-                            _l.label = 2;
-                        case 2:
-                            optionsString = "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top + ",scrollbars=none,location=no,status=no,menubar=no";
-                            newWindow = window.open(url, id, optionsString);
-                            if (!newWindow) {
-                                throw new Error("failed to open a window with url=" + url + " and options=" + optionsString);
-                            }
-                            newWindow.moveTo(left, top);
-                            newWindow.resizeTo(width, height);
-                            remoteWindow = new ChildWebWindow(newWindow, id, name, this.control);
-                            this.childWindows.push(remoteWindow);
-                            return [2, remoteWindow];
-                    }
-                });
-            });
-        };
-        Windows.prototype.onWindowAdded = function (callback) {
-            return this.registry.add("window-added", callback);
-        };
-        Windows.prototype.onWindowRemoved = function (callback) {
-            return this.registry.add("window-removed", callback);
-        };
-        Windows.prototype.getChildWindows = function () {
-            this.childWindows = this.childWindows.filter(function (cw) { return !cw.window.closed; });
-            return this.childWindows;
-        };
-        Windows.prototype.remoteFromServer = function (server) {
-            var _a;
-            if (!server.windowId) {
-                return undefined;
-            }
-            return new RemoteWebWindow(server.windowId, (_a = server.application, (_a !== null && _a !== void 0 ? _a : "")), this.control);
-        };
-        Windows.prototype.getRelativeBounds = function (rect, relativeTo, relativeDirection) {
-            var edgeDistance = 0;
-            switch (relativeDirection) {
-                case "bottom":
-                    return {
-                        left: relativeTo.left,
-                        top: relativeTo.top + relativeTo.height + edgeDistance,
-                        width: relativeTo.width,
-                        height: rect.height
-                    };
-                case "top":
-                    return {
-                        left: relativeTo.left,
-                        top: relativeTo.top - rect.height - edgeDistance,
-                        width: relativeTo.width,
-                        height: rect.height
-                    };
-                case "right":
-                    return {
-                        left: relativeTo.left + relativeTo.width + edgeDistance,
-                        top: relativeTo.top,
-                        width: rect.width,
-                        height: relativeTo.height
-                    };
-                case "left":
-                    return {
-                        left: relativeTo.left - rect.width - edgeDistance,
-                        top: relativeTo.top,
-                        width: rect.width,
-                        height: relativeTo.height
-                    };
-            }
-            throw new Error("invalid relativeDirection");
-        };
-        Windows.prototype.trackWindowsLifetime = function () {
-            var _this = this;
-            this.interop.serverMethodAdded(function (_a) {
-                var server = _a.server, method = _a.method;
-                if (method.name !== Control.CONTROL_METHOD) {
-                    return;
-                }
-                var remoteWindow = _this.remoteFromServer(server);
-                if (remoteWindow) {
-                    _this.registry.execute("window-added", remoteWindow);
-                }
-            });
-            this.interop.serverRemoved(function (server) {
-                var remoteWindow = _this.remoteFromServer(server);
-                if (remoteWindow) {
-                    _this.registry.execute("window-removed", remoteWindow);
-                }
-            });
-        };
-        return Windows;
-    }());
-
-    var LocalStorage = (function () {
-        function LocalStorage() {
-        }
-        LocalStorage.prototype.getAll = function () {
-            var obj = this.getObjectFromLocalStorage();
-            return Object.values(obj);
-        };
-        LocalStorage.prototype.get = function (name, type) {
-            var obj = this.getObjectFromLocalStorage();
-            var key = this.getKey(name, type);
-            return obj[key];
-        };
-        LocalStorage.prototype.save = function (layout) {
-            var obj = this.getObjectFromLocalStorage();
-            var key = this.getKey(layout.name, layout.type);
-            obj[key] = layout;
-            this.setObjectToLocalStorage(obj);
-            return Promise.resolve(layout);
-        };
-        LocalStorage.prototype.remove = function (name, type) {
-            var obj = this.getObjectFromLocalStorage();
-            var key = this.getKey(name, type);
-            delete obj[key];
-            return Promise.resolve();
-        };
-        LocalStorage.prototype.clear = function () {
-            this.setObjectToLocalStorage({});
-            return Promise.resolve();
-        };
-        LocalStorage.prototype.getObjectFromLocalStorage = function () {
-            var values = window.localStorage.getItem(LocalStorage.KEY);
-            if (values) {
-                return JSON.parse(values);
-            }
-            return {};
-        };
-        LocalStorage.prototype.setObjectToLocalStorage = function (obj) {
-            window.localStorage.setItem(LocalStorage.KEY, JSON.stringify(obj));
-        };
-        LocalStorage.prototype.getKey = function (name, type) {
-            return type + "_" + name;
-        };
-        LocalStorage.KEY = "G0_layouts";
-        return LocalStorage;
-    }());
-
-    var Layouts = (function () {
-        function Layouts(windows, interop, logger, control, config) {
-            var _a, _b, _c;
-            this.windows = windows;
-            this.interop = interop;
-            this.logger = logger;
-            this.control = control;
-            this.storage = new LocalStorage();
-            this.registerRequestMethods();
-            this.control.subscribe("layouts", this.handleControlMessage.bind(this));
-            this.autoSaveContext = (_c = (_b = (_a = config) === null || _a === void 0 ? void 0 : _a.layouts) === null || _b === void 0 ? void 0 : _b.autoSaveWindowContext, (_c !== null && _c !== void 0 ? _c : false));
-        }
-        Layouts.prototype.list = function () {
-            return this.storage.getAll();
-        };
-        Layouts.prototype.save = function (layoutOptions) {
-            return __awaiter(this, void 0, void 0, function () {
-                var openedWindows, components;
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0:
-                            if (!layoutOptions.name) {
-                                return [2, Promise.reject("missing name for layout " + JSON.stringify(layoutOptions))];
-                            }
-                            openedWindows = this.windows.getChildWindows().map(function (w) { return w.id; });
-                            return [4, this.getRemoteWindowsInfo(openedWindows)];
-                        case 1:
-                            components = _a.sent();
-                            components.push(this.getLocalLayoutComponent(layoutOptions.context, true));
-                            return [2, this.storage.save({
-                                    type: "Global",
-                                    name: layoutOptions.name,
-                                    components: components,
-                                    context: layoutOptions.context || {},
-                                    metadata: layoutOptions.metadata || {}
-                                })];
-                    }
-                });
-            });
-        };
-        Layouts.prototype.restore = function (options) {
-            return __awaiter(this, void 0, void 0, function () {
-                var layout;
-                var _this = this;
-                return __generator(this, function (_a) {
-                    layout = this.list().find(function (l) { return l.name === options.name && l.type === "Global"; });
-                    if (!layout) {
-                        throw new Error("can not find layout with name " + options.name);
-                    }
-                    layout.components.forEach(function (c) {
-                        if (c.type === "window") {
-                            if (c.main) {
-                                return;
-                            }
-                            var newWindowOptions = __assign(__assign({}, c.bounds), { context: c.windowContext });
-                            _this.windows.open(c.name, c.url, newWindowOptions);
-                        }
-                    });
-                    return [2];
-                });
-            });
-        };
-        Layouts.prototype.remove = function (type, name) {
-            this.storage.remove(name, type);
-            return Promise.resolve();
-        };
-        Layouts.prototype.onSaveRequested = function (callback) {
-            var _this = this;
-            this.getLocalInfoCallback = callback;
-            return function () {
-                _this.getLocalInfoCallback = undefined;
-            };
-        };
-        Layouts.prototype.getLocalLayoutComponent = function (context, main) {
-            if (main === void 0) { main = false; }
-            var _a;
-            var requestResult;
-            var my = this.windows.my();
-            try {
-                if (this.autoSaveContext) {
-                    requestResult = {
-                        windowContext: my.getContextSync()
-                    };
-                }
-                if (this.getLocalInfoCallback) {
-                    requestResult = this.getLocalInfoCallback(context);
-                }
-            }
-            catch (err) {
-                this.logger.warn("onSaveRequested - error getting data from user function - " + err);
-            }
-            return {
-                type: "window",
-                name: my.name,
-                windowContext: ((_a = requestResult) === null || _a === void 0 ? void 0 : _a.windowContext) || {},
-                bounds: my.getBoundsSync(),
-                url: window.document.location.href,
-                id: this.windows.my().id,
-                main: main
-            };
-        };
-        Layouts.prototype.registerRequestMethods = function () {
-            var _this = this;
-            this.interop.register(Layouts.SaveContextMethodName, function (args) {
-                return _this.getLocalLayoutComponent(args);
-            });
-        };
-        Layouts.prototype.handleControlMessage = function (command) {
-            return __awaiter(this, void 0, void 0, function () {
-                var args, components;
-                var _this = this;
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0:
-                            if (!(command.command === "saveAutoLayout")) return [3, 3];
-                            args = command.args;
-                            return [4, this.getRemoteWindowsInfo(args.childWindows)];
-                        case 1:
-                            components = _a.sent();
-                            components.push(args.parentInfo);
-                            return [4, this.storage.save({
-                                    type: "Global",
-                                    name: args.layoutName,
-                                    components: components,
-                                    context: args.context || {},
-                                    metadata: args.metadata || {}
-                                })];
-                        case 2:
-                            _a.sent();
-                            args.childWindows.forEach(function (cw) {
-                                var _a;
-                                (_a = _this.windows.findById(cw)) === null || _a === void 0 ? void 0 : _a.close();
-                            });
-                            _a.label = 3;
-                        case 3: return [2];
-                    }
-                });
-            });
-        };
-        Layouts.prototype.getRemoteWindowsInfo = function (windows) {
-            return __awaiter(this, void 0, void 0, function () {
-                var promises, _loop_1, this_1, _i, windows_1, id, responses;
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0:
-                            promises = [];
-                            _loop_1 = function (id) {
-                                var interopServer = this_1.interop.servers().find(function (s) { return s.windowId === id; });
-                                if (!interopServer || !interopServer.getMethods) {
-                                    return "continue";
-                                }
-                                var methods = interopServer.getMethods();
-                                if (methods.find(function (m) { return m.name === Layouts.SaveContextMethodName; })) {
-                                    try {
-                                        promises.push(this_1.interop.invoke(Layouts.SaveContextMethodName, {}, { windowId: id }));
-                                    }
-                                    catch (_a) {
-                                    }
-                                }
-                            };
-                            this_1 = this;
-                            for (_i = 0, windows_1 = windows; _i < windows_1.length; _i++) {
-                                id = windows_1[_i];
-                                _loop_1(id);
-                            }
-                            return [4, Promise.all(promises)];
-                        case 1:
-                            responses = _a.sent();
-                            return [2, responses.map(function (response) { return response.returned; })];
-                    }
-                });
-            });
-        };
-        Layouts.SaveContextMethodName = "T42.HC.GetSaveContext";
-        return Layouts;
-    }());
-
-    var Notifications = (function () {
-        function Notifications(interop) {
-            this.interop = interop;
-        }
-        Notifications.prototype.raise = function (options) {
-            return __awaiter(this, void 0, void 0, function () {
-                var permissionPromise, notification, interopOptions_1;
-                var _this = this;
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0:
-                            if (!("Notification" in window)) {
-                                throw new Error("this browser does not support desktop notification");
-                            }
-                            if (Notification.permission === "granted") {
-                                permissionPromise = Promise.resolve("granted");
-                            }
-                            else if (Notification.permission === "denied") {
-                                permissionPromise = Promise.reject("no permissions from user");
-                            }
-                            else {
-                                permissionPromise = Notification.requestPermission();
-                            }
-                            return [4, permissionPromise];
-                        case 1:
-                            _a.sent();
-                            notification = this.raiseUsingWebApi(options);
-                            if (options.clickInterop) {
-                                interopOptions_1 = options.clickInterop;
-                                notification.onclick = function () {
-                                    var _a, _b, _c, _d;
-                                    _this.interop.invoke(interopOptions_1.method, (_b = (_a = interopOptions_1) === null || _a === void 0 ? void 0 : _a.arguments, (_b !== null && _b !== void 0 ? _b : {})), (_d = (_c = interopOptions_1) === null || _c === void 0 ? void 0 : _c.target, (_d !== null && _d !== void 0 ? _d : "best")));
-                                };
-                            }
-                            return [2, notification];
-                    }
-                });
-            });
-        };
-        Notifications.prototype.raiseUsingWebApi = function (options) {
-            return new Notification(options.title, options);
-        };
-        return Notifications;
-    }());
-
-    var defaultConfigLocation = "/glue/glue.config.json";
-    var defaultWorkerLocation = "/glue/worker.js";
-    var defaultConfig = {
-        worker: defaultWorkerLocation,
-        extends: defaultConfigLocation,
-        layouts: {
-            autoRestore: false,
-            autoSaveWindowContext: false
-        },
-        logger: "error",
-    };
-
-    var fetchTimeout = function (url, timeoutMilliseconds) {
-        if (timeoutMilliseconds === void 0) { timeoutMilliseconds = 1000; }
-        return new Promise(function (resolve, reject) {
-            var timeoutHit = false;
-            var timeout = setTimeout(function () {
-                timeoutHit = true;
-                reject(new Error("Fetch request for: " + url + " timed out at: " + timeoutMilliseconds + " milliseconds"));
-            }, timeoutMilliseconds);
-            fetch(url)
-                .then(function (response) {
-                if (!timeoutHit) {
-                    clearTimeout(timeout);
-                    resolve(response);
-                }
-            })
-                .catch(function (err) {
-                if (!timeoutHit) {
-                    clearTimeout(timeout);
-                    reject(err);
-                }
-            });
-        });
-    };
-    var getRemoteConfig = function (userConfig) { return __awaiter(void 0, void 0, void 0, function () {
-        var extend, response, json, _a;
-        var _b, _c, _d, _e;
-        return __generator(this, function (_f) {
-            switch (_f.label) {
-                case 0:
-                    extend = (_c = (_b = userConfig.extends, (_b !== null && _b !== void 0 ? _b : defaultConfig.extends)), (_c !== null && _c !== void 0 ? _c : defaultConfigLocation));
-                    if (extend === false) {
-                        return [2, {}];
-                    }
-                    _f.label = 1;
-                case 1:
-                    _f.trys.push([1, 4, , 5]);
-                    return [4, fetchTimeout(extend)];
-                case 2:
-                    response = _f.sent();
-                    if (!response.ok) {
-                        return [2, {}];
-                    }
-                    return [4, response.json()];
-                case 3:
-                    json = _f.sent();
-                    return [2, (_e = (_d = json) === null || _d === void 0 ? void 0 : _d.glue, (_e !== null && _e !== void 0 ? _e : {}))];
-                case 4:
-                    _a = _f.sent();
-                    return [2, {}];
-                case 5: return [2];
-            }
-        });
-    }); };
-    var buildConfig = function (userConfig) { return __awaiter(void 0, void 0, void 0, function () {
-        var remoteConfig;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    userConfig = (userConfig !== null && userConfig !== void 0 ? userConfig : {});
-                    return [4, getRemoteConfig(userConfig)];
-                case 1:
-                    remoteConfig = _a.sent();
-                    return [2, Object.assign({}, defaultConfig, remoteConfig, userConfig)];
-            }
-        });
-    }); };
-
-    var restoreAutoSavedLayout = function (api) {
-        var _a;
-        var layoutName = "_auto_" + document.location.href;
-        var layout = api.layouts.list().find(function (l) { return l.name === layoutName; });
-        if (!layout) {
-            return Promise.resolve();
-        }
-        var my = api.windows.my();
-        if (my.parent) {
-            return Promise.resolve();
-        }
-        api.logger.info("restoring layout " + layoutName);
-        var mainComponent = layout.components.find(function (c) { return c.main; });
-        my.setContext((_a = mainComponent) === null || _a === void 0 ? void 0 : _a.windowContext);
-        try {
-            return api.layouts.restore({
-                name: layoutName,
-                closeRunningInstance: false,
-            });
-        }
-        catch (e) {
-            api.logger.error(e);
-            return Promise.resolve();
-        }
-    };
-
-    var CreateGlueWeb = function (config) { return __awaiter(void 0, void 0, void 0, function () {
-        var gdWindowContext, control, windows, ext, coreConfig, core;
-        var _a, _b, _c, _d;
-        return __generator(this, function (_e) {
-            switch (_e.label) {
-                case 0: return [4, buildConfig(config)];
-                case 1:
-                    config = _e.sent();
-                    gdWindowContext = window;
-                    if (gdWindowContext.glue42gd && gdWindowContext.Glue) {
-                        return [2, gdWindowContext.Glue({
-                                windows: true,
-                                logger: config.logger
-                            })];
-                    }
-                    control = new Control();
-                    ext = {
-                        libs: [
-                            {
-                                name: "windows",
-                                create: function (coreLib) {
-                                    windows = new Windows(coreLib.interop, control);
-                                    return windows;
-                                }
-                            },
-                            {
-                                name: "notifications",
-                                create: function (coreLib) { return new Notifications(coreLib.interop); }
-                            },
-                            {
-                                name: "layouts",
-                                create: function (coreLib) { return new Layouts(windows, coreLib.interop, coreLib.logger.subLogger("layouts"), control, config); }
-                            }
-                        ],
-                        version: version$1
-                    };
-                    coreConfig = {
-                        gateway: {
-                            sharedWorker: (_b = (_a = config) === null || _a === void 0 ? void 0 : _a.worker, (_b !== null && _b !== void 0 ? _b : defaultWorkerLocation))
-                        },
-                        logger: (_c = config) === null || _c === void 0 ? void 0 : _c.logger
-                    };
-                    return [4, GlueCore(coreConfig, ext)];
-                case 2:
-                    core = _e.sent();
-                    control.start(core.interop, core.logger.subLogger("control"));
-                    return [4, initStartupContext(core)];
-                case 3:
-                    _e.sent();
-                    if (!((_d = config.layouts) === null || _d === void 0 ? void 0 : _d.autoRestore)) return [3, 5];
-                    return [4, restoreAutoSavedLayout(core)];
-                case 4:
-                    _e.sent();
-                    _e.label = 5;
-                case 5: return [4, hookCloseEvents(core, config, control)];
-                case 6:
-                    _e.sent();
-                    return [2, core];
-            }
-        });
-    }); };
-    var hookCloseEvents = function (api, config, control) {
-        var done = false;
-        var doneFn = function () { return __awaiter(void 0, void 0, void 0, function () {
-            var shouldSave, allChildren, firstChild, layoutName, layouts, command;
-            var _a, _b;
-            return __generator(this, function (_c) {
-                if (!done) {
-                    done = true;
-                    shouldSave = (_b = (_a = config) === null || _a === void 0 ? void 0 : _a.layouts) === null || _b === void 0 ? void 0 : _b.autoRestore;
-                    if (shouldSave) {
-                        allChildren = api.windows.getChildWindows().map(function (w) { return w.id; });
-                        firstChild = allChildren[0];
-                        layoutName = "_auto_" + document.location.href;
-                        if (allChildren.length > 0) {
-                            layouts = api.layouts;
-                            command = {
-                                domain: "layouts",
-                                command: "saveAutoLayout",
-                                args: {
-                                    childWindows: allChildren,
-                                    closeEveryone: true,
-                                    layoutName: layoutName,
-                                    context: {},
-                                    metadata: {},
-                                    parentInfo: layouts.getLocalLayoutComponent({}, true)
-                                }
-                            };
-                            control.send(command, { windowId: firstChild });
-                        }
-                        else {
-                            api.layouts.save({ name: layoutName });
-                        }
-                    }
-                    api.done();
-                }
-                return [2];
-            });
-        }); };
-        window.addEventListener("beforeunload", function (event) { return __awaiter(void 0, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                doneFn();
-                return [2];
-            });
-        }); });
-        window.addEventListener("unload", function () { return __awaiter(void 0, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                doneFn();
-                return [2];
-            });
-        }); });
-    };
+    var glueWebFactory = createFactoryFunction(GlueCore);
     if (typeof window !== "undefined") {
-        window.GlueWeb = CreateGlueWeb;
+        window.GlueWeb = glueWebFactory;
     }
-    CreateGlueWeb.default = CreateGlueWeb;
-    CreateGlueWeb.version = version$1;
+    glueWebFactory.default = glueWebFactory;
+    glueWebFactory.version = version;
 
-    return CreateGlueWeb;
+    return glueWebFactory;
 
 })));
 //# sourceMappingURL=web.umd.js.map

@@ -3,7 +3,7 @@ import { LocalStorage } from "./localStorage";
 import { Windows } from "../windows/main";
 import { LocalWebWindow } from "../windows/my";
 import { Control } from "../control/control";
-import { SaveAutoLayoutCommandArgs, SaveAutoLayoutCommand, RemoteCommand } from "../control/commands";
+import { SaveAutoLayoutCommandArgs, SaveAutoLayoutCommand, RemoteCommand, LayoutCommand, LayoutRemoteCommand } from "../control/commands";
 
 export class Layouts implements Glue42Web.Layouts.API {
     private static readonly SaveContextMethodName = "T42.HC.GetSaveContext";
@@ -48,12 +48,13 @@ export class Layouts implements Glue42Web.Layouts.API {
 
         layout.components.forEach((c) => {
             if (c.type === "window") {
+                const state = c.state;
                 // do not restore the parent
-                if (c.main) {
+                if (state.main) {
                     return;
                 }
-                const newWindowOptions: Glue42Web.Windows.CreateOptions = { ...c.bounds, context: c.windowContext };
-                this.windows.open(c.name, c.url, newWindowOptions);
+                const newWindowOptions: Glue42Web.Windows.CreateOptions = { ...state.bounds, context: state.context };
+                this.windows.open(state.name, state.url, newWindowOptions);
             }
         });
     }
@@ -70,7 +71,7 @@ export class Layouts implements Glue42Web.Layouts.API {
         };
     }
 
-    public getLocalLayoutComponent(context?: any, main: boolean = false): Glue42Web.Layouts.LayoutComponentInfo {
+    public getLocalLayoutComponent(context?: any, main: boolean = false): Glue42Web.Layouts.LayoutComponent {
         let requestResult: Glue42Web.Layouts.SaveRequestResponse | undefined;
         const my = this.windows.my() as LocalWebWindow;
 
@@ -89,12 +90,16 @@ export class Layouts implements Glue42Web.Layouts.API {
 
         return {
             type: "window",
-            name: my.name,
-            windowContext: requestResult?.windowContext || {},
-            bounds: my.getBoundsSync(),
-            url: window.document.location.href,
-            id: this.windows.my().id,
-            main
+            componentType: "application",
+            state: {
+                name: my.name,
+                context: requestResult?.windowContext || {},
+                bounds: my.getBoundsSync(),
+                url: window.document.location.href,
+                id: my.id,
+                parentId: my.parent,
+                main
+            }
         };
     }
 
@@ -105,8 +110,9 @@ export class Layouts implements Glue42Web.Layouts.API {
     }
 
     private async handleControlMessage(command: RemoteCommand) {
-        if (command.command === "saveAutoLayout") {
-            const args = command.args as SaveAutoLayoutCommandArgs;
+        const layoutCommand = command as LayoutRemoteCommand;
+        if (layoutCommand.command === "saveLayoutAndClose") {
+            const args = layoutCommand.args as SaveAutoLayoutCommandArgs;
             const components = await this.getRemoteWindowsInfo(args.childWindows);
             components.push(args.parentInfo);
             await this.storage.save({
@@ -123,8 +129,8 @@ export class Layouts implements Glue42Web.Layouts.API {
         }
     }
 
-    private async getRemoteWindowsInfo(windows: string[]): Promise<Glue42Web.Layouts.LayoutComponentInfo[]> {
-        const promises: Array<Promise<Glue42Web.Interop.InvocationResult<Glue42Web.Layouts.LayoutComponentInfo>>> = [];
+    private async getRemoteWindowsInfo(windows: string[]): Promise<Glue42Web.Layouts.LayoutComponent[]> {
+        const promises: Array<Promise<Glue42Web.Interop.InvocationResult<Glue42Web.Layouts.LayoutComponent>>> = [];
         for (const id of windows) {
             const interopServer = this.interop.servers().find((s) => s.windowId === id);
             if (!interopServer || !interopServer.getMethods) {
@@ -133,7 +139,7 @@ export class Layouts implements Glue42Web.Layouts.API {
             const methods = interopServer.getMethods();
             if (methods.find((m) => m.name === Layouts.SaveContextMethodName)) {
                 try {
-                    promises.push(this.interop.invoke<Glue42Web.Layouts.LayoutComponentInfo>(Layouts.SaveContextMethodName, {}, { windowId: id }));
+                    promises.push(this.interop.invoke<Glue42Web.Layouts.LayoutComponent>(Layouts.SaveContextMethodName, {}, { windowId: id }));
                 } catch  {
                     // swallow
                 }

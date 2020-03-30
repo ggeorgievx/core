@@ -1,6 +1,7 @@
 import { Control } from "../control/control";
 import { default as CallbackFactory, UnsubscribeFunction } from "callback-registry";
 import { Glue42Web } from "../../web";
+import { Glue42 } from "@glue42/desktop";
 
 /**
  * Our local window
@@ -31,14 +32,17 @@ export class LocalWebWindow implements Glue42Web.Windows.WebWindow {
         return this;
     }
 
-    public close(): Promise<Glue42Web.Windows.WebWindow> {
+    public async close(): Promise<Glue42Web.Windows.WebWindow> {
+        if (!this.parent) {
+            throw new Error("can not close window if it's not opened by script");
+        }
         try {
             window.close();
-        } catch (e) {
-            return Promise.reject(e);
-
+        } catch {
+            // tslint:disable-next-line:no-console
+            console.log("what");
         }
-        return Promise.resolve(this);
+        return this;
     }
 
     public async setTitle(title: string | { title: string }): Promise<Glue42Web.Windows.WebWindow> {

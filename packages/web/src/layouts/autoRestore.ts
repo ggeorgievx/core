@@ -15,8 +15,8 @@ export const restoreAutoSavedLayout = (api: Glue42Web.API): Promise<void> => {
 
     api.logger.info(`restoring layout ${layoutName}`);
     // set the context to our window
-    const mainComponent = layout.components.find((c) => c.main);
-    my.setContext(mainComponent?.windowContext);
+    const mainComponent = layout.components.find((c) => c.state.main);
+    my.setContext(mainComponent?.state.context);
 
     try {
         return api.layouts.restore({

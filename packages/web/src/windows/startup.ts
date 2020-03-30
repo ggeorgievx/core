@@ -12,12 +12,11 @@ export const registerChildStartupContext = (interop: Glue42Web.Interop.API, pare
     interop.register(methodName, () => startingContext);
 };
 
-export const initStartupContext = async (core: Glue42Web.API) => {
-    const my = core.windows?.my() as LocalWebWindow;
+export const initStartupContext = async (my: LocalWebWindow, interop: Glue42Web.Interop.API) => {
     // retrieve the startup context from the window that created us
     const methodName = createMethodName(my.id);
-    if (core.interop.methods().find((m) => m.name === methodName)) {
-        const result = await core.interop.invoke<StartingContext>(methodName);
+    if (interop.methods().find((m) => m.name === methodName)) {
+        const result = await interop.invoke<StartingContext>(methodName);
         if (my) {
             my.setContext(result.returned.context);
             my.name = result.returned.name;

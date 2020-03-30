@@ -1,5 +1,5 @@
-import { Glue42Web } from "../web";
-import { defaultConfigLocation, defaultConfig } from "./defaults";
+import { Glue42Web } from "../../web";
+import { defaultConfigLocation, defaultConfig, defaultWorkerName } from "./defaults";
 
 const fetchTimeout = (url: string, timeoutMilliseconds: number = 1000): Promise<Response> => {
     return new Promise((resolve, reject) => {
@@ -50,5 +50,14 @@ export const buildConfig = async (userConfig?: Glue42Web.Config): Promise<Glue42
     userConfig = userConfig ?? {};
     const remoteConfig = await getRemoteConfig(userConfig);
     // merge user->remote->default
-    return Object.assign({}, defaultConfig, remoteConfig, userConfig);
+    const result = Object.assign({}, defaultConfig, remoteConfig, userConfig);
+
+    // if we have extends options, we need to set the worker location to be the same
+    // because worker is always on the same level as custom config
+    if (result.extends) {
+        const lastIndex = result.extends.lastIndexOf("/");
+        const worker = result.extends.substr(0, lastIndex + 1) + defaultWorkerName;
+        result.worker = worker;
+    }
+    return result;
 };

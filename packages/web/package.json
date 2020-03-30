@@ -31,7 +31,7 @@
     },
     "license": "MIT",
     "dependencies": {
-        "@glue42/core": "^5.0.0-beta.12",
+        "@glue42/core": "^5.0.0-beta.13",
         "shortid": "^2.2.15"
     },
     "devDependencies": {

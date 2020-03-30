@@ -2,6 +2,9 @@ import { LocalWebWindow } from "../windows/my";
 import { RemoteCommand, ControlDomain, LayoutRemoteCommand } from "./commands";
 import { Glue42Web } from "../../web";
 
+/**
+ * This component wraps the internal message exchange between this and other Glue42 enabled windows.
+ */
 export class Control {
     public static CONTROL_METHOD = "GC.Control";
 
@@ -15,12 +18,17 @@ export class Control {
         this.logger = logger;
         this.interop.register(Control.CONTROL_METHOD, async (arg: any) => {
             const command = arg as RemoteCommand;
-            logger.info(`received control command ${JSON.stringify(command)}`);
+            logger.trace(`received control command ${JSON.stringify(command)}`);
             if (command.domain === "windows") {
                 if (!this.myWindow) {
                     return;
                 }
-                return (this.myWindow as any)[command.command].call(this.myWindow, command.args);
+                const result = (this.myWindow as any)[command.command].call(this.myWindow, command.args);
+                if (command.skipResult) {
+                    return {};
+                } else {
+                    return result;
+                }
             }
             if (command.domain === "layouts") {
                 const callback = this.callbacks[command.domain];
