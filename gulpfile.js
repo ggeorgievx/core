@@ -61,10 +61,16 @@ const validateReleasePackages = async () => {
     console.log('All packages are validated and existing');
 };
 
-const checkout = (branchName) => {
-    return async () => {
-        await git.checkout(branchName);
-    };
+const checkout = async (branchName) => {
+    await git.checkout(branchName);
+};
+
+const checkoutRelease = async () => {
+    await checkout(releaseBranch);
+};
+
+const checkoutMaster = async () => {
+    await checkout(stableBranch);
 };
 
 const syncAllContentsExceptPackages = async () => {
@@ -96,8 +102,7 @@ const yarnInstall = () => {
     });
 };
 
-const conditionalLernaTest = async () => {
-    const script = 'test';
+const executeConditionalScript = async (script) => {
     const scope = packagesNamesToRelease.length === 1 ?
         packagesNamesToRelease[0] :
         `{${packagesNamesToRelease.join(',')}}`;
@@ -106,15 +111,29 @@ const conditionalLernaTest = async () => {
     await command.runner;
 };
 
+const conditionalLernaTest = async () => {
+    await executeConditionalScript('test');
+};
+
+const conditionalLernaBuild = async () => {
+    await executeConditionalScript('build');
+};
+
 const versionSync = async () => {
     await sync(git, false);
 };
 
-const addCommit = (message) => {
-    return async () => {
-        await git.add('.');
-        await git.commit(message);
-    };
+const addCommit = async (message) => {
+    await git.add('.');
+    await git.commit(message, undefined, { '--no-verify': null });
+};
+
+const commitPreReleaseSync = async () => {
+    await addCommit('Pre-release sync and build');
+};
+
+const commitIsolatedPackages = async () => {
+    await addCommit('Release package/s isolated');
 };
 
 const publish = async () => {
@@ -130,15 +149,16 @@ const stableSyncPush = async () => {
 
 exports.release = series(
     validateReleasePackages,
-    checkout(releaseBranch),
+    checkoutRelease,
     syncAllContentsExceptPackages,
     syncPackagesToRelease,
     yarnInstall,
     conditionalLernaTest,
-    addCommit('Pre-release sync and build'),
+    conditionalLernaBuild,
+    commitPreReleaseSync,
     versionSync,
-    addCommit('Isolating package/s'),
+    commitIsolatedPackages,
     publish,
-    checkout(stableBranch),
+    checkoutMaster,
     stableSyncPush
 );
