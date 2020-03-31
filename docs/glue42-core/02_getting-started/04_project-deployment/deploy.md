@@ -1,4 +1,4 @@
-## Quick Start
+## Overview
 
 The previous pages of the Getting Started section got you up to speed with setting up the Glue42 Core environment and setting up a Glue42 Client in React and Vanilla JS. Now, we will take a look at how to get all the files you need bundled up and ready for deployment.
 
