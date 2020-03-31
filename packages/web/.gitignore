@@ -11,7 +11,7 @@ src_js/
 npm-debug.log
 types_temp/
 metrics.log
-package-lock.json
+!package-lock.json
 
 /types/
 /src/version.ts
