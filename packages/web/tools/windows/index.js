@@ -7,7 +7,7 @@ function initGrid() {
         { headerName: 'title', field: 'title' },
         { headerName: 'bounds', field: 'bounds' },
         { headerName: 'context', field: 'context' },
-        { headerName: "invoke", field: "actions", width: 100, cellRenderer: buttonCellRendererFunc },
+        { headerName: 'invoke', field: 'actions', width: 100, cellRenderer: buttonCellRendererFunc },
     ];
 
     const gridOptions = {
@@ -33,7 +33,7 @@ GlueWeb({}).then((glue) => {
     });
     initGrid();
     setInterval(() => {
-        refreshList()
+        refreshList();
     }, 2000);
 });
 
@@ -65,12 +65,12 @@ window.addEventListener('DOMContentLoaded', (event) => {
         initialUrl = localStorage.lastUrl;
     }
 
-    document.getElementById("url").value = initialUrl;
-})
+    document.getElementById('url').value = initialUrl;
+});
 
 function openNew() {
-    const url = document.getElementById("url").value;
-    const relative = document.getElementById("relative").checked;
+    const url = document.getElementById('url').value;
+    const relative = document.getElementById('relative').checked;
     const options = {};
     if (relative) {
         options.relativeTo = glue.windows.my().id;

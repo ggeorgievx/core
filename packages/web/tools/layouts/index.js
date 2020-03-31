@@ -1,11 +1,11 @@
 // g0
-const initialAutoSave = typeof localStorage.saveOnClose !== "undefined" ? localStorage.saveOnClose : true;
-const initialAutoRestore = typeof localStorage.restoreOnStart !== "undefined" ? localStorage.restoreOnStart : true;
+const initialAutoSave = typeof localStorage.saveOnClose !== 'undefined' ? localStorage.saveOnClose : true;
+const initialAutoRestore = typeof localStorage.restoreOnStart !== 'undefined' ? localStorage.restoreOnStart : true;
 
 window.addEventListener('DOMContentLoaded', (event) => {
-    document.getElementById("saveOnClose").checked = Boolean(initialAutoSave);
-    document.getElementById("restoreOnStart").checked = Boolean(initialAutoRestore);
-})
+    document.getElementById('saveOnClose').checked = Boolean(initialAutoSave);
+    document.getElementById('restoreOnStart').checked = Boolean(initialAutoRestore);
+});
 
 
 GlueWeb({
@@ -34,14 +34,14 @@ async function openNew() {
         relativeTo = childWindows[childWindows.length - 1].id;
     }
 
-    glue.windows.open("child", "./child.html", { relativeTo });
+    glue.windows.open('child', './child.html', { relativeTo });
     refreshChildWindows();
 
 }
 
 function update() {
-    localStorage.saveOnClose = document.getElementById("saveOnClose").checked;
-    localStorage.restoreOnStart = document.getElementById("restoreOnStart").checked;
+    localStorage.saveOnClose = document.getElementById('saveOnClose').checked;
+    localStorage.restoreOnStart = document.getElementById('restoreOnStart').checked;
 }
 
 function refreshChildWindows() {
@@ -64,9 +64,9 @@ function refreshLayouts() {
     list.innerHTML = '';
     for (const layout of layouts) {
         var entry = document.createElement('li');
-        let contexts = layout.components.map(c => `<br\> <p\>             ${c.url} => b: ${JSON.stringify(c)}`).join(",");
+        let contexts = layout.components.map(c => `<br\> <p\>             ${c.url} => b: ${JSON.stringify(c)}`).join(',');
         const text = `${layout.name} - (${layout.components.length} windows) ${contexts}`;
-        const node = document.createElement("div");
+        const node = document.createElement('div');
         node.innerHTML = text;
         entry.appendChild(node);
         list.appendChild(entry);
@@ -80,7 +80,7 @@ function onChangeBackgroundClick() {
 }
 
 function changeBackground(color) {
-    const body = document.getElementsByTagName("body")[0];
+    const body = document.getElementsByTagName('body')[0];
     body.style = `background-color:${color};`;
 }
 

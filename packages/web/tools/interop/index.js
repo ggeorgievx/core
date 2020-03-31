@@ -2,11 +2,11 @@
 let api;
 function initGrid() {
     const columnDefs = [
-        { headerName: "window", field: "window", width: 300 },
-        { headerName: "method", field: "method", width: 300 },
-        { headerName: "accepts", field: "accepts", width: 100 },
-        { headerName: "returns", field: "returns", width: 100 },
-        { headerName: "invoke", field: "actions", width: 100, cellRenderer: buttonCellRendererFunc },
+        { headerName: 'window', field: 'window', width: 300 },
+        { headerName: 'method', field: 'method', width: 300 },
+        { headerName: 'accepts', field: 'accepts', width: 100 },
+        { headerName: 'returns', field: 'returns', width: 100 },
+        { headerName: 'invoke', field: 'actions', width: 100, cellRenderer: buttonCellRendererFunc },
     ];
 
     const gridOptions = {
@@ -16,7 +16,7 @@ function initGrid() {
         rowHeight: 35
     };
 
-    const eGridDiv = document.querySelector("#myGrid");
+    const eGridDiv = document.querySelector('#myGrid');
     new agGrid.Grid(eGridDiv, gridOptions);
     api = gridOptions.api;
 }
@@ -33,7 +33,7 @@ GlueWeb({}).then((glue) => {
     initGrid();
 
     // register an echo method for
-    glue.agm.register("echo", (arg) => {
+    glue.agm.register('echo', (arg) => {
         console.log(arg);
         return arg;
     });
@@ -61,8 +61,8 @@ function buttonCellRendererFunc(params) {
 }
 
 async function invoke(server, method) {
-    const invokeObjStr = prompt("Enter invoke object (uses eval - be careful), leave empty if not needed");
-    const invokeObj = eval(`(${invokeObjStr || "{}"})`);
+    const invokeObjStr = prompt('Enter invoke object (uses eval - be careful), leave empty if not needed');
+    const invokeObj = eval(`(${invokeObjStr || '{}'})`);
     const result = await glue.interop.invoke(method, invokeObj, {instance: server});
     alert(`response from server ${JSON.stringify(result.returned)}`);
 }

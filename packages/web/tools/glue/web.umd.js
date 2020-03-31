@@ -1,7 +1,7 @@
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-    typeof define === 'function' && define.amd ? define(factory) :
-    (global = global || self, global.web = factory());
+        typeof define === 'function' && define.amd ? define(factory) :
+            (global = global || self, global.web = factory());
 }(this, (function () { 'use strict';
 
     /*! *****************************************************************************
@@ -47,7 +47,7 @@
     function __awaiter(thisArg, _arguments, P, generator) {
         return new (P || (P = Promise))(function (resolve, reject) {
             function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-            function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+            function rejected(value) { try { step(generator['throw'](value)); } catch (e) { reject(e); } }
             function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
             step((generator = generator.apply(thisArg, _arguments || [])).next());
         });
@@ -55,25 +55,25 @@
 
     function __generator(thisArg, body) {
         var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-        return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+        return g = { next: verb(0), 'throw': verb(1), 'return': verb(2) }, typeof Symbol === 'function' && (g[Symbol.iterator] = function() { return this; }), g;
         function verb(n) { return function (v) { return step([n, v]); }; }
         function step(op) {
-            if (f) throw new TypeError("Generator is already executing.");
+            if (f) throw new TypeError('Generator is already executing.');
             while (_) try {
-                if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+                if (f = 1, y && (t = op[0] & 2 ? y['return'] : op[0] ? y['throw'] || ((t = y['return']) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
                 if (y = 0, t) op = [op[0] & 2, t.value];
                 switch (op[0]) {
-                    case 0: case 1: t = op; break;
-                    case 4: _.label++; return { value: op[1], done: false };
-                    case 5: _.label++; y = op[1]; op = [0]; continue;
-                    case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                    default:
-                        if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                        if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                        if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                        if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                        if (t[2]) _.ops.pop();
-                        _.trys.pop(); continue;
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
                 }
                 op = body.call(thisArg, _);
             } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
@@ -81,7 +81,7 @@
         }
     }
 
-    var version = "0.0.1-alpha.0";
+    var version = '0.0.1-alpha.0';
 
     function createCommonjsModule(fn, module) {
     	return module = { exports: {} }, fn(module, module.exports), module.exports;
@@ -139,7 +139,7 @@
         }
 
         var unique = _alphabet_.split('').filter(function(item, ind, arr){
-           return ind !== arr.lastIndexOf(item);
+            return ind !== arr.lastIndexOf(item);
         });
 
         if (unique.length) {
@@ -200,7 +200,7 @@
     }
 
     function get () {
-      return alphabet || ORIGINAL;
+        return alphabet || ORIGINAL;
     }
 
     var alphabet_1 = {
@@ -232,18 +232,18 @@
     var randomByteBrowser = randomByte;
 
     var format_browser = function (random, alphabet, size) {
-      var mask = (2 << Math.log(alphabet.length - 1) / Math.LN2) - 1;
-      var step = -~(1.6 * mask * size / alphabet.length);
-      var id = '';
+        var mask = (2 << Math.log(alphabet.length - 1) / Math.LN2) - 1;
+        var step = -~(1.6 * mask * size / alphabet.length);
+        var id = '';
 
-      while (true) {
-        var i = step;
-        var bytes = random(i);
-        while (i--) {
-          id += alphabet[bytes[i] & mask] || '';
-          if (id.length === +size) return id
+        while (true) {
+            var i = step;
+            var bytes = random(i);
+            while (i--) {
+                id += alphabet[bytes[i] & mask] || '';
+                if (id.length === +size) return id;
+            }
         }
-      }
     };
 
     function generate(number) {
@@ -323,62 +323,62 @@
 
 
 
-    // if you are using cluster or multiple servers use this to make each instance
-    // has a unique value for worker
-    // Note: I don't know if this is automatically set when using third
-    // party cluster solutions such as pm2.
-    var clusterWorkerId =  0;
+        // if you are using cluster or multiple servers use this to make each instance
+        // has a unique value for worker
+        // Note: I don't know if this is automatically set when using third
+        // party cluster solutions such as pm2.
+        var clusterWorkerId =  0;
 
-    /**
+        /**
      * Set the seed.
      * Highly recommended if you don't want people to try to figure out your id schema.
      * exposed as shortid.seed(int)
      * @param seed Integer value to seed the random alphabet.  ALWAYS USE THE SAME SEED or you might get overlaps.
      */
-    function seed(seedValue) {
-        alphabet_1.seed(seedValue);
-        return module.exports;
-    }
+        function seed(seedValue) {
+            alphabet_1.seed(seedValue);
+            return module.exports;
+        }
 
-    /**
+        /**
      * Set the cluster worker or machine id
      * exposed as shortid.worker(int)
      * @param workerId worker must be positive integer.  Number less than 16 is recommended.
      * returns shortid module so it can be chained.
      */
-    function worker(workerId) {
-        clusterWorkerId = workerId;
-        return module.exports;
-    }
+        function worker(workerId) {
+            clusterWorkerId = workerId;
+            return module.exports;
+        }
 
-    /**
+        /**
      *
      * sets new characters to use in the alphabet
      * returns the shuffled alphabet
      */
-    function characters(newCharacters) {
-        if (newCharacters !== undefined) {
-            alphabet_1.characters(newCharacters);
+        function characters(newCharacters) {
+            if (newCharacters !== undefined) {
+                alphabet_1.characters(newCharacters);
+            }
+
+            return alphabet_1.shuffled();
         }
 
-        return alphabet_1.shuffled();
-    }
-
-    /**
+        /**
      * Generate unique id
      * Returns string id
      */
-    function generate() {
-      return build_1(clusterWorkerId);
-    }
+        function generate() {
+            return build_1(clusterWorkerId);
+        }
 
-    // Export all other functions as properties of the generate function
-    module.exports = generate;
-    module.exports.generate = generate;
-    module.exports.seed = seed;
-    module.exports.worker = worker;
-    module.exports.characters = characters;
-    module.exports.isValid = isValid;
+        // Export all other functions as properties of the generate function
+        module.exports = generate;
+        module.exports.generate = generate;
+        module.exports.seed = seed;
+        module.exports.worker = worker;
+        module.exports.characters = characters;
+        module.exports.isValid = isValid;
     });
     var lib_1 = lib.generate;
     var lib_2 = lib.seed;
@@ -401,10 +401,10 @@
                 var result;
                 return __generator(this, function (_c) {
                     switch (_c.label) {
-                        case 0: return [4, this.callControl("getURL", {})];
-                        case 1:
-                            result = _c.sent();
-                            return [2, (_b = (_a = result) === null || _a === void 0 ? void 0 : _a.returned) === null || _b === void 0 ? void 0 : _b._value];
+                    case 0: return [4, this.callControl('getURL', {})];
+                    case 1:
+                        result = _c.sent();
+                        return [2, (_b = (_a = result) === null || _a === void 0 ? void 0 : _a.returned) === null || _b === void 0 ? void 0 : _b._value];
                     }
                 });
             });
@@ -413,10 +413,10 @@
             return __awaiter(this, void 0, void 0, function () {
                 return __generator(this, function (_a) {
                     switch (_a.label) {
-                        case 0: return [4, this.callControl("moveResize", bounds, true)];
-                        case 1:
-                            _a.sent();
-                            return [2, this];
+                    case 0: return [4, this.callControl('moveResize', bounds, true)];
+                    case 1:
+                        _a.sent();
+                        return [2, this];
                     }
                 });
             });
@@ -426,28 +426,28 @@
                 var _this = this;
                 return __generator(this, function (_a) {
                     return [2, new Promise(function (resolve, reject) {
-                            var done = function () {
-                                if (timeout) {
-                                    clearTimeout(timeout);
-                                }
-                                if (un) {
-                                    un();
-                                }
-                            };
-                            var un = _this.windows.onWindowRemoved(function (w) {
-                                if (w.id === _this.id) {
-                                    resolve(_this);
-                                    done();
-                                }
-                            });
-                            var timeout = setTimeout(function () {
-                                reject("can not close window - probably not opened by your window");
+                        var done = function () {
+                            if (timeout) {
+                                clearTimeout(timeout);
+                            }
+                            if (un) {
+                                un();
+                            }
+                        };
+                        var un = _this.windows.onWindowRemoved(function (w) {
+                            if (w.id === _this.id) {
+                                resolve(_this);
                                 done();
-                            }, 1000);
-                            _this.callControl("close", {}, true)
-                                .catch(function () {
+                            }
+                        });
+                        var timeout = setTimeout(function () {
+                            reject('can not close window - probably not opened by your window');
+                            done();
+                        }, 1000);
+                        _this.callControl('close', {}, true)
+                            .catch(function () {
                             });
-                        })];
+                    })];
                 });
             });
         };
@@ -455,14 +455,14 @@
             return __awaiter(this, void 0, void 0, function () {
                 return __generator(this, function (_a) {
                     switch (_a.label) {
-                        case 0:
-                            if (typeof title === "string") {
-                                title = { title: title };
-                            }
-                            return [4, this.callControl("setTitle", title, true)];
-                        case 1:
-                            _a.sent();
-                            return [2, this];
+                    case 0:
+                        if (typeof title === 'string') {
+                            title = { title: title };
+                        }
+                        return [4, this.callControl('setTitle', title, true)];
+                    case 1:
+                        _a.sent();
+                        return [2, this];
                     }
                 });
             });
@@ -471,10 +471,10 @@
             return __awaiter(this, void 0, void 0, function () {
                 return __generator(this, function (_a) {
                     switch (_a.label) {
-                        case 0: return [4, this.callControl("moveResize", { width: width, height: height }, true)];
-                        case 1:
-                            _a.sent();
-                            return [2, this];
+                    case 0: return [4, this.callControl('moveResize', { width: width, height: height }, true)];
+                    case 1:
+                        _a.sent();
+                        return [2, this];
                     }
                 });
             });
@@ -483,10 +483,10 @@
             return __awaiter(this, void 0, void 0, function () {
                 return __generator(this, function (_a) {
                     switch (_a.label) {
-                        case 0: return [4, this.callControl("moveResize", { top: top, left: left }, true)];
-                        case 1:
-                            _a.sent();
-                            return [2, this];
+                    case 0: return [4, this.callControl('moveResize', { top: top, left: left }, true)];
+                    case 1:
+                        _a.sent();
+                        return [2, this];
                     }
                 });
             });
@@ -496,10 +496,10 @@
                 var result;
                 return __generator(this, function (_a) {
                     switch (_a.label) {
-                        case 0: return [4, this.callControl("getBounds", {})];
-                        case 1:
-                            result = _a.sent();
-                            return [2, result.returned];
+                    case 0: return [4, this.callControl('getBounds', {})];
+                    case 1:
+                        result = _a.sent();
+                        return [2, result.returned];
                     }
                 });
             });
@@ -509,10 +509,10 @@
                 var result;
                 return __generator(this, function (_a) {
                     switch (_a.label) {
-                        case 0: return [4, this.callControl("getContext", {})];
-                        case 1:
-                            result = _a.sent();
-                            return [2, result.returned];
+                    case 0: return [4, this.callControl('getContext', {})];
+                    case 1:
+                        result = _a.sent();
+                        return [2, result.returned];
                     }
                 });
             });
@@ -522,25 +522,25 @@
                 var result;
                 return __generator(this, function (_a) {
                     switch (_a.label) {
-                        case 0: return [4, this.callControl("getTitle", {})];
-                        case 1:
-                            result = _a.sent();
-                            return [2, result.returned._value];
+                    case 0: return [4, this.callControl('getTitle', {})];
+                    case 1:
+                        result = _a.sent();
+                        return [2, result.returned._value];
                     }
                 });
             });
         };
         RemoteWebWindow.prototype.onContextUpdated = function (callback) {
-            throw new Error("Method not implemented.");
+            throw new Error('Method not implemented.');
         };
         RemoteWebWindow.prototype.updateContext = function (context) {
             return __awaiter(this, void 0, void 0, function () {
                 return __generator(this, function (_a) {
                     switch (_a.label) {
-                        case 0: return [4, this.callControl("updateContext", context, true)];
-                        case 1:
-                            _a.sent();
-                            return [2, this];
+                    case 0: return [4, this.callControl('updateContext', context, true)];
+                    case 1:
+                        _a.sent();
+                        return [2, this];
                     }
                 });
             });
@@ -549,10 +549,10 @@
             return __awaiter(this, void 0, void 0, function () {
                 return __generator(this, function (_a) {
                     switch (_a.label) {
-                        case 0: return [4, this.callControl("setContext", context, true)];
-                        case 1:
-                            _a.sent();
-                            return [2, this];
+                    case 0: return [4, this.callControl('setContext', context, true)];
+                    case 1:
+                        _a.sent();
+                        return [2, this];
                     }
                 });
             });
@@ -562,8 +562,8 @@
             return __awaiter(this, void 0, void 0, function () {
                 return __generator(this, function (_a) {
                     switch (_a.label) {
-                        case 0: return [4, this.control.send({ command: command, domain: "windows", args: args, skipResult: skipResult }, { windowId: this.id })];
-                        case 1: return [2, _a.sent()];
+                    case 0: return [4, this.control.send({ command: command, domain: 'windows', args: args, skipResult: skipResult }, { windowId: this.id })];
+                    case 1: return [2, _a.sent()];
                     }
                 });
             });
@@ -583,8 +583,8 @@
                 var command, result, callback;
                 return __generator(this, function (_a) {
                     command = arg;
-                    logger.trace("received control command " + JSON.stringify(command));
-                    if (command.domain === "windows") {
+                    logger.trace('received control command ' + JSON.stringify(command));
+                    if (command.domain === 'windows') {
                         if (!this.myWindow) {
                             return [2];
                         }
@@ -596,7 +596,7 @@
                             return [2, result];
                         }
                     }
-                    if (command.domain === "layouts") {
+                    if (command.domain === 'layouts') {
                         callback = this.callbacks[command.domain];
                         if (callback) {
                             callback(command);
@@ -608,9 +608,9 @@
         };
         Control.prototype.send = function (command, target) {
             if (!this.interop) {
-                throw new Error("Control not started");
+                throw new Error('Control not started');
             }
-            this.logger.info("sending control command " + JSON.stringify(command) + " to " + JSON.stringify(target) + "}");
+            this.logger.info('sending control command ' + JSON.stringify(command) + ' to ' + JSON.stringify(target) + '}');
             return this.interop.invoke(Control.CONTROL_METHOD, command, target);
         };
         Control.prototype.subscribe = function (domain, callback) {
@@ -619,19 +619,19 @@
         Control.prototype.setLocalWindow = function (window) {
             this.myWindow = window;
         };
-        Control.CONTROL_METHOD = "GC.Control";
+        Control.CONTROL_METHOD = 'GC.Control';
         return Control;
     }());
 
     function createRegistry(options) {
         if (options && options.errorHandling
-            && typeof options.errorHandling !== "function"
-            && options.errorHandling !== "log"
-            && options.errorHandling !== "silent"
-            && options.errorHandling !== "throw") {
-            throw new Error("Invalid options passed to createRegistry. Prop errorHandling should be [\"log\" | \"silent\" | \"throw\" | (err) => void], but " + typeof options.errorHandling + " was passed");
+            && typeof options.errorHandling !== 'function'
+            && options.errorHandling !== 'log'
+            && options.errorHandling !== 'silent'
+            && options.errorHandling !== 'throw') {
+            throw new Error('Invalid options passed to createRegistry. Prop errorHandling should be ["log" | "silent" | "throw" | (err) => void], but ' + typeof options.errorHandling + ' was passed');
         }
-        var _userErrorHandler = options && typeof options.errorHandling === "function" && options.errorHandling;
+        var _userErrorHandler = options && typeof options.errorHandling === 'function' && options.errorHandling;
         var callbacks = {};
         function add(key, callback) {
             var callbacksForKey = callbacks[key];
@@ -682,15 +682,15 @@
                 _userErrorHandler(errParam);
                 return;
             }
-            var msg = "[ERROR] callback-registry: User callback for key \"" + key + "\" failed: " + errParam.stack;
+            var msg = '[ERROR] callback-registry: User callback for key "' + key + '" failed: ' + errParam.stack;
             if (options) {
                 switch (options.errorHandling) {
-                    case "log":
-                        return console.error(msg);
-                    case "silent":
-                        return;
-                    case "throw":
-                        throw new Error(msg);
+                case 'log':
+                    return console.error(msg);
+                case 'silent':
+                    return;
+                case 'throw':
+                    throw new Error(msg);
                 }
             }
             console.error(msg);
@@ -751,13 +751,13 @@
             return __awaiter(this, void 0, void 0, function () {
                 return __generator(this, function (_a) {
                     if (!this.parent) {
-                        throw new Error("can not close that is not opened by script");
+                        throw new Error('can not close that is not opened by script');
                     }
                     try {
                         window.close();
                     }
                     catch (_b) {
-                        console.log("what");
+                        console.log('what');
                     }
                     return [2, this];
                 });
@@ -766,7 +766,7 @@
         LocalWebWindow.prototype.setTitle = function (title) {
             return __awaiter(this, void 0, void 0, function () {
                 return __generator(this, function (_a) {
-                    if (typeof title === "object" && title !== null) {
+                    if (typeof title === 'object' && title !== null) {
                         title = title.title;
                     }
                     document.title = title;
@@ -778,10 +778,10 @@
             return __awaiter(this, void 0, void 0, function () {
                 return __generator(this, function (_a) {
                     switch (_a.label) {
-                        case 0: return [4, this.moveResize({ width: width, height: height })];
-                        case 1:
-                            _a.sent();
-                            return [2, this];
+                    case 0: return [4, this.moveResize({ width: width, height: height })];
+                    case 1:
+                        _a.sent();
+                        return [2, this];
                     }
                 });
             });
@@ -790,10 +790,10 @@
             return __awaiter(this, void 0, void 0, function () {
                 return __generator(this, function (_a) {
                     switch (_a.label) {
-                        case 0: return [4, this.moveResize({ top: top, left: left })];
-                        case 1:
-                            _a.sent();
-                            return [2, this];
+                    case 0: return [4, this.moveResize({ top: top, left: left })];
+                    case 1:
+                        _a.sent();
+                        return [2, this];
                     }
                 });
             });
@@ -823,12 +823,12 @@
             });
         };
         LocalWebWindow.prototype.onContextUpdated = function (callback) {
-            return this.registry.add("context-updated", callback);
+            return this.registry.add('context-updated', callback);
         };
         LocalWebWindow.prototype.updateContext = function (context) {
             var oldContext = this.context;
             this.context = Object.assign({}, context, oldContext);
-            this.registry.execute("context-updated", context, oldContext);
+            this.registry.execute('context-updated', context, oldContext);
             return Promise.resolve(this);
         };
         LocalWebWindow.prototype.setContext = function (context) {
@@ -837,7 +837,7 @@
                 return __generator(this, function (_a) {
                     oldContext = this.context;
                     this.context = Object.assign({}, context);
-                    this.registry.execute("context-updated", context, oldContext);
+                    this.registry.execute('context-updated', context, oldContext);
                     return [2, Promise.resolve(this)];
                 });
             });
@@ -879,23 +879,23 @@
         var methodName, result;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0:
-                    methodName = createMethodName(my.id);
-                    if (!interop.methods().find(function (m) { return m.name === methodName; })) return [3, 2];
-                    return [4, interop.invoke(methodName)];
-                case 1:
-                    result = _a.sent();
-                    if (my) {
-                        my.setContext(result.returned.context);
-                        my.name = result.returned.name;
-                        my.parent = result.returned.parent;
-                    }
-                    _a.label = 2;
-                case 2: return [2];
+            case 0:
+                methodName = createMethodName(my.id);
+                if (!interop.methods().find(function (m) { return m.name === methodName; })) return [3, 2];
+                return [4, interop.invoke(methodName)];
+            case 1:
+                result = _a.sent();
+                if (my) {
+                    my.setContext(result.returned.context);
+                    my.name = result.returned.name;
+                    my.parent = result.returned.parent;
+                }
+                _a.label = 2;
+            case 2: return [2];
             }
         });
     }); };
-    var createMethodName = function (id) { return "\"GC.Wnd.\"" + id; };
+    var createMethodName = function (id) { return '"GC.Wnd."' + id; };
 
     var Windows = (function () {
         function Windows(interop, control) {
@@ -904,7 +904,7 @@
             this.registry = lib$1();
             this.childWindows = [];
             var id = interop.instance.windowId;
-            var name = "document.title (" + shortid() + ")";
+            var name = 'document.title (' + shortid() + ')';
             this.myWindow = new LocalWebWindow(id, name, window, this.control, this.interop);
             this.trackWindowsLifetime();
         }
@@ -935,47 +935,47 @@
                 var width, height, left, top, id, relativeWindowId_1, relativeWindow, relativeWindowBounds, relativeDir, newBounds, optionsString, newWindow, remoteWindow;
                 return __generator(this, function (_l) {
                     switch (_l.label) {
-                        case 0:
-                            width = (_b = (_a = options) === null || _a === void 0 ? void 0 : _a.width, (_b !== null && _b !== void 0 ? _b : 400));
-                            height = (_d = (_c = options) === null || _c === void 0 ? void 0 : _c.height, (_d !== null && _d !== void 0 ? _d : 400));
-                            left = (_f = (_e = options) === null || _e === void 0 ? void 0 : _e.left, (_f !== null && _f !== void 0 ? _f : window.screen.availWidth - window.screenLeft));
-                            top = (_h = (_g = options) === null || _g === void 0 ? void 0 : _g.top, (_h !== null && _h !== void 0 ? _h : 0));
-                            id = shortid();
-                            registerChildStartupContext(this.interop, this.my().id, id, name, options);
-                            if (!((_j = options) === null || _j === void 0 ? void 0 : _j.relativeTo)) return [3, 2];
-                            relativeWindowId_1 = options.relativeTo;
-                            relativeWindow = this.list().find(function (w) { return w.id === relativeWindowId_1; });
-                            if (!relativeWindow) return [3, 2];
-                            return [4, relativeWindow.getBounds()];
-                        case 1:
-                            relativeWindowBounds = _l.sent();
-                            relativeDir = (_k = options.relativeDirection, (_k !== null && _k !== void 0 ? _k : "right"));
-                            newBounds = this.getRelativeBounds({ width: width, height: height, left: left, top: top }, relativeWindowBounds, relativeDir);
-                            width = newBounds.width;
-                            height = newBounds.height;
-                            left = newBounds.left;
-                            top = newBounds.top;
-                            _l.label = 2;
-                        case 2:
-                            optionsString = "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top + ",scrollbars=none,location=no,status=no,menubar=no";
-                            newWindow = window.open(url, id, optionsString);
-                            if (!newWindow) {
-                                throw new Error("failed to open a window with url=" + url + " and options=" + optionsString);
-                            }
-                            newWindow.moveTo(left, top);
-                            newWindow.resizeTo(width, height);
-                            remoteWindow = new ChildWebWindow(newWindow, id, name, this.control, this);
-                            this.childWindows.push(remoteWindow);
-                            return [2, remoteWindow];
+                    case 0:
+                        width = (_b = (_a = options) === null || _a === void 0 ? void 0 : _a.width, (_b !== null && _b !== void 0 ? _b : 400));
+                        height = (_d = (_c = options) === null || _c === void 0 ? void 0 : _c.height, (_d !== null && _d !== void 0 ? _d : 400));
+                        left = (_f = (_e = options) === null || _e === void 0 ? void 0 : _e.left, (_f !== null && _f !== void 0 ? _f : window.screen.availWidth - window.screenLeft));
+                        top = (_h = (_g = options) === null || _g === void 0 ? void 0 : _g.top, (_h !== null && _h !== void 0 ? _h : 0));
+                        id = shortid();
+                        registerChildStartupContext(this.interop, this.my().id, id, name, options);
+                        if (!((_j = options) === null || _j === void 0 ? void 0 : _j.relativeTo)) return [3, 2];
+                        relativeWindowId_1 = options.relativeTo;
+                        relativeWindow = this.list().find(function (w) { return w.id === relativeWindowId_1; });
+                        if (!relativeWindow) return [3, 2];
+                        return [4, relativeWindow.getBounds()];
+                    case 1:
+                        relativeWindowBounds = _l.sent();
+                        relativeDir = (_k = options.relativeDirection, (_k !== null && _k !== void 0 ? _k : 'right'));
+                        newBounds = this.getRelativeBounds({ width: width, height: height, left: left, top: top }, relativeWindowBounds, relativeDir);
+                        width = newBounds.width;
+                        height = newBounds.height;
+                        left = newBounds.left;
+                        top = newBounds.top;
+                        _l.label = 2;
+                    case 2:
+                        optionsString = 'width=' + width + ',height=' + height + ',left=' + left + ',top=' + top + ',scrollbars=none,location=no,status=no,menubar=no';
+                        newWindow = window.open(url, id, optionsString);
+                        if (!newWindow) {
+                            throw new Error('failed to open a window with url=' + url + ' and options=' + optionsString);
+                        }
+                        newWindow.moveTo(left, top);
+                        newWindow.resizeTo(width, height);
+                        remoteWindow = new ChildWebWindow(newWindow, id, name, this.control, this);
+                        this.childWindows.push(remoteWindow);
+                        return [2, remoteWindow];
                     }
                 });
             });
         };
         Windows.prototype.onWindowAdded = function (callback) {
-            return this.registry.add("window-added", callback);
+            return this.registry.add('window-added', callback);
         };
         Windows.prototype.onWindowRemoved = function (callback) {
-            return this.registry.add("window-removed", callback);
+            return this.registry.add('window-removed', callback);
         };
         Windows.prototype.getChildWindows = function () {
             this.childWindows = this.childWindows.filter(function (cw) { return !cw.window.closed; });
@@ -986,41 +986,41 @@
             if (!server.windowId) {
                 return undefined;
             }
-            return new RemoteWebWindow(server.windowId, (_a = server.application, (_a !== null && _a !== void 0 ? _a : "")), this.control, this);
+            return new RemoteWebWindow(server.windowId, (_a = server.application, (_a !== null && _a !== void 0 ? _a : '')), this.control, this);
         };
         Windows.prototype.getRelativeBounds = function (rect, relativeTo, relativeDirection) {
             var edgeDistance = 0;
             switch (relativeDirection) {
-                case "bottom":
-                    return {
-                        left: relativeTo.left,
-                        top: relativeTo.top + relativeTo.height + edgeDistance,
-                        width: relativeTo.width,
-                        height: rect.height
-                    };
-                case "top":
-                    return {
-                        left: relativeTo.left,
-                        top: relativeTo.top - rect.height - edgeDistance,
-                        width: relativeTo.width,
-                        height: rect.height
-                    };
-                case "right":
-                    return {
-                        left: relativeTo.left + relativeTo.width + edgeDistance,
-                        top: relativeTo.top,
-                        width: rect.width,
-                        height: relativeTo.height
-                    };
-                case "left":
-                    return {
-                        left: relativeTo.left - rect.width - edgeDistance,
-                        top: relativeTo.top,
-                        width: rect.width,
-                        height: relativeTo.height
-                    };
+            case 'bottom':
+                return {
+                    left: relativeTo.left,
+                    top: relativeTo.top + relativeTo.height + edgeDistance,
+                    width: relativeTo.width,
+                    height: rect.height
+                };
+            case 'top':
+                return {
+                    left: relativeTo.left,
+                    top: relativeTo.top - rect.height - edgeDistance,
+                    width: relativeTo.width,
+                    height: rect.height
+                };
+            case 'right':
+                return {
+                    left: relativeTo.left + relativeTo.width + edgeDistance,
+                    top: relativeTo.top,
+                    width: rect.width,
+                    height: relativeTo.height
+                };
+            case 'left':
+                return {
+                    left: relativeTo.left - rect.width - edgeDistance,
+                    top: relativeTo.top,
+                    width: rect.width,
+                    height: relativeTo.height
+                };
             }
-            throw new Error("invalid relativeDirection");
+            throw new Error('invalid relativeDirection');
         };
         Windows.prototype.trackWindowsLifetime = function () {
             var _this = this;
@@ -1031,13 +1031,13 @@
                 }
                 var remoteWindow = _this.remoteFromServer(server);
                 if (remoteWindow) {
-                    _this.registry.execute("window-added", remoteWindow);
+                    _this.registry.execute('window-added', remoteWindow);
                 }
             });
             this.interop.serverRemoved(function (server) {
                 var remoteWindow = _this.remoteFromServer(server);
                 if (remoteWindow) {
-                    _this.registry.execute("window-removed", remoteWindow);
+                    _this.registry.execute('window-removed', remoteWindow);
                 }
             });
         };
@@ -1084,9 +1084,9 @@
             window.localStorage.setItem(LocalStorage.KEY, JSON.stringify(obj));
         };
         LocalStorage.prototype.getKey = function (name, type) {
-            return type + "_" + name;
+            return type + '_' + name;
         };
-        LocalStorage.KEY = "G0_layouts";
+        LocalStorage.KEY = 'G0_layouts';
         return LocalStorage;
     }());
 
@@ -1099,7 +1099,7 @@
             this.control = control;
             this.storage = new LocalStorage();
             this.registerRequestMethods();
-            this.control.subscribe("layouts", this.handleControlMessage.bind(this));
+            this.control.subscribe('layouts', this.handleControlMessage.bind(this));
             this.autoSaveContext = (_c = (_b = (_a = config) === null || _a === void 0 ? void 0 : _a.layouts) === null || _b === void 0 ? void 0 : _b.autoSaveWindowContext, (_c !== null && _c !== void 0 ? _c : false));
         }
         Layouts.prototype.list = function () {
@@ -1110,22 +1110,22 @@
                 var openedWindows, components;
                 return __generator(this, function (_a) {
                     switch (_a.label) {
-                        case 0:
-                            if (!layoutOptions.name) {
-                                return [2, Promise.reject("missing name for layout " + JSON.stringify(layoutOptions))];
-                            }
-                            openedWindows = this.windows.getChildWindows().map(function (w) { return w.id; });
-                            return [4, this.getRemoteWindowsInfo(openedWindows)];
-                        case 1:
-                            components = _a.sent();
-                            components.push(this.getLocalLayoutComponent(layoutOptions.context, true));
-                            return [2, this.storage.save({
-                                    type: "Global",
-                                    name: layoutOptions.name,
-                                    components: components,
-                                    context: layoutOptions.context || {},
-                                    metadata: layoutOptions.metadata || {}
-                                })];
+                    case 0:
+                        if (!layoutOptions.name) {
+                            return [2, Promise.reject('missing name for layout ' + JSON.stringify(layoutOptions))];
+                        }
+                        openedWindows = this.windows.getChildWindows().map(function (w) { return w.id; });
+                        return [4, this.getRemoteWindowsInfo(openedWindows)];
+                    case 1:
+                        components = _a.sent();
+                        components.push(this.getLocalLayoutComponent(layoutOptions.context, true));
+                        return [2, this.storage.save({
+                            type: 'Global',
+                            name: layoutOptions.name,
+                            components: components,
+                            context: layoutOptions.context || {},
+                            metadata: layoutOptions.metadata || {}
+                        })];
                     }
                 });
             });
@@ -1135,12 +1135,12 @@
                 var layout;
                 var _this = this;
                 return __generator(this, function (_a) {
-                    layout = this.list().find(function (l) { return l.name === options.name && l.type === "Global"; });
+                    layout = this.list().find(function (l) { return l.name === options.name && l.type === 'Global'; });
                     if (!layout) {
-                        throw new Error("can not find layout with name " + options.name);
+                        throw new Error('can not find layout with name ' + options.name);
                     }
                     layout.components.forEach(function (c) {
-                        if (c.type === "window") {
+                        if (c.type === 'window') {
                             var state = c.state;
                             if (state.main) {
                                 return;
@@ -1180,11 +1180,11 @@
                 }
             }
             catch (err) {
-                this.logger.warn("onSaveRequested - error getting data from user function - " + err);
+                this.logger.warn('onSaveRequested - error getting data from user function - ' + err);
             }
             return {
-                type: "window",
-                componentType: "application",
+                type: 'window',
+                componentType: 'application',
                 state: {
                     name: my.name,
                     context: ((_a = requestResult) === null || _a === void 0 ? void 0 : _a.windowContext) || {},
@@ -1208,29 +1208,29 @@
                 var _this = this;
                 return __generator(this, function (_a) {
                     switch (_a.label) {
-                        case 0:
-                            layoutCommand = command;
-                            if (!(layoutCommand.command === "saveLayoutAndClose")) return [3, 3];
-                            args = layoutCommand.args;
-                            return [4, this.getRemoteWindowsInfo(args.childWindows)];
-                        case 1:
-                            components = _a.sent();
-                            components.push(args.parentInfo);
-                            return [4, this.storage.save({
-                                    type: "Global",
-                                    name: args.layoutName,
-                                    components: components,
-                                    context: args.context || {},
-                                    metadata: args.metadata || {}
-                                })];
-                        case 2:
-                            _a.sent();
-                            args.childWindows.forEach(function (cw) {
-                                var _a;
-                                (_a = _this.windows.findById(cw)) === null || _a === void 0 ? void 0 : _a.close();
-                            });
-                            _a.label = 3;
-                        case 3: return [2];
+                    case 0:
+                        layoutCommand = command;
+                        if (!(layoutCommand.command === 'saveLayoutAndClose')) return [3, 3];
+                        args = layoutCommand.args;
+                        return [4, this.getRemoteWindowsInfo(args.childWindows)];
+                    case 1:
+                        components = _a.sent();
+                        components.push(args.parentInfo);
+                        return [4, this.storage.save({
+                            type: 'Global',
+                            name: args.layoutName,
+                            components: components,
+                            context: args.context || {},
+                            metadata: args.metadata || {}
+                        })];
+                    case 2:
+                        _a.sent();
+                        args.childWindows.forEach(function (cw) {
+                            var _a;
+                            (_a = _this.windows.findById(cw)) === null || _a === void 0 ? void 0 : _a.close();
+                        });
+                        _a.label = 3;
+                    case 3: return [2];
                     }
                 });
             });
@@ -1240,36 +1240,36 @@
                 var promises, _loop_1, this_1, _i, windows_1, id, responses;
                 return __generator(this, function (_a) {
                     switch (_a.label) {
-                        case 0:
-                            promises = [];
-                            _loop_1 = function (id) {
-                                var interopServer = this_1.interop.servers().find(function (s) { return s.windowId === id; });
-                                if (!interopServer || !interopServer.getMethods) {
-                                    return "continue";
-                                }
-                                var methods = interopServer.getMethods();
-                                if (methods.find(function (m) { return m.name === Layouts.SaveContextMethodName; })) {
-                                    try {
-                                        promises.push(this_1.interop.invoke(Layouts.SaveContextMethodName, {}, { windowId: id }));
-                                    }
-                                    catch (_a) {
-                                    }
-                                }
-                            };
-                            this_1 = this;
-                            for (_i = 0, windows_1 = windows; _i < windows_1.length; _i++) {
-                                id = windows_1[_i];
-                                _loop_1(id);
+                    case 0:
+                        promises = [];
+                        _loop_1 = function (id) {
+                            var interopServer = this_1.interop.servers().find(function (s) { return s.windowId === id; });
+                            if (!interopServer || !interopServer.getMethods) {
+                                return 'continue';
                             }
-                            return [4, Promise.all(promises)];
-                        case 1:
-                            responses = _a.sent();
-                            return [2, responses.map(function (response) { return response.returned; })];
+                            var methods = interopServer.getMethods();
+                            if (methods.find(function (m) { return m.name === Layouts.SaveContextMethodName; })) {
+                                try {
+                                    promises.push(this_1.interop.invoke(Layouts.SaveContextMethodName, {}, { windowId: id }));
+                                }
+                                catch (_a) {
+                                }
+                            }
+                        };
+                        this_1 = this;
+                        for (_i = 0, windows_1 = windows; _i < windows_1.length; _i++) {
+                            id = windows_1[_i];
+                            _loop_1(id);
+                        }
+                        return [4, Promise.all(promises)];
+                    case 1:
+                        responses = _a.sent();
+                        return [2, responses.map(function (response) { return response.returned; })];
                     }
                 });
             });
         };
-        Layouts.SaveContextMethodName = "T42.HC.GetSaveContext";
+        Layouts.SaveContextMethodName = 'T42.HC.GetSaveContext';
         return Layouts;
     }());
 
@@ -1283,31 +1283,31 @@
                 var _this = this;
                 return __generator(this, function (_a) {
                     switch (_a.label) {
-                        case 0:
-                            if (!("Notification" in window)) {
-                                throw new Error("this browser does not support desktop notification");
-                            }
-                            if (Notification.permission === "granted") {
-                                permissionPromise = Promise.resolve("granted");
-                            }
-                            else if (Notification.permission === "denied") {
-                                permissionPromise = Promise.reject("no permissions from user");
-                            }
-                            else {
-                                permissionPromise = Notification.requestPermission();
-                            }
-                            return [4, permissionPromise];
-                        case 1:
-                            _a.sent();
-                            notification = this.raiseUsingWebApi(options);
-                            if (options.clickInterop) {
-                                interopOptions_1 = options.clickInterop;
-                                notification.onclick = function () {
-                                    var _a, _b, _c, _d;
-                                    _this.interop.invoke(interopOptions_1.method, (_b = (_a = interopOptions_1) === null || _a === void 0 ? void 0 : _a.arguments, (_b !== null && _b !== void 0 ? _b : {})), (_d = (_c = interopOptions_1) === null || _c === void 0 ? void 0 : _c.target, (_d !== null && _d !== void 0 ? _d : "best")));
-                                };
-                            }
-                            return [2, notification];
+                    case 0:
+                        if (!('Notification' in window)) {
+                            throw new Error('this browser does not support desktop notification');
+                        }
+                        if (Notification.permission === 'granted') {
+                            permissionPromise = Promise.resolve('granted');
+                        }
+                        else if (Notification.permission === 'denied') {
+                            permissionPromise = Promise.reject('no permissions from user');
+                        }
+                        else {
+                            permissionPromise = Notification.requestPermission();
+                        }
+                        return [4, permissionPromise];
+                    case 1:
+                        _a.sent();
+                        notification = this.raiseUsingWebApi(options);
+                        if (options.clickInterop) {
+                            interopOptions_1 = options.clickInterop;
+                            notification.onclick = function () {
+                                var _a, _b, _c, _d;
+                                _this.interop.invoke(interopOptions_1.method, (_b = (_a = interopOptions_1) === null || _a === void 0 ? void 0 : _a.arguments, (_b !== null && _b !== void 0 ? _b : {})), (_d = (_c = interopOptions_1) === null || _c === void 0 ? void 0 : _c.target, (_d !== null && _d !== void 0 ? _d : 'best')));
+                            };
+                        }
+                        return [2, notification];
                     }
                 });
             });
@@ -1318,11 +1318,11 @@
         return Notifications;
     }());
 
-    var defaultSharedLocation = "/glue/";
-    var defaultConfigName = "glue.config.json";
-    var defaultWorkerName = "worker.js";
-    var defaultConfigLocation = "" + defaultSharedLocation + defaultConfigName;
-    var defaultWorkerLocation = "" + defaultSharedLocation + defaultWorkerName;
+    var defaultSharedLocation = '/glue/';
+    var defaultConfigName = 'glue.config.json';
+    var defaultWorkerName = 'worker.js';
+    var defaultConfigLocation = '' + defaultSharedLocation + defaultConfigName;
+    var defaultWorkerLocation = '' + defaultSharedLocation + defaultWorkerName;
     var defaultConfig = {
         worker: defaultWorkerLocation,
         extends: defaultConfigLocation,
@@ -1330,7 +1330,7 @@
             autoRestore: false,
             autoSaveWindowContext: false
         },
-        logger: "error",
+        logger: 'error',
     };
 
     var fetchTimeout = function (url, timeoutMilliseconds) {
@@ -1339,21 +1339,21 @@
             var timeoutHit = false;
             var timeout = setTimeout(function () {
                 timeoutHit = true;
-                reject(new Error("Fetch request for: " + url + " timed out at: " + timeoutMilliseconds + " milliseconds"));
+                reject(new Error('Fetch request for: ' + url + ' timed out at: ' + timeoutMilliseconds + ' milliseconds'));
             }, timeoutMilliseconds);
             fetch(url)
                 .then(function (response) {
-                if (!timeoutHit) {
-                    clearTimeout(timeout);
-                    resolve(response);
-                }
-            })
+                    if (!timeoutHit) {
+                        clearTimeout(timeout);
+                        resolve(response);
+                    }
+                })
                 .catch(function (err) {
-                if (!timeoutHit) {
-                    clearTimeout(timeout);
-                    reject(err);
-                }
-            });
+                    if (!timeoutHit) {
+                        clearTimeout(timeout);
+                        reject(err);
+                    }
+                });
         });
     };
     var getRemoteConfig = function (userConfig) { return __awaiter(void 0, void 0, void 0, function () {
@@ -1361,28 +1361,28 @@
         var _b, _c, _d, _e;
         return __generator(this, function (_f) {
             switch (_f.label) {
-                case 0:
-                    extend = (_c = (_b = userConfig.extends, (_b !== null && _b !== void 0 ? _b : defaultConfig.extends)), (_c !== null && _c !== void 0 ? _c : defaultConfigLocation));
-                    if (extend === false) {
-                        return [2, {}];
-                    }
-                    _f.label = 1;
-                case 1:
-                    _f.trys.push([1, 4, , 5]);
-                    return [4, fetchTimeout(extend)];
-                case 2:
-                    response = _f.sent();
-                    if (!response.ok) {
-                        return [2, {}];
-                    }
-                    return [4, response.json()];
-                case 3:
-                    json = _f.sent();
-                    return [2, (_e = (_d = json) === null || _d === void 0 ? void 0 : _d.glue, (_e !== null && _e !== void 0 ? _e : {}))];
-                case 4:
-                    _a = _f.sent();
+            case 0:
+                extend = (_c = (_b = userConfig.extends, (_b !== null && _b !== void 0 ? _b : defaultConfig.extends)), (_c !== null && _c !== void 0 ? _c : defaultConfigLocation));
+                if (extend === false) {
                     return [2, {}];
-                case 5: return [2];
+                }
+                _f.label = 1;
+            case 1:
+                _f.trys.push([1, 4, , 5]);
+                return [4, fetchTimeout(extend)];
+            case 2:
+                response = _f.sent();
+                if (!response.ok) {
+                    return [2, {}];
+                }
+                return [4, response.json()];
+            case 3:
+                json = _f.sent();
+                return [2, (_e = (_d = json) === null || _d === void 0 ? void 0 : _d.glue, (_e !== null && _e !== void 0 ? _e : {}))];
+            case 4:
+                _a = _f.sent();
+                return [2, {}];
+            case 5: return [2];
             }
         });
     }); };
@@ -1390,25 +1390,25 @@
         var remoteConfig, result, lastIndex, worker;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0:
-                    userConfig = (userConfig !== null && userConfig !== void 0 ? userConfig : {});
-                    return [4, getRemoteConfig(userConfig)];
-                case 1:
-                    remoteConfig = _a.sent();
-                    result = Object.assign({}, defaultConfig, remoteConfig, userConfig);
-                    if (result.extends) {
-                        lastIndex = result.extends.lastIndexOf("/");
-                        worker = result.extends.substr(0, lastIndex + 1) + defaultWorkerName;
-                        result.worker = worker;
-                    }
-                    return [2, result];
+            case 0:
+                userConfig = (userConfig !== null && userConfig !== void 0 ? userConfig : {});
+                return [4, getRemoteConfig(userConfig)];
+            case 1:
+                remoteConfig = _a.sent();
+                result = Object.assign({}, defaultConfig, remoteConfig, userConfig);
+                if (result.extends) {
+                    lastIndex = result.extends.lastIndexOf('/');
+                    worker = result.extends.substr(0, lastIndex + 1) + defaultWorkerName;
+                    result.worker = worker;
+                }
+                return [2, result];
             }
         });
     }); };
 
     var restoreAutoSavedLayout = function (api) {
         var _a;
-        var layoutName = "_auto_" + document.location.href;
+        var layoutName = '_auto_' + document.location.href;
         var layout = api.layouts.list().find(function (l) { return l.name === layoutName; });
         if (!layout) {
             return Promise.resolve();
@@ -1417,7 +1417,7 @@
         if (my.parent) {
             return Promise.resolve();
         }
-        api.logger.info("restoring layout " + layoutName);
+        api.logger.info('restoring layout ' + layoutName);
         var mainComponent = layout.components.find(function (c) { return c.state.main; });
         my.setContext((_a = mainComponent) === null || _a === void 0 ? void 0 : _a.state.context);
         try {
@@ -1438,61 +1438,61 @@
             var _a, _b, _c, _d, _e, _f;
             return __generator(this, function (_g) {
                 switch (_g.label) {
-                    case 0: return [4, buildConfig(config)];
-                    case 1:
-                        config = _g.sent();
-                        if (typeof window !== "undefined") {
-                            gdWindowContext = window;
-                            if (((_a = gdWindowContext) === null || _a === void 0 ? void 0 : _a.glue42gd) && ((_b = gdWindowContext) === null || _b === void 0 ? void 0 : _b.Glue)) {
-                                return [2, gdWindowContext.Glue({
-                                        windows: true,
-                                        logger: config.logger
-                                    })];
-                            }
+                case 0: return [4, buildConfig(config)];
+                case 1:
+                    config = _g.sent();
+                    if (typeof window !== 'undefined') {
+                        gdWindowContext = window;
+                        if (((_a = gdWindowContext) === null || _a === void 0 ? void 0 : _a.glue42gd) && ((_b = gdWindowContext) === null || _b === void 0 ? void 0 : _b.Glue)) {
+                            return [2, gdWindowContext.Glue({
+                                windows: true,
+                                logger: config.logger
+                            })];
                         }
-                        control = new Control();
-                        ext = {
-                            libs: [
-                                {
-                                    name: "windows",
-                                    create: function (coreLib) {
-                                        windows = new Windows(coreLib.interop, control);
-                                        return windows;
-                                    }
-                                },
-                                {
-                                    name: "notifications",
-                                    create: function (coreLib) { return new Notifications(coreLib.interop); }
-                                },
-                                {
-                                    name: "layouts",
-                                    create: function (coreLib) { return new Layouts(windows, coreLib.interop, coreLib.logger.subLogger("layouts"), control, config); }
+                    }
+                    control = new Control();
+                    ext = {
+                        libs: [
+                            {
+                                name: 'windows',
+                                create: function (coreLib) {
+                                    windows = new Windows(coreLib.interop, control);
+                                    return windows;
                                 }
-                            ],
-                            version: version
-                        };
-                        coreConfig = {
-                            gateway: {
-                                sharedWorker: (_d = (_c = config) === null || _c === void 0 ? void 0 : _c.worker, (_d !== null && _d !== void 0 ? _d : defaultWorkerLocation))
                             },
-                            logger: (_e = config) === null || _e === void 0 ? void 0 : _e.logger
-                        };
-                        return [4, coreFactoryFunction(coreConfig, ext)];
-                    case 2:
-                        core = _g.sent();
-                        control.start(core.interop, core.logger.subLogger("control"));
-                        return [4, initStartupContext(core.windows.my(), core.interop)];
-                    case 3:
-                        _g.sent();
-                        if (!((_f = config.layouts) === null || _f === void 0 ? void 0 : _f.autoRestore)) return [3, 5];
-                        return [4, restoreAutoSavedLayout(core)];
-                    case 4:
-                        _g.sent();
-                        _g.label = 5;
-                    case 5: return [4, hookCloseEvents(core, config, control)];
-                    case 6:
-                        _g.sent();
-                        return [2, core];
+                            {
+                                name: 'notifications',
+                                create: function (coreLib) { return new Notifications(coreLib.interop); }
+                            },
+                            {
+                                name: 'layouts',
+                                create: function (coreLib) { return new Layouts(windows, coreLib.interop, coreLib.logger.subLogger('layouts'), control, config); }
+                            }
+                        ],
+                        version: version
+                    };
+                    coreConfig = {
+                        gateway: {
+                            sharedWorker: (_d = (_c = config) === null || _c === void 0 ? void 0 : _c.worker, (_d !== null && _d !== void 0 ? _d : defaultWorkerLocation))
+                        },
+                        logger: (_e = config) === null || _e === void 0 ? void 0 : _e.logger
+                    };
+                    return [4, coreFactoryFunction(coreConfig, ext)];
+                case 2:
+                    core = _g.sent();
+                    control.start(core.interop, core.logger.subLogger('control'));
+                    return [4, initStartupContext(core.windows.my(), core.interop)];
+                case 3:
+                    _g.sent();
+                    if (!((_f = config.layouts) === null || _f === void 0 ? void 0 : _f.autoRestore)) return [3, 5];
+                    return [4, restoreAutoSavedLayout(core)];
+                case 4:
+                    _g.sent();
+                    _g.label = 5;
+                case 5: return [4, hookCloseEvents(core, config, control)];
+                case 6:
+                    _g.sent();
+                    return [2, core];
                 }
             });
         }); };
@@ -1509,12 +1509,12 @@
                     if (shouldSave) {
                         allChildren = api.windows.getChildWindows().map(function (w) { return w.id; });
                         firstChild = allChildren[0];
-                        layoutName = "_auto_" + document.location.href;
+                        layoutName = '_auto_' + document.location.href;
                         if (allChildren.length > 0) {
                             layouts = api.layouts;
                             command = {
-                                domain: "layouts",
-                                command: "saveLayoutAndClose",
+                                domain: 'layouts',
+                                command: 'saveLayoutAndClose',
                                 args: {
                                     childWindows: allChildren,
                                     closeEveryone: true,
@@ -1535,7 +1535,7 @@
                 return [2];
             });
         }); };
-        window.addEventListener("beforeunload", function (event) { return __awaiter(void 0, void 0, void 0, function () {
+        window.addEventListener('beforeunload', function (event) { return __awaiter(void 0, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 doneFn();
                 return [2];
@@ -1586,7 +1586,7 @@
     function __awaiter$1(thisArg, _arguments, P, generator) {
         return new (P || (P = Promise))(function (resolve, reject) {
             function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-            function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+            function rejected(value) { try { step(generator['throw'](value)); } catch (e) { reject(e); } }
             function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
             step((generator = generator.apply(thisArg, _arguments || [])).next());
         });
@@ -1594,25 +1594,25 @@
 
     function __generator$1(thisArg, body) {
         var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-        return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+        return g = { next: verb(0), 'throw': verb(1), 'return': verb(2) }, typeof Symbol === 'function' && (g[Symbol.iterator] = function() { return this; }), g;
         function verb(n) { return function (v) { return step([n, v]); }; }
         function step(op) {
-            if (f) throw new TypeError("Generator is already executing.");
+            if (f) throw new TypeError('Generator is already executing.');
             while (_) try {
-                if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+                if (f = 1, y && (t = op[0] & 2 ? y['return'] : op[0] ? y['throw'] || ((t = y['return']) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
                 if (y = 0, t) op = [op[0] & 2, t.value];
                 switch (op[0]) {
-                    case 0: case 1: t = op; break;
-                    case 4: _.label++; return { value: op[1], done: false };
-                    case 5: _.label++; y = op[1]; op = [0]; continue;
-                    case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                    default:
-                        if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                        if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                        if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                        if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                        if (t[2]) _.ops.pop();
-                        _.trys.pop(); continue;
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
                 }
                 op = body.call(thisArg, _);
             } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
@@ -1637,47 +1637,47 @@
 
     function getMetricTypeByValue(metric) {
         if (metric.type === MetricTypes.TIMESTAMP) {
-            return "timestamp";
+            return 'timestamp';
         }
         else if (metric.type === MetricTypes.NUMBER) {
-            return "number";
+            return 'number';
         }
         else if (metric.type === MetricTypes.STRING) {
-            return "string";
+            return 'string';
         }
         else if (metric.type === MetricTypes.OBJECT) {
-            return "object";
+            return 'object';
         }
-        return "unknown";
+        return 'unknown';
     }
     function getTypeByValue(value) {
         if (value.constructor === Date) {
-            return "timestamp";
+            return 'timestamp';
         }
-        else if (typeof value === "number") {
-            return "number";
+        else if (typeof value === 'number') {
+            return 'number';
         }
-        else if (typeof value === "string") {
-            return "string";
+        else if (typeof value === 'string') {
+            return 'string';
         }
-        else if (typeof value === "object") {
-            return "object";
+        else if (typeof value === 'object') {
+            return 'object';
         }
         else {
-            return "string";
+            return 'string';
         }
     }
     function serializeMetric(metric) {
         var serializedMetrics = {};
         var type = getMetricTypeByValue(metric);
-        if (type === "object") {
+        if (type === 'object') {
             var values = Object.keys(metric.value).reduce(function (memo, key) {
                 var innerType = getTypeByValue(metric.value[key]);
-                if (innerType === "object") {
+                if (innerType === 'object') {
                     var composite = defineNestedComposite(metric.value[key]);
                     memo[key] = {
-                        type: "object",
-                        description: "",
+                        type: 'object',
+                        description: '',
                         context: {},
                         composite: composite,
                     };
@@ -1685,7 +1685,7 @@
                 else {
                     memo[key] = {
                         type: innerType,
-                        description: "",
+                        description: '',
                         context: {},
                     };
                 }
@@ -1693,7 +1693,7 @@
             }, {});
             serializedMetrics.composite = values;
         }
-        serializedMetrics.name = normalizeMetricName(metric.path.join("/") + "/" + metric.name);
+        serializedMetrics.name = normalizeMetricName(metric.path.join('/') + '/' + metric.name);
         serializedMetrics.type = type;
         serializedMetrics.description = metric.description;
         serializedMetrics.context = {};
@@ -1702,10 +1702,10 @@
     function defineNestedComposite(values) {
         return Object.keys(values).reduce(function (memo, key) {
             var type = getTypeByValue(values[key]);
-            if (type === "object") {
+            if (type === 'object') {
                 memo[key] = {
-                    type: "object",
-                    description: "",
+                    type: 'object',
+                    description: '',
                     context: {},
                     composite: defineNestedComposite(values[key]),
                 };
@@ -1713,7 +1713,7 @@
             else {
                 memo[key] = {
                     type: type,
-                    description: "",
+                    description: '',
                     context: {},
                 };
             }
@@ -1721,8 +1721,8 @@
         }, {});
     }
     function normalizeMetricName(name) {
-        if (typeof name !== "undefined" && name.length > 0 && name[0] !== "/") {
-            return "/" + name;
+        if (typeof name !== 'undefined' && name.length > 0 && name[0] !== '/') {
+            return '/' + name;
         }
         else {
             return name;
@@ -1730,7 +1730,7 @@
     }
     function getMetricValueByType(metric) {
         var type = getMetricTypeByValue(metric);
-        if (type === "timestamp") {
+        if (type === 'timestamp') {
             return Date.now();
         }
         else {
@@ -1738,12 +1738,12 @@
         }
     }
     function publishNestedComposite(values) {
-        if (typeof values !== "object") {
+        if (typeof values !== 'object') {
             return values;
         }
         return Object.keys(values).reduce(function (memo, key) {
             var value = values[key];
-            if (typeof value === "object" && value.constructor !== Date) {
+            if (typeof value === 'object' && value.constructor !== Date) {
                 memo[key] = publishNestedComposite(value);
             }
             else if (value.constructor === Date) {
@@ -1775,18 +1775,18 @@
         })[0];
     }
     function aggregateDescription(arr) {
-        var msg = "";
+        var msg = '';
         arr.forEach(function (m, idx, a) {
-            var path = m.path.join(".");
+            var path = m.path.join('.');
             if (idx === a.length - 1) {
-                msg += path + "." + m.name + ": " + m.description;
+                msg += path + '.' + m.name + ': ' + m.description;
             }
             else {
-                msg += path + "." + m.name + ": " + m.description + ",";
+                msg += path + '.' + m.name + ': ' + m.description + ',';
             }
         });
         if (msg.length > 100) {
-            return msg.slice(0, 100) + "...";
+            return msg.slice(0, 100) + '...';
         }
         else {
             return msg;
@@ -1804,8 +1804,8 @@
     }
 
     function gw3 (connection, config) {
-        if (!connection || typeof connection !== "object") {
-            throw new Error("Connection is required parameter");
+        if (!connection || typeof connection !== 'object') {
+            throw new Error('Connection is required parameter');
         }
         var joinPromise;
         var session;
@@ -1814,30 +1814,30 @@
             joinPromise = new Promise(function (resolve) {
                 resolveReadyPromise = resolve;
             });
-            session = connection.domain("metrics");
+            session = connection.domain('metrics');
             session.onJoined(function (reconnect) {
                 if (!reconnect && resolveReadyPromise) {
                     resolveReadyPromise();
                     resolveReadyPromise = undefined;
                 }
                 var rootStateMetric = {
-                    name: "/State",
-                    type: "object",
+                    name: '/State',
+                    type: 'object',
                     composite: {
                         Description: {
-                            type: "string",
-                            description: "",
+                            type: 'string',
+                            description: '',
                         },
                         Value: {
-                            type: "number",
-                            description: "",
+                            type: 'number',
+                            description: '',
                         },
                     },
-                    description: "System state",
+                    description: 'System state',
                     context: {},
                 };
                 var defineRootMetricsMsg = {
-                    type: "define",
+                    type: 'define',
                     metrics: [rootStateMetric],
                 };
                 session.send(defineRootMetricsMsg);
@@ -1865,23 +1865,23 @@
             }
             joinPromise.then(function () {
                 var metric = {
-                    name: normalizeMetricName(system.path.join("/") + "/" + system.name + "/State"),
-                    type: "object",
+                    name: normalizeMetricName(system.path.join('/') + '/' + system.name + '/State'),
+                    type: 'object',
                     composite: {
                         Description: {
-                            type: "string",
-                            description: "",
+                            type: 'string',
+                            description: '',
                         },
                         Value: {
-                            type: "number",
-                            description: "",
+                            type: 'number',
+                            description: '',
                         },
                     },
-                    description: "System state",
+                    description: 'System state',
                     context: {},
                 };
                 var createMetricsMsg = {
-                    type: "define",
+                    type: 'define',
                     metrics: [metric],
                 };
                 session.send(createMetricsMsg);
@@ -1890,29 +1890,29 @@
         var updateSystem = function (system, state) {
             joinPromise.then(function () {
                 var shadowedUpdateMetric = {
-                    type: "publish",
+                    type: 'publish',
                     values: [{
-                            name: normalizeMetricName(system.path.join("/") + "/" + system.name + "/State"),
-                            value: {
-                                Description: state.description,
-                                Value: state.state,
-                            },
-                            timestamp: Date.now(),
-                        }],
+                        name: normalizeMetricName(system.path.join('/') + '/' + system.name + '/State'),
+                        value: {
+                            Description: state.description,
+                            Value: state.state,
+                        },
+                        timestamp: Date.now(),
+                    }],
                 };
                 session.send(shadowedUpdateMetric);
                 var stateObj = composeMsgForRootStateMetric(system);
                 var rootMetric = {
-                    type: "publish",
+                    type: 'publish',
                     peer_id: connection.peerId,
                     values: [{
-                            name: "/State",
-                            value: {
-                                Description: stateObj.description,
-                                Value: stateObj.value,
-                            },
-                            timestamp: Date.now(),
-                        }],
+                        name: '/State',
+                        value: {
+                            Description: stateObj.description,
+                            Value: stateObj.value,
+                        },
+                        timestamp: Date.now(),
+                    }],
                 };
                 session.send(rootMetric);
             });
@@ -1922,11 +1922,11 @@
             joinPromise.then(function () {
                 var m = serializeMetric(metricClone);
                 var createMetricsMsg = {
-                    type: "define",
+                    type: 'define',
                     metrics: [m],
                 };
                 session.send(createMetricsMsg);
-                if (typeof metricClone.value !== "undefined") {
+                if (typeof metricClone.value !== 'undefined') {
                     updateMetricCore(metricClone);
                 }
             });
@@ -1938,18 +1938,18 @@
         var updateMetricCore = function (metric) {
             var value = getMetricValueByType(metric);
             var publishMetricsMsg = {
-                type: "publish",
+                type: 'publish',
                 values: [{
-                        name: normalizeMetricName(metric.path.join("/") + "/" + metric.name),
-                        value: value,
-                        timestamp: Date.now(),
-                    }],
+                    name: normalizeMetricName(metric.path.join('/') + '/' + metric.name),
+                    value: value,
+                    timestamp: Date.now(),
+                }],
             };
             session.send(publishMetricsMsg);
         };
         var cloneMetric = function (metric) {
             var metricClone = __assign$1({}, metric);
-            if (typeof metric.value === "object" && metric.value !== null) {
+            if (typeof metric.value === 'object' && metric.value !== null) {
                 metricClone.value = __assign$1({}, metric.value);
             }
             return metricClone;
@@ -1965,14 +1965,14 @@
 
     var Helpers = {
         validate: function (definition, parent, transport) {
-            if (definition === null || typeof definition !== "object") {
-                throw new Error("Missing definition");
+            if (definition === null || typeof definition !== 'object') {
+                throw new Error('Missing definition');
             }
-            if (parent === null || typeof parent !== "object") {
-                throw new Error("Missing parent");
+            if (parent === null || typeof parent !== 'object') {
+                throw new Error('Missing parent');
             }
-            if (transport === null || typeof transport !== "object") {
-                throw new Error("Missing transport");
+            if (transport === null || typeof transport !== 'object') {
+                throw new Error('Missing transport');
             }
         },
     };
@@ -1992,7 +1992,7 @@
             this.description = definition.description;
             transport.createMetric(this);
         }
-        Object.defineProperty(BaseMetric.prototype, "repo", {
+        Object.defineProperty(BaseMetric.prototype, 'repo', {
             get: function () {
                 var _a;
                 return (_a = this.system) === null || _a === void 0 ? void 0 : _a.repo;
@@ -2000,8 +2000,8 @@
             enumerable: true,
             configurable: true
         });
-        Object.defineProperty(BaseMetric.prototype, "id", {
-            get: function () { return this.system.path + "/" + name; },
+        Object.defineProperty(BaseMetric.prototype, 'id', {
+            get: function () { return this.system.path + '/' + name; },
             enumerable: true,
             configurable: true
         });
@@ -2044,7 +2044,7 @@
         ObjectMetric.prototype.mergeValues = function (values) {
             var _this = this;
             return Object.keys(this.value).forEach(function (k) {
-                if (typeof values[k] !== "undefined") {
+                if (typeof values[k] !== 'undefined') {
                     _this.value[k] = values[k];
                 }
             });
@@ -2073,25 +2073,25 @@
 
     function system(name, repo, protocol, parent, description) {
         if (!repo) {
-            throw new Error("Repository is required");
+            throw new Error('Repository is required');
         }
         if (!protocol) {
-            throw new Error("Transport is required");
+            throw new Error('Transport is required');
         }
         var _transport = protocol;
         var _name = name;
-        var _description = description || "";
+        var _description = description || '';
         var _repo = repo;
         var _parent = parent;
         var _path = _buildPath(parent);
         var _state = {};
-        var id = _arrayToString(_path, "/") + name;
+        var id = _arrayToString(_path, '/') + name;
         var root = repo.root;
         var _subSystems = [];
         var _metrics = [];
         function subSystem(nameSystem, descriptionSystem) {
             if (!nameSystem || nameSystem.length === 0) {
-                throw new Error("name is required");
+                throw new Error('name is required');
             }
             var match = _subSystems.filter(function (s) { return s.name === nameSystem; });
             if (match.length > 0) {
@@ -2118,8 +2118,8 @@
             return _getOrCreateMetric(definition, MetricTypes.TIMESTAMP, value, function (metricDef) { return new TimestampMetric(metricDef, me, _transport, value); });
         }
         function _getOrCreateMetric(metricObject, expectedType, value, createMetric) {
-            var metricDef = { name: "" };
-            if (typeof metricObject === "string") {
+            var metricDef = { name: '' };
+            if (typeof metricObject === 'string') {
                 metricDef = { name: metricObject };
             }
             else {
@@ -2129,9 +2129,9 @@
             if (matching.length > 0) {
                 var existing = matching[0];
                 if (existing.type !== expectedType) {
-                    throw new Error("A metric named " + metricDef.name + " is already defined with different type.");
+                    throw new Error('A metric named ' + metricDef.name + ' is already defined with different type.');
                 }
-                if (typeof value !== "undefined") {
+                if (typeof value !== 'undefined') {
                     existing.update(value);
                 }
                 return existing;
@@ -2149,7 +2149,7 @@
             return path;
         }
         function _arrayToString(path, separator) {
-            return ((path && path.length > 0) ? path.join(separator) : "");
+            return ((path && path.length > 0) ? path.join(separator) : '');
         }
         function getAggregateState() {
             var aggState = [];
@@ -2209,51 +2209,51 @@
     var Repository = (function () {
         function Repository(options, protocol) {
             protocol.init(this);
-            this.root = system("", this, protocol);
+            this.root = system('', this, protocol);
             this.addSystemMetrics(this.root, options.clickStream || options.clickStream === undefined);
         }
         Repository.prototype.addSystemMetrics = function (rootSystem, useClickStream) {
-            if (typeof navigator !== "undefined") {
-                rootSystem.stringMetric("UserAgent", navigator.userAgent);
+            if (typeof navigator !== 'undefined') {
+                rootSystem.stringMetric('UserAgent', navigator.userAgent);
             }
-            if (useClickStream && typeof document !== "undefined") {
-                var clickStream_1 = rootSystem.subSystem("ClickStream");
+            if (useClickStream && typeof document !== 'undefined') {
+                var clickStream_1 = rootSystem.subSystem('ClickStream');
                 var documentClickHandler = function (e) {
                     if (!e.target) {
                         return;
                     }
                     var target = e.target;
-                    clickStream_1.objectMetric("LastBrowserEvent", {
-                        type: "click",
+                    clickStream_1.objectMetric('LastBrowserEvent', {
+                        type: 'click',
                         timestamp: new Date(),
                         target: {
-                            className: e.target ? target.className : "",
+                            className: e.target ? target.className : '',
                             id: target.id,
-                            type: "<" + target.tagName.toLowerCase() + ">",
-                            href: target.href || "",
+                            type: '<' + target.tagName.toLowerCase() + '>',
+                            href: target.href || '',
                         },
                     });
                 };
-                clickStream_1.objectMetric("Page", {
+                clickStream_1.objectMetric('Page', {
                     title: document.title,
                     page: window.location.href,
                 });
                 if (document.addEventListener) {
-                    document.addEventListener("click", documentClickHandler);
+                    document.addEventListener('click', documentClickHandler);
                 }
                 else {
-                    document.attachEvent("onclick", documentClickHandler);
+                    document.attachEvent('onclick', documentClickHandler);
                 }
             }
-            var startTime = rootSystem.stringMetric("StartTime", (new Date()).toString());
-            var urlMetric = rootSystem.stringMetric("StartURL", "");
-            var appNameMetric = rootSystem.stringMetric("AppName", "");
-            if (typeof window !== "undefined") {
-                if (typeof window.location !== "undefined") {
+            var startTime = rootSystem.stringMetric('StartTime', (new Date()).toString());
+            var urlMetric = rootSystem.stringMetric('StartURL', '');
+            var appNameMetric = rootSystem.stringMetric('AppName', '');
+            if (typeof window !== 'undefined') {
+                if (typeof window.location !== 'undefined') {
                     var startUrl = window.location.href;
                     urlMetric.update(startUrl);
                 }
-                if (typeof window.glue42gd !== "undefined") {
+                if (typeof window.glue42gd !== 'undefined') {
                     appNameMetric.update(window.glue42gd.appName);
                 }
             }
@@ -2279,7 +2279,7 @@
 
     var metrics = (function (options) {
         var protocol;
-        if (!options.connection || typeof options.connection !== "object") {
+        if (!options.connection || typeof options.connection !== 'object') {
             protocol = new NullProtocol();
         }
         else {
@@ -2289,20 +2289,20 @@
         return repo.root;
     });
     function addFAVSupport(system) {
-        var reportingSystem = system.subSystem("reporting");
+        var reportingSystem = system.subSystem('reporting');
         var def = {
-            name: "features"
+            name: 'features'
         };
         var featureMetric;
         var featureMetricFunc = function (name, action, payload) {
-            if (typeof name === "undefined" || name === "") {
-                throw new Error("name is mandatory");
+            if (typeof name === 'undefined' || name === '') {
+                throw new Error('name is mandatory');
             }
-            else if (typeof action === "undefined" || action === "") {
-                throw new Error("action is mandatory");
+            else if (typeof action === 'undefined' || action === '') {
+                throw new Error('action is mandatory');
             }
-            else if (typeof payload === "undefined" || payload === "") {
-                throw new Error("payload is mandatory");
+            else if (typeof payload === 'undefined' || payload === '') {
+                throw new Error('payload is mandatory');
             }
             if (!featureMetric) {
                 featureMetric = reportingSystem.objectMetric(def, { name: name, action: action, payload: payload });
@@ -2321,13 +2321,13 @@
 
     function createRegistry$1(options) {
         if (options && options.errorHandling
-            && typeof options.errorHandling !== "function"
-            && options.errorHandling !== "log"
-            && options.errorHandling !== "silent"
-            && options.errorHandling !== "throw") {
-            throw new Error("Invalid options passed to createRegistry. Prop errorHandling should be [\"log\" | \"silent\" | \"throw\" | (err) => void], but " + typeof options.errorHandling + " was passed");
+            && typeof options.errorHandling !== 'function'
+            && options.errorHandling !== 'log'
+            && options.errorHandling !== 'silent'
+            && options.errorHandling !== 'throw') {
+            throw new Error('Invalid options passed to createRegistry. Prop errorHandling should be ["log" | "silent" | "throw" | (err) => void], but ' + typeof options.errorHandling + ' was passed');
         }
-        var _userErrorHandler = options && typeof options.errorHandling === "function" && options.errorHandling;
+        var _userErrorHandler = options && typeof options.errorHandling === 'function' && options.errorHandling;
         var callbacks = {};
         function add(key, callback) {
             var callbacksForKey = callbacks[key];
@@ -2378,15 +2378,15 @@
                 _userErrorHandler(errParam);
                 return;
             }
-            var msg = "[ERROR] callback-registry: User callback for key \"" + key + "\" failed: " + errParam.stack;
+            var msg = '[ERROR] callback-registry: User callback for key "' + key + '" failed: ' + errParam.stack;
             if (options) {
                 switch (options.errorHandling) {
-                    case "log":
-                        return console.error(msg);
-                    case "silent":
-                        return;
-                    case "throw":
-                        throw new Error(msg);
+                case 'log':
+                    return console.error(msg);
+                case 'silent':
+                    return;
+                case 'throw':
+                    throw new Error(msg);
                 }
             }
             console.error(msg);
@@ -2422,7 +2422,7 @@
                 _this.client = client;
             });
         }
-        Object.defineProperty(InProcTransport.prototype, "isObjectBasedTransport", {
+        Object.defineProperty(InProcTransport.prototype, 'isObjectBasedTransport', {
             get: function () {
                 return true;
             },
@@ -2435,14 +2435,14 @@
                 return Promise.resolve(undefined);
             }
             else {
-                return Promise.reject("not connected");
+                return Promise.reject('not connected');
             }
         };
         InProcTransport.prototype.send = function (_msg) {
-            return Promise.reject("not supported");
+            return Promise.reject('not supported');
         };
         InProcTransport.prototype.onMessage = function (callback) {
-            return this.registry.add("onMessage", callback);
+            return this.registry.add('onMessage', callback);
         };
         InProcTransport.prototype.onConnectedChanged = function (callback) {
             callback(true);
@@ -2454,13 +2454,13 @@
             return Promise.resolve();
         };
         InProcTransport.prototype.name = function () {
-            return "in-memory";
+            return 'in-memory';
         };
         InProcTransport.prototype.reconnect = function () {
             return Promise.resolve();
         };
         InProcTransport.prototype.messageHandler = function (msg) {
-            this.registry.execute("onMessage", msg);
+            this.registry.execute('onMessage', msg);
         };
         return InProcTransport;
     }());
@@ -2475,7 +2475,7 @@
                 _this.messageHandler(e.data);
             };
         }
-        Object.defineProperty(SharedWorkerTransport.prototype, "isObjectBasedTransport", {
+        Object.defineProperty(SharedWorkerTransport.prototype, 'isObjectBasedTransport', {
             get: function () {
                 return true;
             },
@@ -2487,10 +2487,10 @@
             return Promise.resolve();
         };
         SharedWorkerTransport.prototype.send = function (_msg) {
-            return Promise.reject("not supported");
+            return Promise.reject('not supported');
         };
         SharedWorkerTransport.prototype.onMessage = function (callback) {
-            return this.registry.add("onMessage", callback);
+            return this.registry.add('onMessage', callback);
         };
         SharedWorkerTransport.prototype.onConnectedChanged = function (callback) {
             callback(true);
@@ -2502,13 +2502,13 @@
             return Promise.resolve();
         };
         SharedWorkerTransport.prototype.name = function () {
-            return "shared-worker";
+            return 'shared-worker';
         };
         SharedWorkerTransport.prototype.reconnect = function () {
             return Promise.resolve();
         };
         SharedWorkerTransport.prototype.messageHandler = function (msg) {
-            this.registry.execute("onMessage", msg);
+            this.registry.execute('onMessage', msg);
         };
         return SharedWorkerTransport;
     }());
@@ -2517,7 +2517,7 @@
         function Utils() {
         }
         Utils.getGDMajorVersion = function () {
-            if (typeof window === "undefined") {
+            if (typeof window === 'undefined') {
                 return undefined;
             }
             if (!window.glueDesktop) {
@@ -2530,11 +2530,11 @@
             return isNaN(ver) ? undefined : ver;
         };
         Utils.isNode = function () {
-            if (typeof Utils._isNode !== "undefined") {
+            if (typeof Utils._isNode !== 'undefined') {
                 return Utils._isNode;
             }
             try {
-                Utils._isNode = Object.prototype.toString.call(global.process) === "[object process]";
+                Utils._isNode = Object.prototype.toString.call(global.process) === '[object process]';
             }
             catch (e) {
                 Utils._isNode = false;
@@ -2563,7 +2563,7 @@
         PromiseWrapper.delay = function (time) {
             return new Promise(function (resolve) { return setTimeout(resolve, time); });
         };
-        Object.defineProperty(PromiseWrapper.prototype, "ended", {
+        Object.defineProperty(PromiseWrapper.prototype, 'ended', {
             get: function () {
                 return this.rejected || this.resolved;
             },
@@ -2573,7 +2573,7 @@
         return PromiseWrapper;
     }());
 
-    var WebSocketConstructor = Utils.isNode() ? require("ws") : window.WebSocket;
+    var WebSocketConstructor = Utils.isNode() ? require('ws') : window.WebSocket;
     var WS = (function () {
         function WS(settings, logger) {
             this._running = true;
@@ -2582,11 +2582,11 @@
             this.settings = settings;
             this.logger = logger;
             if (!this.settings.ws) {
-                throw new Error("ws is missing");
+                throw new Error('ws is missing');
             }
         }
         WS.prototype.onMessage = function (callback) {
-            return this._registry.add("onMessage", callback);
+            return this._registry.add('onMessage', callback);
         };
         WS.prototype.send = function (msg, options) {
             var _this = this;
@@ -2605,7 +2605,7 @@
         };
         WS.prototype.open = function () {
             var _this = this;
-            this.logger.info("opening ws...");
+            this.logger.info('opening ws...');
             this._running = true;
             return new Promise(function (resolve, reject) {
                 _this.waitForSocketConnection(resolve, reject);
@@ -2619,10 +2619,10 @@
             return Promise.resolve();
         };
         WS.prototype.onConnectedChanged = function (callback) {
-            return this._registry.add("onConnectedChanged", callback);
+            return this._registry.add('onConnectedChanged', callback);
         };
         WS.prototype.name = function () {
-            return "ws " + this.settings.ws;
+            return 'ws ' + this.settings.ws;
         };
         WS.prototype.reconnect = function () {
             var _a;
@@ -2637,7 +2637,7 @@
             var _a;
             failed = (failed !== null && failed !== void 0 ? failed : (function () { }));
             if (!this._running) {
-                failed("wait for socket on " + this.settings.ws + " failed - socket closed by user");
+                failed('wait for socket on ' + this.settings.ws + ' failed - socket closed by user');
                 return;
             }
             if (((_a = this.ws) === null || _a === void 0 ? void 0 : _a.readyState) === 1) {
@@ -2656,33 +2656,33 @@
                 var _this = this;
                 return __generator$1(this, function (_b) {
                     switch (_b.label) {
-                        case 0:
-                            if (retryInterval === undefined) {
-                                retryInterval = this.settings.reconnectInterval;
+                    case 0:
+                        if (retryInterval === undefined) {
+                            retryInterval = this.settings.reconnectInterval;
+                        }
+                        if (retriesLeft !== undefined) {
+                            if (retriesLeft === 0) {
+                                this.notifyForSocketState('wait for socket on ' + this.settings.ws + ' failed - no more retries left');
+                                return [2];
                             }
-                            if (retriesLeft !== undefined) {
-                                if (retriesLeft === 0) {
-                                    this.notifyForSocketState("wait for socket on " + this.settings.ws + " failed - no more retries left");
-                                    return [2];
-                                }
-                                this.logger.debug("will retry " + retriesLeft + " more times (every " + retryInterval + " ms)");
-                            }
-                            _b.label = 1;
-                        case 1:
-                            _b.trys.push([1, 3, , 4]);
-                            return [4, this.initiateSocket()];
-                        case 2:
-                            _b.sent();
-                            this.notifyForSocketState();
-                            return [3, 4];
-                        case 3:
-                            _a = _b.sent();
-                            setTimeout(function () {
-                                var retries = retriesLeft === undefined ? undefined : retriesLeft - 1;
-                                _this.openSocket(retryInterval, retries);
-                            }, retryInterval);
-                            return [3, 4];
-                        case 4: return [2];
+                            this.logger.debug('will retry ' + retriesLeft + ' more times (every ' + retryInterval + ' ms)');
+                        }
+                        _b.label = 1;
+                    case 1:
+                        _b.trys.push([1, 3, , 4]);
+                        return [4, this.initiateSocket()];
+                    case 2:
+                        _b.sent();
+                        this.notifyForSocketState();
+                        return [3, 4];
+                    case 3:
+                        _a = _b.sent();
+                        setTimeout(function () {
+                            var retries = retriesLeft === undefined ? undefined : retriesLeft - 1;
+                            _this.openSocket(retryInterval, retries);
+                        }, retryInterval);
+                        return [3, 4];
+                    case 4: return [2];
                     }
                 });
             });
@@ -2690,17 +2690,17 @@
         WS.prototype.initiateSocket = function () {
             var _this = this;
             var pw = new PromiseWrapper();
-            this.logger.debug("initiating ws to " + this.settings.ws + "...");
-            this.ws = new WebSocketConstructor(this.settings.ws || "");
+            this.logger.debug('initiating ws to ' + this.settings.ws + '...');
+            this.ws = new WebSocketConstructor(this.settings.ws || '');
             this.ws.onerror = function (err) {
-                var reason = "";
+                var reason = '';
                 try {
                     reason = JSON.stringify(err);
                 }
                 catch (error) {
                     var seen_1 = new WeakSet();
                     var replacer = function (key, value) {
-                        if (typeof value === "object" && value !== null) {
+                        if (typeof value === 'object' && value !== null) {
                             if (seen_1.has(value)) {
                                 return;
                             }
@@ -2710,22 +2710,22 @@
                     };
                     reason = JSON.stringify(err, replacer);
                 }
-                pw.reject("error");
+                pw.reject('error');
                 _this.notifyStatusChanged(false, reason);
             };
             this.ws.onclose = function (err) {
-                _this.logger.info("ws closed " + err);
-                pw.reject("closed");
+                _this.logger.info('ws closed ' + err);
+                pw.reject('closed');
                 _this.notifyStatusChanged(false);
             };
             this.ws.onopen = function () {
                 var _a;
-                _this.logger.info("ws opened " + ((_a = _this.settings.identity) === null || _a === void 0 ? void 0 : _a.application));
+                _this.logger.info('ws opened ' + ((_a = _this.settings.identity) === null || _a === void 0 ? void 0 : _a.application));
                 pw.resolve();
                 _this.notifyStatusChanged(true);
             };
             this.ws.onmessage = function (message) {
-                _this._registry.execute("onMessage", message.data);
+                _this._registry.execute('onMessage', message.data);
             };
             return pw.promise;
         };
@@ -2743,7 +2743,7 @@
             this.wsRequests = [];
         };
         WS.prototype.notifyStatusChanged = function (status, reason) {
-            this._registry.execute("onConnectedChanged", status, reason);
+            this._registry.execute('onConnectedChanged', status, reason);
         };
         return WS;
     }());
@@ -2804,7 +2804,7 @@
         }
 
         var unique = _alphabet_.split('').filter(function(item, ind, arr){
-           return ind !== arr.lastIndexOf(item);
+            return ind !== arr.lastIndexOf(item);
         });
 
         if (unique.length) {
@@ -2939,99 +2939,99 @@
 
 
 
-    // Ignore all milliseconds before a certain time to reduce the size of the date entropy without sacrificing uniqueness.
-    // This number should be updated every year or so to keep the generated id short.
-    // To regenerate `new Date() - 0` and bump the version. Always bump the version!
-    var REDUCE_TIME = 1459707606518;
+        // Ignore all milliseconds before a certain time to reduce the size of the date entropy without sacrificing uniqueness.
+        // This number should be updated every year or so to keep the generated id short.
+        // To regenerate `new Date() - 0` and bump the version. Always bump the version!
+        var REDUCE_TIME = 1459707606518;
 
-    // don't change unless we change the algos or REDUCE_TIME
-    // must be an integer and less than 16
-    var version = 6;
+        // don't change unless we change the algos or REDUCE_TIME
+        // must be an integer and less than 16
+        var version = 6;
 
-    // if you are using cluster or multiple servers use this to make each instance
-    // has a unique value for worker
-    // Note: I don't know if this is automatically set when using third
-    // party cluster solutions such as pm2.
-    var clusterWorkerId =  0;
+        // if you are using cluster or multiple servers use this to make each instance
+        // has a unique value for worker
+        // Note: I don't know if this is automatically set when using third
+        // party cluster solutions such as pm2.
+        var clusterWorkerId =  0;
 
-    // Counter is used when shortid is called multiple times in one second.
-    var counter;
+        // Counter is used when shortid is called multiple times in one second.
+        var counter;
 
-    // Remember the last time shortid was called in case counter is needed.
-    var previousSeconds;
+        // Remember the last time shortid was called in case counter is needed.
+        var previousSeconds;
 
-    /**
+        /**
      * Generate unique id
      * Returns string id
      */
-    function generate() {
+        function generate() {
 
-        var str = '';
+            var str = '';
 
-        var seconds = Math.floor((Date.now() - REDUCE_TIME) * 0.001);
+            var seconds = Math.floor((Date.now() - REDUCE_TIME) * 0.001);
 
-        if (seconds === previousSeconds) {
-            counter++;
-        } else {
-            counter = 0;
-            previousSeconds = seconds;
+            if (seconds === previousSeconds) {
+                counter++;
+            } else {
+                counter = 0;
+                previousSeconds = seconds;
+            }
+
+            str = str + encode_1(alphabet_1$1.lookup, version);
+            str = str + encode_1(alphabet_1$1.lookup, clusterWorkerId);
+            if (counter > 0) {
+                str = str + encode_1(alphabet_1$1.lookup, counter);
+            }
+            str = str + encode_1(alphabet_1$1.lookup, seconds);
+
+            return str;
         }
 
-        str = str + encode_1(alphabet_1$1.lookup, version);
-        str = str + encode_1(alphabet_1$1.lookup, clusterWorkerId);
-        if (counter > 0) {
-            str = str + encode_1(alphabet_1$1.lookup, counter);
-        }
-        str = str + encode_1(alphabet_1$1.lookup, seconds);
 
-        return str;
-    }
-
-
-    /**
+        /**
      * Set the seed.
      * Highly recommended if you don't want people to try to figure out your id schema.
      * exposed as shortid.seed(int)
      * @param seed Integer value to seed the random alphabet.  ALWAYS USE THE SAME SEED or you might get overlaps.
      */
-    function seed(seedValue) {
-        alphabet_1$1.seed(seedValue);
-        return module.exports;
-    }
+        function seed(seedValue) {
+            alphabet_1$1.seed(seedValue);
+            return module.exports;
+        }
 
-    /**
+        /**
      * Set the cluster worker or machine id
      * exposed as shortid.worker(int)
      * @param workerId worker must be positive integer.  Number less than 16 is recommended.
      * returns shortid module so it can be chained.
      */
-    function worker(workerId) {
-        clusterWorkerId = workerId;
-        return module.exports;
-    }
+        function worker(workerId) {
+            clusterWorkerId = workerId;
+            return module.exports;
+        }
 
-    /**
+        /**
      *
      * sets new characters to use in the alphabet
      * returns the shuffled alphabet
      */
-    function characters(newCharacters) {
-        if (newCharacters !== undefined) {
-            alphabet_1$1.characters(newCharacters);
+        function characters(newCharacters) {
+            if (newCharacters !== undefined) {
+                alphabet_1$1.characters(newCharacters);
+            }
+
+            return alphabet_1$1.shuffled();
         }
 
-        return alphabet_1$1.shuffled();
-    }
 
-
-    // Export all other functions as properties of the generate function
-    module.exports = generate;
-    module.exports.generate = generate;
-    module.exports.seed = seed;
-    module.exports.worker = worker;
-    module.exports.characters = characters;
-    module.exports.decode = decode_1;
-    module.exports.isValid = isValid$1;
+        // Export all other functions as properties of the generate function
+        module.exports = generate;
+        module.exports.generate = generate;
+        module.exports.seed = seed;
+        module.exports.worker = worker;
+        module.exports.characters = characters;
+        module.exports.decode = decode_1;
+        module.exports.isValid = isValid$1;
     });
     var lib_1$1 = lib$1$1.generate;
     var lib_2$1 = lib$1$1.seed;
@@ -3044,10 +3044,10 @@
 
     function domainSession (domain, connection, logger, successMessages, errorMessages) {
         if (domain == null) {
-            domain = "global";
+            domain = 'global';
         }
-        successMessages = successMessages || ["success"];
-        errorMessages = errorMessages || ["error"];
+        successMessages = successMessages || ['success'];
+        errorMessages = errorMessages || ['error'];
         var isJoined = false;
         var tryReconnecting = false;
         var _latestOptions;
@@ -3055,9 +3055,9 @@
         var callbacks = lib$2();
         connection.disconnected(handleConnectionDisconnected);
         connection.loggedIn(handleConnectionLoggedIn);
-        connection.on("success", function (msg) { return handleSuccessMessage(msg); });
-        connection.on("error", function (msg) { return handleErrorMessage(msg); });
-        connection.on("result", function (msg) { return handleSuccessMessage(msg); });
+        connection.on('success', function (msg) { return handleSuccessMessage(msg); });
+        connection.on('error', function (msg) { return handleErrorMessage(msg); });
+        connection.on('result', function (msg) { return handleSuccessMessage(msg); });
         if (successMessages) {
             successMessages.forEach(function (sm) {
                 connection.on(sm, function (msg) { return handleSuccessMessage(msg); });
@@ -3077,64 +3077,64 @@
                     return;
                 }
                 var joinPromise;
-                if (domain === "global") {
-                    joinPromise = _connectionOn ? Promise.resolve({}) : Promise.reject("not connected to gateway");
+                if (domain === 'global') {
+                    joinPromise = _connectionOn ? Promise.resolve({}) : Promise.reject('not connected to gateway');
                 }
                 else {
-                    logger.debug("joining domain " + domain);
+                    logger.debug('joining domain ' + domain);
                     var joinMsg = {
-                        type: "join",
+                        type: 'join',
                         destination: domain,
-                        domain: "global",
+                        domain: 'global',
                         options: options,
                     };
                     joinPromise = send(joinMsg);
                 }
                 joinPromise
                     .then(function () {
-                    handleJoined();
-                    resolve();
-                })
+                        handleJoined();
+                        resolve();
+                    })
                     .catch(function (err) {
-                    logger.debug("error joining " + domain + " domain: " + JSON.stringify(err));
-                    reject(err);
-                });
+                        logger.debug('error joining ' + domain + ' domain: ' + JSON.stringify(err));
+                        reject(err);
+                    });
             });
         }
         function leave() {
-            if (domain === "global") {
+            if (domain === 'global') {
                 return Promise.resolve();
             }
-            logger.debug("stopping session " + domain + "...");
+            logger.debug('stopping session ' + domain + '...');
             var leaveMsg = {
-                type: "leave",
+                type: 'leave',
                 destination: domain,
-                domain: "global",
+                domain: 'global',
             };
             tryReconnecting = false;
             return send(leaveMsg).then(function () {
                 isJoined = false;
-                callbacks.execute("onLeft");
+                callbacks.execute('onLeft');
             });
         }
         function handleJoined() {
-            logger.debug("did join " + domain);
+            logger.debug('did join ' + domain);
             isJoined = true;
             var wasReconnect = tryReconnecting;
             tryReconnecting = false;
-            callbacks.execute("onJoined", wasReconnect);
+            callbacks.execute('onJoined', wasReconnect);
         }
         function handleConnectionDisconnected() {
             _connectionOn = false;
-            logger.debug("connection is down");
+            logger.debug('connection is down');
             isJoined = false;
             tryReconnecting = true;
-            callbacks.execute("onLeft", { disconnected: true });
+            callbacks.execute('onLeft', { disconnected: true });
         }
         function handleConnectionLoggedIn() {
             _connectionOn = true;
             if (tryReconnecting) {
-                logger.debug("connection is now up - trying to reconnect...");
+                logger.debug('connection is now up - trying to reconnect...');
                 join(_latestOptions);
             }
         }
@@ -3142,13 +3142,13 @@
             if (isJoined) {
                 callback(false);
             }
-            return callbacks.add("onJoined", callback);
+            return callbacks.add('onJoined', callback);
         }
         function onLeft(callback) {
             if (!isJoined) {
                 callback();
             }
-            return callbacks.add("onLeft", callback);
+            return callbacks.add('onLeft', callback);
         }
         function handleErrorMessage(msg) {
             if (domain !== msg.domain) {
@@ -3197,7 +3197,7 @@
                         resolve(successMsg);
                     },
                     error: function (errorMsg) {
-                        logger.warn("GW error - " + JSON.stringify(errorMsg) + " for request " + JSON.stringify(msg));
+                        logger.warn('GW error - ' + JSON.stringify(errorMsg) + ' for request ' + JSON.stringify(msg));
                         delete requestsMap[requestId];
                         errorMsg._tag = tag;
                         reject(errorMsg);
@@ -3206,8 +3206,8 @@
                 connection
                     .send(msg, options)
                     .catch(function (err) {
-                    requestsMap[requestId].error({ err: err });
-                });
+                        requestsMap[requestId].error({ err: err });
+                    });
             });
         }
         function sendFireAndForget(msg) {
@@ -3232,7 +3232,7 @@
                         callback(msg);
                     }
                     catch (e) {
-                        logger.error("Callback  failed: " + e + " \n " + e.stack + " \n msg was: " + JSON.stringify(msg), e);
+                        logger.error('Callback  failed: ' + e + ' \n ' + e.stack + ' \n msg was: ' + JSON.stringify(msg), e);
                     }
                 });
             },
@@ -3255,7 +3255,7 @@
             this.settings = settings;
             this.logger = logger;
             this.protocolVersion = 3;
-            this.datePrefix = "#T42_DATE#";
+            this.datePrefix = '#T42_DATE#';
             this.datePrefixLen = this.datePrefix.length;
             this.dateMinLen = this.datePrefixLen + 1;
             this.datePrefixFirstChar = this.datePrefix[0];
@@ -3270,7 +3270,7 @@
             });
             this.ping();
         }
-        Object.defineProperty(GW3ProtocolImpl.prototype, "isLoggedIn", {
+        Object.defineProperty(GW3ProtocolImpl.prototype, 'isLoggedIn', {
             get: function () {
                 return this._isLoggedIn;
             },
@@ -3280,7 +3280,7 @@
         GW3ProtocolImpl.prototype.processStringMessage = function (message) {
             var _this = this;
             var msg = JSON.parse(message, function (key, value) {
-                if (typeof value !== "string") {
+                if (typeof value !== 'string') {
                     return value;
                 }
                 if (value.length < _this.dateMinLen) {
@@ -3324,7 +3324,7 @@
         };
         GW3ProtocolImpl.prototype.processObjectMessage = function (message) {
             if (!message.type) {
-                throw new Error("Object should have type property");
+                throw new Error('Object should have type property');
             }
             return {
                 msg: message,
@@ -3340,139 +3340,139 @@
                 var authentication, token, e_1, _b, helloMsg, sendOptions, welcomeMsg, msg, token, _c, err_1;
                 return __generator$1(this, function (_d) {
                     switch (_d.label) {
-                        case 0:
-                            this.logger.debug("logging in...");
-                            this.loginConfig = config;
-                            if (!this.loginConfig) {
-                                this.loginConfig = { username: "", password: "" };
-                            }
-                            this.shouldTryLogin = true;
-                            authentication = {};
-                            this.connection.gatewayToken = config.gatewayToken;
-                            if (!config.gatewayToken) return [3, 5];
-                            if (!reconnect) return [3, 4];
-                            _d.label = 1;
-                        case 1:
-                            _d.trys.push([1, 3, , 4]);
-                            return [4, this.getNewGWToken()];
-                        case 2:
-                            token = _d.sent();
-                            config.gatewayToken = token;
-                            return [3, 4];
-                        case 3:
-                            e_1 = _d.sent();
-                            this.logger.warn("failed to get GW token when reconnecting " + (((_a = e_1) === null || _a === void 0 ? void 0 : _a.message) || e_1));
-                            return [3, 4];
-                        case 4:
-                            authentication.method = "gateway-token";
-                            authentication.token = config.gatewayToken;
-                            this.connection.gatewayToken = config.gatewayToken;
-                            return [3, 10];
-                        case 5:
-                            if (!(config.flowName === "sspi")) return [3, 9];
-                            authentication.provider = "win";
-                            authentication.method = "access-token";
-                            if (!(config.flowCallback && config.sessionId)) return [3, 7];
-                            _b = authentication;
-                            return [4, config.flowCallback(config.sessionId, null)];
-                        case 6:
-                            _b.token =
+                    case 0:
+                        this.logger.debug('logging in...');
+                        this.loginConfig = config;
+                        if (!this.loginConfig) {
+                            this.loginConfig = { username: '', password: '' };
+                        }
+                        this.shouldTryLogin = true;
+                        authentication = {};
+                        this.connection.gatewayToken = config.gatewayToken;
+                        if (!config.gatewayToken) return [3, 5];
+                        if (!reconnect) return [3, 4];
+                        _d.label = 1;
+                    case 1:
+                        _d.trys.push([1, 3, , 4]);
+                        return [4, this.getNewGWToken()];
+                    case 2:
+                        token = _d.sent();
+                        config.gatewayToken = token;
+                        return [3, 4];
+                    case 3:
+                        e_1 = _d.sent();
+                        this.logger.warn('failed to get GW token when reconnecting ' + (((_a = e_1) === null || _a === void 0 ? void 0 : _a.message) || e_1));
+                        return [3, 4];
+                    case 4:
+                        authentication.method = 'gateway-token';
+                        authentication.token = config.gatewayToken;
+                        this.connection.gatewayToken = config.gatewayToken;
+                        return [3, 10];
+                    case 5:
+                        if (!(config.flowName === 'sspi')) return [3, 9];
+                        authentication.provider = 'win';
+                        authentication.method = 'access-token';
+                        if (!(config.flowCallback && config.sessionId)) return [3, 7];
+                        _b = authentication;
+                        return [4, config.flowCallback(config.sessionId, null)];
+                    case 6:
+                        _b.token =
                                 (_d.sent())
                                     .data
-                                    .toString("base64");
-                            return [3, 8];
-                        case 7: throw new Error("Invalid SSPI config");
-                        case 8: return [3, 10];
-                        case 9:
-                            if (config.token) {
-                                authentication.method = "access-token";
-                                authentication.token = config.token;
-                            }
-                            else if (config.username) {
-                                authentication.method = "secret";
-                                authentication.login = config.username;
-                                authentication.secret = config.password;
-                            }
-                            else {
-                                throw new Error("invalid auth message" + JSON.stringify(config));
-                            }
-                            _d.label = 10;
-                        case 10:
-                            helloMsg = {
-                                type: "hello",
-                                identity: this.settings.identity,
-                                authentication: authentication
-                            };
-                            if (config.sessionId) {
-                                helloMsg.request_id = config.sessionId;
-                            }
-                            this.globalDomain = domainSession("global", this.connection, this.logger.subLogger("global-domain"), [
-                                "welcome",
-                                "token",
-                                "authentication-request"
-                            ]);
-                            sendOptions = { skipPeerId: true };
-                            if (this.initialLogin) {
-                                sendOptions.retryInterval = this.settings.reconnectInterval;
-                                sendOptions.maxRetries = this.settings.reconnectAttempts;
-                            }
-                            _d.label = 11;
-                        case 11:
-                            _d.trys.push([11, 19, 20, 21]);
-                            welcomeMsg = void 0;
-                            _d.label = 12;
-                        case 12:
-                            return [4, this.globalDomain.send(helloMsg, undefined, sendOptions)];
-                        case 13:
-                            msg = _d.sent();
-                            if (!(msg.type === "authentication-request")) return [3, 16];
-                            token = Buffer.from(msg.authentication.token, "base64");
-                            if (!(config.flowCallback && config.sessionId)) return [3, 15];
-                            _c = helloMsg.authentication;
-                            return [4, config.flowCallback(config.sessionId, token)];
-                        case 14:
-                            _c.token =
-                                (_d.sent())
-                                    .data
-                                    .toString("base64");
-                            _d.label = 15;
-                        case 15:
+                                    .toString('base64');
+                        return [3, 8];
+                    case 7: throw new Error('Invalid SSPI config');
+                    case 8: return [3, 10];
+                    case 9:
+                        if (config.token) {
+                            authentication.method = 'access-token';
+                            authentication.token = config.token;
+                        }
+                        else if (config.username) {
+                            authentication.method = 'secret';
+                            authentication.login = config.username;
+                            authentication.secret = config.password;
+                        }
+                        else {
+                            throw new Error('invalid auth message' + JSON.stringify(config));
+                        }
+                        _d.label = 10;
+                    case 10:
+                        helloMsg = {
+                            type: 'hello',
+                            identity: this.settings.identity,
+                            authentication: authentication
+                        };
+                        if (config.sessionId) {
                             helloMsg.request_id = config.sessionId;
-                            return [3, 12];
-                        case 16:
-                            if (msg.type === "welcome") {
-                                welcomeMsg = msg;
-                                return [3, 18];
-                            }
-                            else if (msg.type === "error") {
-                                throw new Error("Authentication failed: " + msg.reason);
-                            }
-                            else {
-                                throw new Error("Unexpected message type during authentication: " + msg.type);
-                            }
-                        case 17: return [3, 12];
-                        case 18:
-                            this.initialLogin = false;
-                            this.logger.info("login successful with peerId " + welcomeMsg.peer_id);
-                            this.connection.peerId = welcomeMsg.peer_id;
-                            this.connection.resolvedIdentity = welcomeMsg.resolved_identity;
-                            this.connection.availableDomains = welcomeMsg.available_domains;
-                            if (welcomeMsg.options) {
-                                this.connection.token = welcomeMsg.options.access_token;
-                                this.connection.info = welcomeMsg.options.info;
-                            }
-                            this.setLoggedIn(true);
-                            return [2, welcomeMsg.resolved_identity];
-                        case 19:
-                            err_1 = _d.sent();
-                            this.logger.error("error sending hello message - " + (err_1.message || err_1.msg || err_1.reason || err_1), err_1);
-                            throw err_1;
-                        case 20:
-                            if (config && config.flowCallback && config.sessionId) {
-                                config.flowCallback(config.sessionId, null);
-                            }
-                            return [7];
-                        case 21: return [2];
+                        }
+                        this.globalDomain = domainSession('global', this.connection, this.logger.subLogger('global-domain'), [
+                            'welcome',
+                            'token',
+                            'authentication-request'
+                        ]);
+                        sendOptions = { skipPeerId: true };
+                        if (this.initialLogin) {
+                            sendOptions.retryInterval = this.settings.reconnectInterval;
+                            sendOptions.maxRetries = this.settings.reconnectAttempts;
+                        }
+                        _d.label = 11;
+                    case 11:
+                        _d.trys.push([11, 19, 20, 21]);
+                        welcomeMsg = void 0;
+                        _d.label = 12;
+                    case 12:
+                        return [4, this.globalDomain.send(helloMsg, undefined, sendOptions)];
+                    case 13:
+                        msg = _d.sent();
+                        if (!(msg.type === 'authentication-request')) return [3, 16];
+                        token = Buffer.from(msg.authentication.token, 'base64');
+                        if (!(config.flowCallback && config.sessionId)) return [3, 15];
+                        _c = helloMsg.authentication;
+                        return [4, config.flowCallback(config.sessionId, token)];
+                    case 14:
+                        _c.token =
+                                (_d.sent())
+                                    .data
+                                    .toString('base64');
+                        _d.label = 15;
+                    case 15:
+                        helloMsg.request_id = config.sessionId;
+                        return [3, 12];
+                    case 16:
+                        if (msg.type === 'welcome') {
+                            welcomeMsg = msg;
+                            return [3, 18];
+                        }
+                        else if (msg.type === 'error') {
+                            throw new Error('Authentication failed: ' + msg.reason);
+                        }
+                        else {
+                            throw new Error('Unexpected message type during authentication: ' + msg.type);
+                        }
+                    case 17: return [3, 12];
+                    case 18:
+                        this.initialLogin = false;
+                        this.logger.info('login successful with peerId ' + welcomeMsg.peer_id);
+                        this.connection.peerId = welcomeMsg.peer_id;
+                        this.connection.resolvedIdentity = welcomeMsg.resolved_identity;
+                        this.connection.availableDomains = welcomeMsg.available_domains;
+                        if (welcomeMsg.options) {
+                            this.connection.token = welcomeMsg.options.access_token;
+                            this.connection.info = welcomeMsg.options.info;
+                        }
+                        this.setLoggedIn(true);
+                        return [2, welcomeMsg.resolved_identity];
+                    case 19:
+                        err_1 = _d.sent();
+                        this.logger.error('error sending hello message - ' + (err_1.message || err_1.msg || err_1.reason || err_1), err_1);
+                        throw err_1;
+                    case 20:
+                        if (config && config.flowCallback && config.sessionId) {
+                            config.flowCallback(config.sessionId, null);
+                        }
+                        return [7];
+                    case 21: return [2];
                     }
                 });
             });
@@ -3482,19 +3482,19 @@
                 var promises;
                 return __generator$1(this, function (_a) {
                     switch (_a.label) {
-                        case 0:
-                            this.logger.debug("logging out...");
-                            this.shouldTryLogin = false;
-                            if (this.pingTimer) {
-                                clearTimeout(this.pingTimer);
-                            }
-                            promises = this.sessions.map(function (session) {
-                                session.leave();
-                            });
-                            return [4, Promise.all(promises)];
-                        case 1:
-                            _a.sent();
-                            return [2];
+                    case 0:
+                        this.logger.debug('logging out...');
+                        this.shouldTryLogin = false;
+                        if (this.pingTimer) {
+                            clearTimeout(this.pingTimer);
+                        }
+                        promises = this.sessions.map(function (session) {
+                            session.leave();
+                        });
+                        return [4, Promise.all(promises)];
+                    case 1:
+                        _a.sent();
+                        return [2];
                     }
                 });
             });
@@ -3503,7 +3503,7 @@
             if (this._isLoggedIn) {
                 callback();
             }
-            return this.registry.add("onLoggedIn", callback);
+            return this.registry.add('onLoggedIn', callback);
         };
         GW3ProtocolImpl.prototype.domain = function (domainName, domainLogger, successMessages, errorMessages) {
             var session = this.sessions.filter(function (s) { return s.domain === domainName; })[0];
@@ -3523,21 +3523,21 @@
                 }
                 this.initialLoginAttempts--;
             }
-            this.logger.debug("disconnected - will try new login?" + this.shouldTryLogin);
+            this.logger.debug('disconnected - will try new login?' + this.shouldTryLogin);
             if (this.shouldTryLogin) {
                 if (!this.loginConfig) {
-                    throw new Error("no login info");
+                    throw new Error('no login info');
                 }
                 this.connection.login(this.loginConfig, true)
                     .catch(function () {
-                    setTimeout(_this.handleDisconnected, 1000);
-                });
+                        setTimeout(_this.handleDisconnected, 1000);
+                    });
             }
         };
         GW3ProtocolImpl.prototype.setLoggedIn = function (value) {
             this._isLoggedIn = value;
             if (this._isLoggedIn) {
-                this.registry.execute("onLoggedIn");
+                this.registry.execute('onLoggedIn');
             }
         };
         GW3ProtocolImpl.prototype.ping = function () {
@@ -3546,7 +3546,7 @@
                 return;
             }
             if (this._isLoggedIn) {
-                this.connection.send({ type: "ping" });
+                this.connection.send({ type: 'ping' });
             }
             this.pingTimer = setTimeout(function () {
                 _this.ping();
@@ -3554,15 +3554,15 @@
         };
         GW3ProtocolImpl.prototype.authToken = function () {
             var createTokenReq = {
-                type: "create-token"
+                type: 'create-token'
             };
             if (!this.globalDomain) {
-                return Promise.reject(new Error("no global domain session"));
+                return Promise.reject(new Error('no global domain session'));
             }
             return this.globalDomain.send(createTokenReq)
                 .then(function (res) {
-                return res.token;
-            });
+                    return res.token;
+                });
         };
         GW3ProtocolImpl.prototype.getNewGWToken = function () {
             if (typeof window !== undefined) {
@@ -3571,7 +3571,7 @@
                     return glue42gd.getGWToken();
                 }
             }
-            return Promise.reject(new Error("not running in GD"));
+            return Promise.reject(new Error('not running in GD'));
         };
         return GW3ProtocolImpl;
     }());
@@ -3602,7 +3602,7 @@
                     refCount += 1;
                     this_1.subsRefCount[type] = refCount;
                     if (refCount > 1) {
-                        return "continue";
+                        return 'continue';
                     }
                     var sub = connection.on(type, function (msg) { return _this.processMessage(type, msg); });
                     this_1.subs[type] = sub;
@@ -3663,20 +3663,20 @@
             settings.reconnectAttempts = settings.reconnectAttempts || 10;
             settings.reconnectInterval = settings.reconnectInterval || 1000;
             if (settings.inproc) {
-                this.transport = new InProcTransport(settings.inproc, logger.subLogger("inMemory"));
+                this.transport = new InProcTransport(settings.inproc, logger.subLogger('inMemory'));
             }
             else if (settings.sharedWorker) {
-                this.transport = new SharedWorkerTransport(settings.sharedWorker, logger.subLogger("shared-worker"));
+                this.transport = new SharedWorkerTransport(settings.sharedWorker, logger.subLogger('shared-worker'));
             }
             else if (settings.ws !== undefined) {
-                this.transport = new WS(settings, logger.subLogger("ws"));
+                this.transport = new WS(settings, logger.subLogger('ws'));
             }
             else {
-                throw new Error("No connection information specified");
+                throw new Error('No connection information specified');
             }
-            this.isTrace = logger.canPublish("trace");
-            logger.info("starting with " + this.transport.name() + " transport");
-            this.protocol = new GW3ProtocolImpl(this, settings, logger.subLogger("protocol"));
+            this.isTrace = logger.canPublish('trace');
+            logger.info('starting with ' + this.transport.name() + ' transport');
+            this.protocol = new GW3ProtocolImpl(this, settings, logger.subLogger('protocol'));
             this.transport.onConnectedChanged(this.handleConnectionChanged.bind(this));
             this.transport.onMessage(this.handleTransportMessage.bind(this));
             if (settings.replaySpecs && settings.replaySpecs.length) {
@@ -3684,7 +3684,7 @@
                 this.replayer.init(this);
             }
         }
-        Object.defineProperty(Connection.prototype, "protocolVersion", {
+        Object.defineProperty(Connection.prototype, 'protocolVersion', {
             get: function () {
                 var _a;
                 return (_a = this.protocol) === null || _a === void 0 ? void 0 : _a.protocolVersion;
@@ -3697,14 +3697,14 @@
                 this.transport.isObjectBasedTransport) {
                 var msg = this.protocol.createObjectMessage(message);
                 if (this.isTrace) {
-                    this.logger.trace(">> " + JSON.stringify(msg));
+                    this.logger.trace('>> ' + JSON.stringify(msg));
                 }
                 return this.transport.sendObject(msg, options);
             }
             else {
                 var strMessage = this.protocol.createStringMessage(message);
                 if (this.isTrace) {
-                    this.logger.trace(">> " + strMessage);
+                    this.logger.trace('>> ' + strMessage);
                 }
                 return this.transport.send(strMessage, options);
             }
@@ -3724,7 +3724,7 @@
         Connection.prototype.off = function (info) {
             delete this.messageHandlers[info.type.toLowerCase()][info.id];
         };
-        Object.defineProperty(Connection.prototype, "isConnected", {
+        Object.defineProperty(Connection.prototype, 'isConnected', {
             get: function () {
                 return this.protocol.isLoggedIn;
             },
@@ -3734,22 +3734,22 @@
         Connection.prototype.connected = function (callback) {
             var _this = this;
             return this.protocol.loggedIn(function () {
-                callback(_this.settings.ws || _this.settings.sharedWorker || "");
+                callback(_this.settings.ws || _this.settings.sharedWorker || '');
             });
         };
         Connection.prototype.disconnected = function (callback) {
-            return this.registry.add("disconnected", callback);
+            return this.registry.add('disconnected', callback);
         };
         Connection.prototype.login = function (authRequest, reconnect) {
             return __awaiter$1(this, void 0, void 0, function () {
                 var identity;
                 return __generator$1(this, function (_a) {
                     switch (_a.label) {
-                        case 0: return [4, this.transport.open()];
-                        case 1:
-                            _a.sent();
-                            identity = this.protocol.login(authRequest, reconnect);
-                            return [2, identity];
+                    case 0: return [4, this.transport.open()];
+                    case 1:
+                        _a.sent();
+                        identity = this.protocol.login(authRequest, reconnect);
+                        return [2, identity];
                     }
                 });
             });
@@ -3758,13 +3758,13 @@
             return __awaiter$1(this, void 0, void 0, function () {
                 return __generator$1(this, function (_a) {
                     switch (_a.label) {
-                        case 0: return [4, this.protocol.logout()];
-                        case 1:
-                            _a.sent();
-                            return [4, this.transport.close()];
-                        case 2:
-                            _a.sent();
-                            return [2];
+                    case 0: return [4, this.protocol.logout()];
+                    case 1:
+                        _a.sent();
+                        return [4, this.transport.close()];
+                    case 2:
+                        _a.sent();
+                        return [2];
                     }
                 });
             });
@@ -3773,7 +3773,7 @@
             return this.protocol.loggedIn(callback);
         };
         Connection.prototype.domain = function (domain, successMessages, errorMessages) {
-            return this.protocol.domain(domain, this.logger.subLogger("domain=" + domain), successMessages, errorMessages);
+            return this.protocol.domain(domain, this.logger.subLogger('domain=' + domain), successMessages, errorMessages);
         };
         Connection.prototype.authToken = function () {
             return this.protocol.authToken();
@@ -3792,7 +3792,7 @@
                             handler(message);
                         }
                         catch (error) {
-                            _this.logger.error("Message handler failed with " + error.stack, error);
+                            _this.logger.error('Message handler failed with ' + error.stack, error);
                         }
                     }
                 });
@@ -3804,29 +3804,29 @@
             }
             this._connected = connected;
             if (connected) {
-                this.registry.execute("connected");
+                this.registry.execute('connected');
             }
             else {
-                this.registry.execute("disconnected");
+                this.registry.execute('disconnected');
             }
         };
         Connection.prototype.handleTransportMessage = function (msg) {
             var msgObj;
-            if (typeof msg === "string") {
+            if (typeof msg === 'string') {
                 msgObj = this.protocol.processStringMessage(msg);
             }
             else {
                 msgObj = this.protocol.processObjectMessage(msg);
             }
             if (this.isTrace) {
-                this.logger.trace("<< " + JSON.stringify(msgObj));
+                this.logger.trace('<< ' + JSON.stringify(msgObj));
             }
             this.distributeMessage(msgObj.msg, msgObj.msgType);
         };
         return Connection;
     }());
 
-    var order = ["trace", "debug", "info", "warn", "error", "off"];
+    var order = ['trace', 'debug', 'info', 'warn', 'error', 'off'];
     var Logger = (function () {
         function Logger(name, parent, logFn) {
             this.name = name;
@@ -3836,12 +3836,12 @@
             this.customLogFn = false;
             this.name = name;
             if (parent) {
-                this.path = parent.path + "." + name;
+                this.path = parent.path + '.' + name;
             }
             else {
                 this.path = name;
             }
-            this.loggerFullName = "[" + this.path + "]";
+            this.loggerFullName = '[' + this.path + ']';
             this.includeTimeAndLevel = !logFn;
             if (logFn) {
                 this.logFn = logFn;
@@ -3857,7 +3857,7 @@
             }
             Object.keys(this).forEach(function (key) {
                 if (key === name) {
-                    throw new Error("This sub logger name is not allowed.");
+                    throw new Error('This sub logger name is not allowed.');
                 }
             });
             var sub = new Logger(name, this, this.customLogFn ? this.logFn : undefined);
@@ -3879,105 +3879,105 @@
             return this._consoleLevel || ((_a = this.parent) === null || _a === void 0 ? void 0 : _a.consoleLevel());
         };
         Logger.prototype.log = function (message, level, error) {
-            this.publishMessage(level || "info", message, error);
+            this.publishMessage(level || 'info', message, error);
         };
         Logger.prototype.trace = function (message) {
-            this.log(message, "trace");
+            this.log(message, 'trace');
         };
         Logger.prototype.debug = function (message) {
-            this.log(message, "debug");
+            this.log(message, 'debug');
         };
         Logger.prototype.info = function (message) {
-            this.log(message, "info");
+            this.log(message, 'info');
         };
         Logger.prototype.warn = function (message) {
-            this.log(message, "warn");
+            this.log(message, 'warn');
         };
         Logger.prototype.error = function (message, err) {
-            this.log(message, "error");
+            this.log(message, 'error');
         };
         Logger.prototype.canPublish = function (level, compareWith) {
             var levelIdx = order.indexOf(level);
-            var restrictionIdx = order.indexOf(compareWith || this.consoleLevel() || "trace");
+            var restrictionIdx = order.indexOf(compareWith || this.consoleLevel() || 'trace');
             return levelIdx >= restrictionIdx;
         };
         Logger.prototype.publishMessage = function (level, message, error) {
             var _a, _b;
             var loggerName = this.loggerFullName;
-            if (level === "error" && !error) {
+            if (level === 'error' && !error) {
                 var e = new Error();
                 if (e.stack) {
                     message =
                         message +
-                            "\n" +
+                            '\n' +
                             e.stack
-                                .split("\n")
+                                .split('\n')
                                 .slice(3)
-                                .join("\n");
+                                .join('\n');
                 }
             }
             if (this.canPublish(level, this.publishLevel())) {
                 if (((_a = Logger.Interop) === null || _a === void 0 ? void 0 : _a.methods({ name: Logger.InteropMethodName }).length) > 0) {
                     (_b = Logger.Interop) === null || _b === void 0 ? void 0 : _b.invoke(Logger.InteropMethodName, {
-                        msg: "" + message,
+                        msg: '' + message,
                         logger: loggerName,
                         level: level
                     });
                 }
             }
             if (this.canPublish(level)) {
-                var prefix = "";
+                var prefix = '';
                 if (this.includeTimeAndLevel) {
                     var date = new Date();
-                    var time = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds() + ":" + date.getMilliseconds();
-                    prefix = "[" + time + "] [" + level + "] ";
+                    var time = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds() + ':' + date.getMilliseconds();
+                    prefix = '[' + time + '] [' + level + '] ';
                 }
-                var toPrint = "" + prefix + loggerName + ": " + message;
+                var toPrint = '' + prefix + loggerName + ': ' + message;
                 switch (level) {
-                    case "trace":
+                case 'trace':
+                    this.logFn.debug(toPrint);
+                    break;
+                case 'debug':
+                    if (this.logFn.debug) {
                         this.logFn.debug(toPrint);
-                        break;
-                    case "debug":
-                        if (this.logFn.debug) {
-                            this.logFn.debug(toPrint);
-                        }
-                        else {
-                            this.logFn.log(toPrint);
-                        }
-                        break;
-                    case "info":
-                        this.logFn.info(toPrint);
-                        break;
-                    case "warn":
-                        this.logFn.warn(toPrint);
-                        break;
-                    case "error":
-                        this.logFn.error(toPrint, error);
-                        break;
+                    }
+                    else {
+                        this.logFn.log(toPrint);
+                    }
+                    break;
+                case 'info':
+                    this.logFn.info(toPrint);
+                    break;
+                case 'warn':
+                    this.logFn.warn(toPrint);
+                    break;
+                case 'error':
+                    this.logFn.error(toPrint, error);
+                    break;
                 }
             }
         };
-        Logger.InteropMethodName = "T42.AppLogger.Log";
+        Logger.InteropMethodName = 'T42.AppLogger.Log';
         return Logger;
     }());
 
-    var GW_MESSAGE_CREATE_CONTEXT = "create-context";
-    var GW_MESSAGE_ACTIVITY_CREATED = "created";
-    var GW_MESSAGE_ACTIVITY_DESTROYED = "destroyed";
-    var GW_MESSAGE_CONTEXT_CREATED = "context-created";
-    var GW_MESSAGE_CONTEXT_ADDED = "context-added";
-    var GW_MESSAGE_SUBSCRIBE_CONTEXT = "subscribe-context";
-    var GW_MESSAGE_SUBSCRIBED_CONTEXT = "subscribed-context";
-    var GW_MESSAGE_UNSUBSCRIBE_CONTEXT = "unsubscribe-context";
-    var GW_MESSAGE_DESTROY_CONTEXT = "destroy-context";
-    var GW_MESSAGE_CONTEXT_DESTROYED = "context-destroyed";
-    var GW_MESSAGE_UPDATE_CONTEXT = "update-context";
-    var GW_MESSAGE_CONTEXT_UPDATED = "context-updated";
-    var GW_MESSAGE_JOINED_ACTIVITY = "joined";
+    var GW_MESSAGE_CREATE_CONTEXT = 'create-context';
+    var GW_MESSAGE_ACTIVITY_CREATED = 'created';
+    var GW_MESSAGE_ACTIVITY_DESTROYED = 'destroyed';
+    var GW_MESSAGE_CONTEXT_CREATED = 'context-created';
+    var GW_MESSAGE_CONTEXT_ADDED = 'context-added';
+    var GW_MESSAGE_SUBSCRIBE_CONTEXT = 'subscribe-context';
+    var GW_MESSAGE_SUBSCRIBED_CONTEXT = 'subscribed-context';
+    var GW_MESSAGE_UNSUBSCRIBE_CONTEXT = 'unsubscribe-context';
+    var GW_MESSAGE_DESTROY_CONTEXT = 'destroy-context';
+    var GW_MESSAGE_CONTEXT_DESTROYED = 'context-destroyed';
+    var GW_MESSAGE_UPDATE_CONTEXT = 'update-context';
+    var GW_MESSAGE_CONTEXT_UPDATED = 'context-updated';
+    var GW_MESSAGE_JOINED_ACTIVITY = 'joined';
 
     var ContextMessageReplaySpec = {
         get name() {
-            return "context";
+            return 'context';
         },
         get types() {
             return [
@@ -3998,7 +3998,7 @@
         }
     };
 
-    var version$2 = "5.0.0-beta.12";
+    var version$2 = '5.0.0-beta.12';
 
     function prepareConfig (configuration, ext, glue42gd) {
         var _a, _b, _c, _d;
@@ -4019,7 +4019,7 @@
             var protocolVersion = (_b = (_a = gwConfig) === null || _a === void 0 ? void 0 : _a.protocolVersion, (_b !== null && _b !== void 0 ? _b : 3));
             var reconnectInterval = (_c = gwConfig) === null || _c === void 0 ? void 0 : _c.reconnectInterval;
             var reconnectAttempts = (_d = gwConfig) === null || _d === void 0 ? void 0 : _d.reconnectAttempts;
-            var defaultWs = "ws://localhost:8385";
+            var defaultWs = 'ws://localhost:8385';
             var ws = (_e = gwConfig) === null || _e === void 0 ? void 0 : _e.ws;
             var sharedWorker = (_f = gwConfig) === null || _f === void 0 ? void 0 : _f.sharedWorker;
             var inproc = (_g = gwConfig) === null || _g === void 0 ? void 0 : _g.inproc;
@@ -4039,14 +4039,14 @@
             var region;
             var appName = getApplication();
             var uniqueAppName = appName;
-            if (typeof glue42gd !== "undefined") {
+            if (typeof glue42gd !== 'undefined') {
                 windowId = glue42gd.windowId;
                 pid = glue42gd.pid;
                 if (glue42gd.env) {
                     environment = glue42gd.env.env;
                     region = glue42gd.env.region;
                 }
-                uniqueAppName = (_h = glue42gd.application, (_h !== null && _h !== void 0 ? _h : "glue-app"));
+                uniqueAppName = (_h = glue42gd.application, (_h !== null && _h !== void 0 ? _h : 'glue-app'));
                 instanceId = glue42gd.appInstanceId;
             }
             else if (Utils.isNode()) {
@@ -4094,16 +4094,16 @@
                 if (nodeStartingContext) {
                     return nodeStartingContext.applicationConfig.name;
                 }
-                return "NodeJS" + uid;
+                return 'NodeJS' + uid;
             }
-            if (typeof window !== "undefined" && typeof document !== "undefined") {
-                return document.title + (" (" + uid + ")");
+            if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+                return document.title + (' (' + uid + ')');
             }
             return uid;
         }
         function getAuth() {
             var _a, _b;
-            if (typeof configuration.auth === "string") {
+            if (typeof configuration.auth === 'string') {
                 return {
                     token: configuration.auth
                 };
@@ -4118,18 +4118,18 @@
             }
             if (((_a = configuration.gateway) === null || _a === void 0 ? void 0 : _a.inproc) || ((_b = configuration.gateway) === null || _b === void 0 ? void 0 : _b.sharedWorker)) {
                 return {
-                    username: "glue42", password: "glue42"
+                    username: 'glue42', password: 'glue42'
                 };
             }
         }
         function getLogger() {
             var _a, _b;
             var config = configuration.logger;
-            var defaultLevel = "error";
+            var defaultLevel = 'error';
             if (!config) {
                 config = defaultLevel;
             }
-            if (typeof config === "string") {
+            if (typeof config === 'string') {
                 return { console: config, publish: defaultLevel };
             }
             return {
@@ -4263,12 +4263,12 @@
             what[key] = right;
             return what;
         }
-        if (typeof left === "string" ||
-            typeof left === "number" ||
-            typeof left === "boolean" ||
-            typeof right === "string" ||
-            typeof right === "number" ||
-            typeof right === "boolean" ||
+        if (typeof left === 'string' ||
+            typeof left === 'number' ||
+            typeof left === 'boolean' ||
+            typeof right === 'string' ||
+            typeof right === 'number' ||
+            typeof right === 'boolean' ||
             Array.isArray(left) ||
             Array.isArray(right)) {
             what[key] = right;
@@ -4297,7 +4297,7 @@
             if (x[p] === y[p]) {
                 continue;
             }
-            if (typeof (x[p]) !== "object") {
+            if (typeof (x[p]) !== 'object') {
                 return false;
             }
             if (!deepEqual(x[p], y[p])) {
@@ -4323,7 +4323,7 @@
             this._contextIdToName = {};
             this._connection = config.connection;
             this._logger = config.logger;
-            this._gw3Session = this._connection.domain("global", [
+            this._gw3Session = this._connection.domain('global', [
                 GW_MESSAGE_CONTEXT_CREATED,
                 GW_MESSAGE_SUBSCRIBED_CONTEXT,
                 GW_MESSAGE_CONTEXT_DESTROYED,
@@ -4369,30 +4369,30 @@
             var _this = this;
             return this._gw3Session
                 .send({
-                type: GW_MESSAGE_CREATE_CONTEXT,
-                domain: "global",
-                name: name,
-                data: data,
-                lifetime: "retained",
-            })
+                    type: GW_MESSAGE_CREATE_CONTEXT,
+                    domain: 'global',
+                    name: name,
+                    data: data,
+                    lifetime: 'retained',
+                })
                 .then(function (createContextMsg) {
-                _this._contextNameToId[name] = createContextMsg.context_id;
-                if (!_this._contextIdToName[createContextMsg.context_id]) {
-                    _this._contextIdToName[createContextMsg.context_id] = name;
-                    var contextData = _this._contextNameToData[name] || new GW3ContextData(createContextMsg.context_id, name, true, undefined);
-                    contextData.isAnnounced = true;
-                    contextData.name = name;
-                    contextData.contextId = createContextMsg.context_id;
-                    _this._contextNameToData[name] = contextData;
-                    contextData.context = createContextMsg.data;
-                    contextData.sentExplicitSubscription = true;
-                    if (contextData.context) {
-                        _this.invokeUpdateCallbacks(contextData, contextData.context, undefined);
+                    _this._contextNameToId[name] = createContextMsg.context_id;
+                    if (!_this._contextIdToName[createContextMsg.context_id]) {
+                        _this._contextIdToName[createContextMsg.context_id] = name;
+                        var contextData = _this._contextNameToData[name] || new GW3ContextData(createContextMsg.context_id, name, true, undefined);
+                        contextData.isAnnounced = true;
+                        contextData.name = name;
+                        contextData.contextId = createContextMsg.context_id;
+                        _this._contextNameToData[name] = contextData;
+                        contextData.context = createContextMsg.data;
+                        contextData.sentExplicitSubscription = true;
+                        if (contextData.context) {
+                            _this.invokeUpdateCallbacks(contextData, contextData.context, undefined);
+                        }
+                        return _this.update(name, data).then(function () { return createContextMsg.context_id; });
                     }
-                    return _this.update(name, data).then(function () { return createContextMsg.context_id; });
-                }
-                return createContextMsg.context_id;
-            });
+                    return createContextMsg.context_id;
+                });
         };
         GW3Bridge.prototype.all = function () {
             var _this = this;
@@ -4405,36 +4405,36 @@
                 var _this = this;
                 return __generator$1(this, function (_a) {
                     switch (_a.label) {
-                        case 0:
-                            contextData = this._contextNameToData[name];
-                            if (!contextData || !contextData.isAnnounced) {
-                                return [2, this.createContext(name, delta)];
-                            }
-                            currentContext = contextData.context;
-                            if (!!contextData.hasCallbacks()) return [3, 2];
-                            return [4, this.get(contextData.name, false)];
-                        case 1:
-                            currentContext = _a.sent();
-                            _a.label = 2;
-                        case 2:
-                            calculatedDelta = this.calculateContextDelta(currentContext, delta);
-                            if (!Object.keys(calculatedDelta.added).length
+                    case 0:
+                        contextData = this._contextNameToData[name];
+                        if (!contextData || !contextData.isAnnounced) {
+                            return [2, this.createContext(name, delta)];
+                        }
+                        currentContext = contextData.context;
+                        if (contextData.hasCallbacks()) return [3, 2];
+                        return [4, this.get(contextData.name, false)];
+                    case 1:
+                        currentContext = _a.sent();
+                        _a.label = 2;
+                    case 2:
+                        calculatedDelta = this.calculateContextDelta(currentContext, delta);
+                        if (!Object.keys(calculatedDelta.added).length
                                 && !Object.keys(calculatedDelta.updated).length
                                 && !calculatedDelta.removed.length) {
-                                return [2, Promise.resolve()];
-                            }
-                            return [2, this._gw3Session
-                                    .send({
-                                    type: GW_MESSAGE_UPDATE_CONTEXT,
-                                    domain: "global",
-                                    context_id: contextData.contextId,
-                                    delta: calculatedDelta,
-                                }, {}, { skipPeerId: false })
-                                    .then(function (gwResponse) {
-                                    _this.handleUpdated(contextData, calculatedDelta, {
-                                        updaterId: gwResponse.peer_id
-                                    });
-                                })];
+                            return [2, Promise.resolve()];
+                        }
+                        return [2, this._gw3Session
+                            .send({
+                                type: GW_MESSAGE_UPDATE_CONTEXT,
+                                domain: 'global',
+                                context_id: contextData.contextId,
+                                delta: calculatedDelta,
+                            }, {}, { skipPeerId: false })
+                            .then(function (gwResponse) {
+                                _this.handleUpdated(contextData, calculatedDelta, {
+                                    updaterId: gwResponse.peer_id
+                                });
+                            })];
                     }
                 });
             });
@@ -4447,14 +4447,14 @@
             }
             return this._gw3Session
                 .send({
-                type: GW_MESSAGE_UPDATE_CONTEXT,
-                domain: "global",
-                context_id: contextData.contextId,
-                delta: { reset: data },
-            }, {}, { skipPeerId: false })
+                    type: GW_MESSAGE_UPDATE_CONTEXT,
+                    domain: 'global',
+                    context_id: contextData.contextId,
+                    delta: { reset: data },
+                }, {}, { skipPeerId: false })
                 .then(function (gwResponse) {
-                _this.handleUpdated(contextData, { reset: data, added: {}, removed: [], updated: {} }, { updaterId: gwResponse.peer_id });
-            });
+                    _this.handleUpdated(contextData, { reset: data, added: {}, removed: [], updated: {} }, { updaterId: gwResponse.peer_id });
+                });
         };
         GW3Bridge.prototype.get = function (name, resolveImmediately) {
             var _this = this;
@@ -4567,10 +4567,10 @@
             }
             var name = this._contextIdToName[contextCreatedMsg.context_id];
             if (!name) {
-                throw new Error("Received created event for context with unknown name: " + contextCreatedMsg.context_id);
+                throw new Error('Received created event for context with unknown name: ' + contextCreatedMsg.context_id);
             }
             if (!this._contextNameToId[name]) {
-                throw new Error("Received created event for context with unknown id: " + contextCreatedMsg.context_id);
+                throw new Error('Received created event for context with unknown id: ' + contextCreatedMsg.context_id);
             }
             var contextData = this._contextNameToData[name];
             if (contextData) {
@@ -4579,7 +4579,7 @@
                 }
                 else {
                     if (!contextData.hasCallbacks()) {
-                        throw new Error("Assertion failure: contextData.hasCallbacks()");
+                        throw new Error('Assertion failure: contextData.hasCallbacks()');
                     }
                     contextData.isAnnounced = true;
                     contextData.contextId = contextCreatedMsg.context_id;
@@ -4635,7 +4635,7 @@
                         this._contextNameToId[contextUpdatedMsg.name] = contextId;
                     }
                     else {
-                        this._logger.error("Received 'update' for unknown context: " + contextId);
+                        this._logger.error('Received \'update\' for unknown context: ' + contextId);
                     }
                     return;
                 }
@@ -4651,7 +4651,7 @@
                 contextData.context = applyContextDelta(contextData.context, contextUpdatedMsg.delta);
             }
             else {
-                throw new Error("Unrecognized context update message " + updatedMessageType);
+                throw new Error('Unrecognized context update message ' + updatedMessageType);
             }
             if (justSeen ||
                 !deepEqual(contextData.context, oldContext) ||
@@ -4668,7 +4668,7 @@
                         updateCallback(deepClone(data), Object.assign({}, delta.added || {}, delta.updated || {}, delta.reset || {}), delta.removed, parseInt(updateCallbackIndex, 10), extraData);
                     }
                     catch (err) {
-                        this._logger.debug("callback error: " + JSON.stringify(err));
+                        this._logger.debug('callback error: ' + JSON.stringify(err));
                     }
                 }
             }
@@ -4692,7 +4692,7 @@
                 name = destroyedMsg.activity_id;
                 contextId = this._contextNameToId[name];
                 if (!contextId) {
-                    this._logger.error("Received 'destroyed' for unknown activity: " + destroyedMsg.activity_id);
+                    this._logger.error('Received \'destroyed\' for unknown activity: ' + destroyedMsg.activity_id);
                     return;
                 }
             }
@@ -4700,7 +4700,7 @@
                 contextId = destroyedMsg.context_id;
                 name = this._contextIdToName[contextId];
                 if (!name) {
-                    this._logger.error("Received 'destroyed' for unknown context: " + destroyedMsg.context_id);
+                    this._logger.error('Received \'destroyed\' for unknown context: ' + destroyedMsg.context_id);
                     return;
                 }
             }
@@ -4709,7 +4709,7 @@
             var contextData = this._contextNameToData[name];
             delete this._contextNameToData[name];
             if (!contextData || !contextData.isAnnounced) {
-                this._logger.error("Received 'destroyed' for unknown context: " + contextId);
+                this._logger.error('Received \'destroyed\' for unknown context: ' + contextId);
                 return;
             }
         };
@@ -4717,19 +4717,19 @@
             contextData.sentExplicitSubscription = true;
             return this._gw3Session
                 .send({
-                type: GW_MESSAGE_SUBSCRIBE_CONTEXT,
-                domain: "global",
-                context_id: contextData.contextId,
-            }).then(function (_) { return undefined; });
+                    type: GW_MESSAGE_SUBSCRIBE_CONTEXT,
+                    domain: 'global',
+                    context_id: contextData.contextId,
+                }).then(function (_) { return undefined; });
         };
         GW3Bridge.prototype.sendUnsubscribe = function (contextData) {
             contextData.sentExplicitSubscription = false;
             return this._gw3Session
                 .send({
-                type: GW_MESSAGE_UNSUBSCRIBE_CONTEXT,
-                domain: "global",
-                context_id: contextData.contextId,
-            }).then(function (_) { return undefined; });
+                    type: GW_MESSAGE_UNSUBSCRIBE_CONTEXT,
+                    domain: 'global',
+                    context_id: contextData.contextId,
+                }).then(function (_) { return undefined; });
         };
         GW3Bridge.prototype.calculateContextDelta = function (from, to) {
             var delta = { added: {}, updated: {}, removed: [], reset: undefined };
@@ -4780,10 +4780,10 @@
             return this._bridge
                 .subscribe(name, function (data, delta, removed, key, extraData) { return callback(data, delta, removed, function () { return _this._bridge.unsubscribe(key); }, extraData); })
                 .then(function (key) {
-                return function () {
-                    _this._bridge.unsubscribe(key);
-                };
-            });
+                    return function () {
+                        _this._bridge.unsubscribe(key);
+                    };
+                });
         };
         ContextsModule.prototype.get = function (name, resolveImmediately) {
             if (resolveImmediately === undefined) {
@@ -4795,22 +4795,22 @@
             return Promise.resolve(this);
         };
         ContextsModule.prototype.checkName = function (name) {
-            if (typeof name !== "string" ||
-                name === "") {
-                throw new Error("'name' must be non-empty string, got '" + name + "'");
+            if (typeof name !== 'string' ||
+                name === '') {
+                throw new Error('\'name\' must be non-empty string, got \'' + name + '\'');
             }
         };
         return ContextsModule;
     }());
 
     function promisify (promise, successCallback, errorCallback) {
-        if (typeof successCallback !== "function" && typeof errorCallback !== "function") {
+        if (typeof successCallback !== 'function' && typeof errorCallback !== 'function') {
             return promise;
         }
-        if (typeof successCallback !== "function") {
+        if (typeof successCallback !== 'function') {
             successCallback = function () { };
         }
-        else if (typeof errorCallback !== "function") {
+        else if (typeof errorCallback !== 'function') {
             errorCallback = function () { };
         }
         return promise.then(successCallback, errorCallback);
@@ -4823,8 +4823,8 @@
 
     var InvokeStatus;
     (function (InvokeStatus) {
-        InvokeStatus[InvokeStatus["Success"] = 0] = "Success";
-        InvokeStatus[InvokeStatus["Error"] = 1] = "Error";
+        InvokeStatus[InvokeStatus['Success'] = 0] = 'Success';
+        InvokeStatus[InvokeStatus['Error'] = 1] = 'Error';
     })(InvokeStatus || (InvokeStatus = {}));
     var Client = (function () {
         function Client(protocol, repo, instance, configuration) {
@@ -4848,18 +4848,18 @@
                     reject(err);
                 };
                 if (!method) {
-                    reject("Method definition is required. Please, provide either a unique string for a method name or a \u201CmethodDefinition\u201D object with a required \u201Cname\u201D property.");
+                    reject('Method definition is required. Please, provide either a unique string for a method name or a \u201CmethodDefinition\u201D object with a required \u201Cname\u201D property.');
                     return;
                 }
                 var methodDef;
-                if (typeof method === "string") {
+                if (typeof method === 'string') {
                     methodDef = { name: method };
                 }
                 else {
                     methodDef = method;
                 }
                 if (!methodDef.name) {
-                    reject("Method definition is required. Please, provide either a unique string for a method name or a \u201CmethodDefinition\u201D object with a required \u201Cname\u201D property.");
+                    reject('Method definition is required. Please, provide either a unique string for a method name or a \u201CmethodDefinition\u201D object with a required \u201Cname\u201D property.');
                     return;
                 }
                 if (options === undefined) {
@@ -4867,10 +4867,10 @@
                 }
                 var target = options.target;
                 if (target === undefined) {
-                    target = "best";
+                    target = 'best';
                 }
-                if (typeof target === "string" && target !== "all" && target !== "best") {
-                    reject(new Error("\"" + target + "\" is not a valid target. Valid targets are \"all\", \"best\", or an instance."));
+                if (typeof target === 'string' && target !== 'all' && target !== 'best') {
+                    reject(new Error('"' + target + '" is not a valid target. Valid targets are "all", "best", or an instance.'));
                     return;
                 }
                 if (options.methodResponseTimeout === undefined) {
@@ -4903,7 +4903,7 @@
                             callProtocolSubscribe(currentServers, streamInfo, successProxy, errorProxy);
                         }
                         else if (delayTillNow >= options.waitTimeoutMs) {
-                            var def = typeof method === "string" ? { name: method } : method;
+                            var def = typeof method === 'string' ? { name: method } : method;
                             callProtocolSubscribe(currentServers, def, successProxy, errorProxy);
                         }
                         else {
@@ -4964,89 +4964,89 @@
                         var _this = this;
                         return __generator$1(this, function (_a) {
                             switch (_a.label) {
-                                case 0:
-                                    if (typeof methodFilter === "string") {
-                                        methodDefinition = { name: methodFilter };
-                                    }
-                                    else {
-                                        methodDefinition = __assign$1({}, methodFilter);
-                                    }
-                                    if (!methodDefinition.name) {
-                                        return [2, Promise.reject("Method definition is required. Please, provide either a unique string for a method name or a \u201CmethodDefinition\u201D object with a required \u201Cname\u201D property.")];
-                                    }
-                                    if (!argumentObj) {
-                                        argumentObj = {};
-                                    }
-                                    if (!target) {
-                                        target = "best";
-                                    }
-                                    if (typeof target === "string" && target !== "all" && target !== "best" && target !== "skipMine") {
-                                        return [2, Promise.reject(new Error("\"" + target + "\" is not a valid target. Valid targets are \"all\" and \"best\"."))];
-                                    }
-                                    if (!additionalOptions) {
-                                        additionalOptions = {};
-                                    }
+                            case 0:
+                                if (typeof methodFilter === 'string') {
+                                    methodDefinition = { name: methodFilter };
+                                }
+                                else {
+                                    methodDefinition = __assign$1({}, methodFilter);
+                                }
+                                if (!methodDefinition.name) {
+                                    return [2, Promise.reject('Method definition is required. Please, provide either a unique string for a method name or a \u201CmethodDefinition\u201D object with a required \u201Cname\u201D property.')];
+                                }
+                                if (!argumentObj) {
+                                    argumentObj = {};
+                                }
+                                if (!target) {
+                                    target = 'best';
+                                }
+                                if (typeof target === 'string' && target !== 'all' && target !== 'best' && target !== 'skipMine') {
+                                    return [2, Promise.reject(new Error('"' + target + '" is not a valid target. Valid targets are "all" and "best".'))];
+                                }
+                                if (!additionalOptions) {
+                                    additionalOptions = {};
+                                }
+                                if (additionalOptions.methodResponseTimeoutMs === undefined) {
+                                    additionalOptions.methodResponseTimeoutMs = additionalOptions.method_response_timeout;
                                     if (additionalOptions.methodResponseTimeoutMs === undefined) {
-                                        additionalOptions.methodResponseTimeoutMs = additionalOptions.method_response_timeout;
-                                        if (additionalOptions.methodResponseTimeoutMs === undefined) {
-                                            additionalOptions.methodResponseTimeoutMs = this.configuration.methodResponseTimeout;
-                                        }
+                                        additionalOptions.methodResponseTimeoutMs = this.configuration.methodResponseTimeout;
                                     }
+                                }
+                                if (additionalOptions.waitTimeoutMs === undefined) {
+                                    additionalOptions.waitTimeoutMs = additionalOptions.wait_for_method_timeout;
                                     if (additionalOptions.waitTimeoutMs === undefined) {
-                                        additionalOptions.waitTimeoutMs = additionalOptions.wait_for_method_timeout;
-                                        if (additionalOptions.waitTimeoutMs === undefined) {
-                                            additionalOptions.waitTimeoutMs = this.configuration.waitTimeoutMs;
-                                        }
+                                        additionalOptions.waitTimeoutMs = this.configuration.waitTimeoutMs;
                                     }
-                                    if (additionalOptions.waitTimeoutMs !== undefined && typeof additionalOptions.waitTimeoutMs !== "number") {
-                                        return [2, Promise.reject(new Error("\"" + additionalOptions.waitTimeoutMs + "\" is not a valid number for \"waitTimeoutMs\" "))];
-                                    }
-                                    if (typeof argumentObj !== "object") {
-                                        return [2, Promise.reject(new Error("The method arguments must be an object. method: " + methodDefinition.name))];
-                                    }
-                                    serversMethodMap = this.getServerMethodsByFilterAndTarget(methodDefinition, target);
-                                    if (!(serversMethodMap.length === 0)) return [3, 4];
-                                    _a.label = 1;
-                                case 1:
-                                    _a.trys.push([1, 3, , 4]);
-                                    return [4, this.tryToAwaitForMethods(methodDefinition, target, additionalOptions)];
-                                case 2:
-                                    serversMethodMap = _a.sent();
-                                    return [3, 4];
-                                case 3:
-                                    err_1 = _a.sent();
-                                    errorObj = {
-                                        method: methodDefinition,
-                                        called_with: argumentObj,
-                                        message: "Can not find a method matching " + JSON.stringify(methodFilter) + " with server filter " + JSON.stringify(target) + ". Is the object a valid instance ?",
-                                        executed_by: undefined,
-                                        returned: undefined,
-                                        status: undefined,
-                                    };
-                                    return [2, Promise.reject(errorObj)];
-                                case 4:
-                                    timeout = additionalOptions.methodResponseTimeoutMs;
-                                    additionalOptionsCopy = additionalOptions;
-                                    invokePromises = serversMethodMap.map(function (serversMethodPair) {
-                                        var invId = shortid$1();
-                                        return Promise.race([
-                                            _this.protocol.client.invoke(invId, serversMethodPair.methods[0], argumentObj, serversMethodPair.server, additionalOptionsCopy),
-                                            rejectAfter(timeout, {
-                                                invocationId: invId,
-                                                message: "Invocation timeout (" + timeout + " ms) reached",
-                                                status: InvokeStatus.Error,
-                                            })
-                                        ]);
-                                    });
-                                    return [4, Promise.all(invokePromises)];
-                                case 5:
-                                    invocationMessages = _a.sent();
-                                    results = this.getInvocationResultObj(invocationMessages, methodDefinition, argumentObj);
-                                    allRejected = invocationMessages.every(function (result) { return result.status === InvokeStatus.Error; });
-                                    if (allRejected) {
-                                        return [2, Promise.reject(results)];
-                                    }
-                                    return [2, results];
+                                }
+                                if (additionalOptions.waitTimeoutMs !== undefined && typeof additionalOptions.waitTimeoutMs !== 'number') {
+                                    return [2, Promise.reject(new Error('"' + additionalOptions.waitTimeoutMs + '" is not a valid number for "waitTimeoutMs" '))];
+                                }
+                                if (typeof argumentObj !== 'object') {
+                                    return [2, Promise.reject(new Error('The method arguments must be an object. method: ' + methodDefinition.name))];
+                                }
+                                serversMethodMap = this.getServerMethodsByFilterAndTarget(methodDefinition, target);
+                                if (!(serversMethodMap.length === 0)) return [3, 4];
+                                _a.label = 1;
+                            case 1:
+                                _a.trys.push([1, 3, , 4]);
+                                return [4, this.tryToAwaitForMethods(methodDefinition, target, additionalOptions)];
+                            case 2:
+                                serversMethodMap = _a.sent();
+                                return [3, 4];
+                            case 3:
+                                err_1 = _a.sent();
+                                errorObj = {
+                                    method: methodDefinition,
+                                    called_with: argumentObj,
+                                    message: 'Can not find a method matching ' + JSON.stringify(methodFilter) + ' with server filter ' + JSON.stringify(target) + '. Is the object a valid instance ?',
+                                    executed_by: undefined,
+                                    returned: undefined,
+                                    status: undefined,
+                                };
+                                return [2, Promise.reject(errorObj)];
+                            case 4:
+                                timeout = additionalOptions.methodResponseTimeoutMs;
+                                additionalOptionsCopy = additionalOptions;
+                                invokePromises = serversMethodMap.map(function (serversMethodPair) {
+                                    var invId = shortid$1();
+                                    return Promise.race([
+                                        _this.protocol.client.invoke(invId, serversMethodPair.methods[0], argumentObj, serversMethodPair.server, additionalOptionsCopy),
+                                        rejectAfter(timeout, {
+                                            invocationId: invId,
+                                            message: 'Invocation timeout (' + timeout + ' ms) reached',
+                                            status: InvokeStatus.Error,
+                                        })
+                                    ]);
+                                });
+                                return [4, Promise.all(invokePromises)];
+                            case 5:
+                                invocationMessages = _a.sent();
+                                results = this.getInvocationResultObj(invocationMessages, methodDefinition, argumentObj);
+                                allRejected = invocationMessages.every(function (result) { return result.status === InvokeStatus.Error; });
+                                if (allRejected) {
+                                    return [2, Promise.reject(results)];
+                                }
+                                return [2, results];
                             }
                         });
                     }); };
@@ -5058,31 +5058,31 @@
             var all_return_values = invocationResults
                 .filter(function (invokeMessage) { return invokeMessage.status === InvokeStatus.Success; })
                 .reduce(function (allValues, currentValue) {
-                allValues = __spreadArrays(allValues, [
-                    {
-                        executed_by: currentValue.instance,
-                        returned: currentValue.result,
-                        called_with: calledWith,
-                        method: method,
-                        message: currentValue.message,
-                        status: currentValue.status,
-                    }
-                ]);
-                return allValues;
-            }, []);
+                    allValues = __spreadArrays(allValues, [
+                        {
+                            executed_by: currentValue.instance,
+                            returned: currentValue.result,
+                            called_with: calledWith,
+                            method: method,
+                            message: currentValue.message,
+                            status: currentValue.status,
+                        }
+                    ]);
+                    return allValues;
+                }, []);
             var all_errors = invocationResults
                 .filter(function (invokeMessage) { return invokeMessage.status === InvokeStatus.Error; })
                 .reduce(function (allErrors, currError) {
-                allErrors = __spreadArrays(allErrors, [
-                    {
-                        executed_by: currError.instance,
-                        called_with: calledWith,
-                        name: method.name,
-                        message: currError.message,
-                    }
-                ]);
-                return allErrors;
-            }, []);
+                    allErrors = __spreadArrays(allErrors, [
+                        {
+                            executed_by: currError.instance,
+                            called_with: calledWith,
+                            name: method.name,
+                            message: currError.message,
+                        }
+                    ]);
+                    return allErrors;
+                }, []);
             var invResult = invocationResults[0];
             var result = {
                 method: method,
@@ -5123,11 +5123,11 @@
         };
         Client.prototype.filterByTarget = function (target, serverMethodMap) {
             var _this = this;
-            if (typeof target === "string") {
-                if (target === "all") {
+            if (typeof target === 'string') {
+                if (target === 'all') {
                     return __spreadArrays(serverMethodMap);
                 }
-                else if (target === "best") {
+                else if (target === 'best') {
                     var localMachine = serverMethodMap
                         .find(function (s) { return s.server.instance.isLocal; });
                     if (localMachine) {
@@ -5137,7 +5137,7 @@
                         return [serverMethodMap[0]];
                     }
                 }
-                else if (target === "skipMine") {
+                else if (target === 'skipMine') {
                     return serverMethodMap.filter(function (_a) {
                         var server = _a.server;
                         return server.instance.peerId !== _this.instance.peerId;
@@ -5171,19 +5171,19 @@
         Client.prototype.containsProps = function (filter, repoMethod) {
             var filterProps = Object.keys(filter)
                 .filter(function (prop) {
-                return filter[prop] !== undefined
-                    && typeof filter[prop] !== "function"
-                    && prop !== "object_types"
-                    && prop !== "display_name"
-                    && prop !== "id"
-                    && prop !== "gatewayId"
-                    && prop !== "identifier"
-                    && prop[0] !== "_";
-            });
+                    return filter[prop] !== undefined
+                    && typeof filter[prop] !== 'function'
+                    && prop !== 'object_types'
+                    && prop !== 'display_name'
+                    && prop !== 'id'
+                    && prop !== 'gatewayId'
+                    && prop !== 'identifier'
+                    && prop[0] !== '_';
+                });
             return filterProps.reduce(function (isMatch, prop) {
                 var filterValue = filter[prop];
                 var repoMethodValue = repoMethod[prop];
-                if (prop === "objectTypes") {
+                if (prop === 'objectTypes') {
                     var containsAllFromFilter = function (filterObjTypes, repoObjectTypes) {
                         var objTypeToContains = filterObjTypes.reduce(function (object, objType) {
                             object[objType] = false;
@@ -5218,7 +5218,7 @@
             if (methodFilter === undefined) {
                 return this.repo.getMethods();
             }
-            if (typeof methodFilter === "string") {
+            if (typeof methodFilter === 'string') {
                 methodFilter = { name: methodFilter };
             }
             var methods = this.repo.getMethods().filter(function (method) {
@@ -5249,8 +5249,8 @@
             }
             return Object.keys(resultMethodsObject)
                 .map(function (key) {
-                return resultMethodsObject[key];
-            });
+                    return resultMethodsObject[key];
+                });
         };
         Client.prototype.getServers = function (methodFilter) {
             var _this = this;
@@ -5284,30 +5284,30 @@
             this.repoMethod = repoMethod;
             this.subscription = subscription;
         }
-        Object.defineProperty(ServerSubscription.prototype, "stream", {
+        Object.defineProperty(ServerSubscription.prototype, 'stream', {
             get: function () {
                 if (!this.repoMethod.stream) {
-                    throw new Error("no stream");
+                    throw new Error('no stream');
                 }
                 return this.repoMethod.stream;
             },
             enumerable: true,
             configurable: true
         });
-        Object.defineProperty(ServerSubscription.prototype, "arguments", {
+        Object.defineProperty(ServerSubscription.prototype, 'arguments', {
             get: function () { return this.subscription.arguments || {}; },
             enumerable: true,
             configurable: true
         });
-        Object.defineProperty(ServerSubscription.prototype, "branchKey", {
+        Object.defineProperty(ServerSubscription.prototype, 'branchKey', {
             get: function () { return this.subscription.branchKey; },
             enumerable: true,
             configurable: true
         });
-        Object.defineProperty(ServerSubscription.prototype, "instance", {
+        Object.defineProperty(ServerSubscription.prototype, 'instance', {
             get: function () {
                 if (!this.subscription.instance) {
-                    throw new Error("no instance");
+                    throw new Error('no instance');
                 }
                 return this.subscription.instance;
             },
@@ -5332,7 +5332,7 @@
             this.instance = requestContext.instance;
         }
         Request.prototype.accept = function () {
-            this.protocol.server.acceptRequestOnBranch(this.requestContext, this.repoMethod, "");
+            this.protocol.server.acceptRequestOnBranch(this.requestContext, this.repoMethod, '');
         };
         Request.prototype.acceptOnBranch = function (branch) {
             this.protocol.server.acceptRequestOnBranch(this.requestContext, this.repoMethod, branch);
@@ -5355,7 +5355,7 @@
         ServerStreaming.prototype.handleSubRequest = function (requestContext, repoMethod) {
             if (!(repoMethod &&
                 repoMethod.streamCallbacks &&
-                typeof repoMethod.streamCallbacks.subscriptionRequestHandler === "function")) {
+                typeof repoMethod.streamCallbacks.subscriptionRequestHandler === 'function')) {
                 return;
             }
             var request = new Request(this.protocol, repoMethod, requestContext);
@@ -5364,7 +5364,7 @@
         ServerStreaming.prototype.handleSubAdded = function (subscription, repoMethod) {
             if (!(repoMethod &&
                 repoMethod.streamCallbacks &&
-                typeof repoMethod.streamCallbacks.subscriptionAddedHandler === "function")) {
+                typeof repoMethod.streamCallbacks.subscriptionAddedHandler === 'function')) {
                 return;
             }
             var sub = new ServerSubscription(this.protocol, repoMethod, subscription);
@@ -5373,7 +5373,7 @@
         ServerStreaming.prototype.handleSubRemoved = function (subscription, repoMethod) {
             if (!(repoMethod &&
                 repoMethod.streamCallbacks &&
-                typeof repoMethod.streamCallbacks.subscriptionRemovedHandler === "function")) {
+                typeof repoMethod.streamCallbacks.subscriptionRemovedHandler === 'function')) {
                 return;
             }
             var sub = new ServerSubscription(this.protocol, repoMethod, subscription);
@@ -5436,7 +5436,7 @@
                 return new ServerSubscription(_this._protocol, _this._repoMethod, sub);
             });
         };
-        Object.defineProperty(ServerStream.prototype, "definition", {
+        Object.defineProperty(ServerStream.prototype, 'definition', {
             get: function () {
                 var def2 = this._repoMethod.definition;
                 return {
@@ -5457,11 +5457,11 @@
             this._server.unregister(this._repoMethod.definition, true);
         };
         ServerStream.prototype.push = function (data, branches) {
-            if (typeof branches !== "string" && !Array.isArray(branches) && branches !== undefined) {
-                throw new Error("invalid branches should be string or string array");
+            if (typeof branches !== 'string' && !Array.isArray(branches) && branches !== undefined) {
+                throw new Error('invalid branches should be string or string array');
             }
-            if (typeof data !== "object") {
-                throw new Error("Invalid arguments. Data must be an object.");
+            if (typeof data !== 'object') {
+                throw new Error('Invalid arguments. Data must be an object.');
             }
             this._protocol.server.pushData(this._repoMethod, data, branches);
         };
@@ -5484,29 +5484,29 @@
             var _this = this;
             var promise = new Promise(function (resolve, reject) {
                 if (!streamDef) {
-                    reject("The stream name must be unique! Please, provide either a unique string for a stream name to \u201Cglue.interop.createStream()\u201D or a \u201CmethodDefinition\u201D object with a unique \u201Cname\u201D property for the stream.");
+                    reject('The stream name must be unique! Please, provide either a unique string for a stream name to \u201Cglue.interop.createStream()\u201D or a \u201CmethodDefinition\u201D object with a unique \u201Cname\u201D property for the stream.');
                     return;
                 }
                 var streamMethodDefinition;
-                if (typeof streamDef === "string") {
-                    streamMethodDefinition = { name: "" + streamDef };
+                if (typeof streamDef === 'string') {
+                    streamMethodDefinition = { name: '' + streamDef };
                 }
                 else {
                     streamMethodDefinition = __assign$1({}, streamDef);
                 }
                 if (!streamMethodDefinition.name) {
-                    return reject("The \u201Cname\u201D property is required for the \u201CstreamDefinition\u201D object and must be unique. Stream definition: " + JSON.stringify(streamMethodDefinition));
+                    return reject('The \u201Cname\u201D property is required for the \u201CstreamDefinition\u201D object and must be unique. Stream definition: ' + JSON.stringify(streamMethodDefinition));
                 }
                 var nameAlreadyExists = _this.serverRepository.getList()
                     .some(function (serverMethod) { return serverMethod.definition.name === streamMethodDefinition.name; });
                 if (nameAlreadyExists) {
-                    return reject("A stream with the name \"" + streamMethodDefinition.name + "\" already exists! Please, provide a unique name for the stream.");
+                    return reject('A stream with the name "' + streamMethodDefinition.name + '" already exists! Please, provide a unique name for the stream.');
                 }
                 streamMethodDefinition.supportsStreaming = true;
                 if (!callbacks) {
                     callbacks = {};
                 }
-                if (typeof callbacks.subscriptionRequestHandler !== "function") {
+                if (typeof callbacks.subscriptionRequestHandler !== 'function') {
                     callbacks.subscriptionRequestHandler = function (request) {
                         request.accept();
                     };
@@ -5518,59 +5518,59 @@
                 });
                 _this.protocol.server.createStream(repoMethod)
                     .then(function () {
-                    var streamUserObject;
-                    if (existingStream) {
-                        streamUserObject = existingStream;
-                        existingStream.updateRepoMethod(repoMethod);
-                    }
-                    else {
-                        streamUserObject = new ServerStream(_this.protocol, repoMethod, _this);
-                    }
-                    repoMethod.stream = streamUserObject;
-                    resolve(streamUserObject);
-                })
+                        var streamUserObject;
+                        if (existingStream) {
+                            streamUserObject = existingStream;
+                            existingStream.updateRepoMethod(repoMethod);
+                        }
+                        else {
+                            streamUserObject = new ServerStream(_this.protocol, repoMethod, _this);
+                        }
+                        repoMethod.stream = streamUserObject;
+                        resolve(streamUserObject);
+                    })
                     .catch(function (err) {
-                    if (repoMethod.repoId) {
-                        _this.serverRepository.remove(repoMethod.repoId);
-                    }
-                    reject(err);
-                });
+                        if (repoMethod.repoId) {
+                            _this.serverRepository.remove(repoMethod.repoId);
+                        }
+                        reject(err);
+                    });
             });
             return promisify(promise, successCallback, errorCallback);
         };
         Server.prototype.register = function (methodDefinition, callback) {
             var _this = this;
             if (!methodDefinition) {
-                return Promise.reject("Method definition is required. Please, provide either a unique string for a method name or a \u201CmethodDefinition\u201D object with a required \u201Cname\u201D property.");
+                return Promise.reject('Method definition is required. Please, provide either a unique string for a method name or a \u201CmethodDefinition\u201D object with a required \u201Cname\u201D property.');
             }
-            if (typeof callback !== "function") {
-                return Promise.reject("The second parameter must be a callback function. Method: " + (typeof methodDefinition === "string" ? methodDefinition : methodDefinition.name));
+            if (typeof callback !== 'function') {
+                return Promise.reject('The second parameter must be a callback function. Method: ' + (typeof methodDefinition === 'string' ? methodDefinition : methodDefinition.name));
             }
             var wrappedCallbackFunction = function (context, resultCallback) { return __awaiter$1(_this, void 0, void 0, function () {
                 var result, resultValue, e_1;
                 return __generator$1(this, function (_a) {
                     switch (_a.label) {
-                        case 0:
-                            _a.trys.push([0, 4, , 5]);
-                            result = callback(context.args, context.instance);
-                            if (!(result && typeof result.then === "function")) return [3, 2];
-                            return [4, result];
-                        case 1:
-                            resultValue = _a.sent();
-                            resultCallback(undefined, resultValue);
-                            return [3, 3];
-                        case 2:
-                            resultCallback(undefined, result);
-                            _a.label = 3;
-                        case 3: return [3, 5];
-                        case 4:
-                            e_1 = _a.sent();
-                            if (!e_1) {
-                                e_1 = "";
-                            }
-                            resultCallback(e_1, e_1);
-                            return [3, 5];
-                        case 5: return [2];
+                    case 0:
+                        _a.trys.push([0, 4, , 5]);
+                        result = callback(context.args, context.instance);
+                        if (!(result && typeof result.then === 'function')) return [3, 2];
+                        return [4, result];
+                    case 1:
+                        resultValue = _a.sent();
+                        resultCallback(undefined, resultValue);
+                        return [3, 3];
+                    case 2:
+                        resultCallback(undefined, result);
+                        _a.label = 3;
+                    case 3: return [3, 5];
+                    case 4:
+                        e_1 = _a.sent();
+                        if (!e_1) {
+                            e_1 = '';
+                        }
+                        resultCallback(e_1, e_1);
+                        return [3, 5];
+                    case 5: return [2];
                     }
                 });
             }); };
@@ -5579,10 +5579,10 @@
         };
         Server.prototype.registerAsync = function (methodDefinition, callback) {
             if (!methodDefinition) {
-                return Promise.reject("Method definition is required. Please, provide either a unique string for a method name or a \u201CmethodDefinition\u201D object with a required \u201Cname\u201D property.");
+                return Promise.reject('Method definition is required. Please, provide either a unique string for a method name or a \u201CmethodDefinition\u201D object with a required \u201Cname\u201D property.');
             }
-            if (typeof callback !== "function") {
-                return Promise.reject("The second parameter must be a callback function. Method: " + (typeof methodDefinition === "string" ? methodDefinition : methodDefinition.name));
+            if (typeof callback !== 'function') {
+                return Promise.reject('The second parameter must be a callback function. Method: ' + (typeof methodDefinition === 'string' ? methodDefinition : methodDefinition.name));
             }
             var wrappedCallback = function (context, resultCallback) {
                 try {
@@ -5596,14 +5596,14 @@
                     var error = function (e) {
                         if (!resultCalled_1) {
                             if (!e) {
-                                e = "";
+                                e = '';
                             }
                             resultCallback(e, e);
                         }
                         resultCalled_1 = true;
                     };
                     var methodResult = callback(context.args, context.instance, success, error);
-                    if (methodResult && typeof methodResult.then === "function") {
+                    if (methodResult && typeof methodResult.then === 'function') {
                         methodResult
                             .then(success)
                             .catch(error);
@@ -5622,36 +5622,36 @@
                 var methodDefinition, methodToBeRemoved;
                 return __generator$1(this, function (_a) {
                     switch (_a.label) {
-                        case 0:
-                            if (methodFilter === undefined) {
-                                return [2, Promise.reject("Please, provide either a unique string for a name or an object containing a \u201Cname\u201D property.")];
-                            }
-                            if (!(typeof methodFilter === "function")) return [3, 2];
-                            return [4, this.unregisterWithPredicate(methodFilter, forStream)];
-                        case 1:
-                            _a.sent();
-                            return [2];
-                        case 2:
-                            if (typeof methodFilter === "string") {
-                                methodDefinition = { name: methodFilter };
-                            }
-                            else {
-                                methodDefinition = methodFilter;
-                            }
-                            if (methodDefinition.name === undefined) {
-                                return [2, Promise.reject("Method name is required. Cannot find a method if the method name is undefined!")];
-                            }
-                            methodToBeRemoved = this.serverRepository.getList().find(function (serverMethod) {
-                                return serverMethod.definition.name === methodDefinition.name
+                    case 0:
+                        if (methodFilter === undefined) {
+                            return [2, Promise.reject('Please, provide either a unique string for a name or an object containing a \u201Cname\u201D property.')];
+                        }
+                        if (!(typeof methodFilter === 'function')) return [3, 2];
+                        return [4, this.unregisterWithPredicate(methodFilter, forStream)];
+                    case 1:
+                        _a.sent();
+                        return [2];
+                    case 2:
+                        if (typeof methodFilter === 'string') {
+                            methodDefinition = { name: methodFilter };
+                        }
+                        else {
+                            methodDefinition = methodFilter;
+                        }
+                        if (methodDefinition.name === undefined) {
+                            return [2, Promise.reject('Method name is required. Cannot find a method if the method name is undefined!')];
+                        }
+                        methodToBeRemoved = this.serverRepository.getList().find(function (serverMethod) {
+                            return serverMethod.definition.name === methodDefinition.name
                                     && (serverMethod.definition.supportsStreaming || false) === forStream;
-                            });
-                            if (!methodToBeRemoved) {
-                                return [2, Promise.reject("Method with a name \"" + methodDefinition.name + "\" does not exist or is not registered by your application!")];
-                            }
-                            return [4, this.removeMethodsOrStreams([methodToBeRemoved])];
-                        case 3:
-                            _a.sent();
-                            return [2];
+                        });
+                        if (!methodToBeRemoved) {
+                            return [2, Promise.reject('Method with a name "' + methodDefinition.name + '" does not exist or is not registered by your application!')];
+                        }
+                        return [4, this.removeMethodsOrStreams([methodToBeRemoved])];
+                    case 3:
+                        _a.sent();
+                        return [2];
                     }
                 });
             });
@@ -5661,19 +5661,19 @@
                 var methodsOrStreamsToRemove;
                 return __generator$1(this, function (_a) {
                     switch (_a.label) {
-                        case 0:
-                            methodsOrStreamsToRemove = this.serverRepository.getList()
-                                .filter(function (sm) { return filterPredicate(sm.definition); })
-                                .filter(function (serverMethod) {
+                    case 0:
+                        methodsOrStreamsToRemove = this.serverRepository.getList()
+                            .filter(function (sm) { return filterPredicate(sm.definition); })
+                            .filter(function (serverMethod) {
                                 return (serverMethod.definition.supportsStreaming || false) === forStream;
                             });
-                            if (!methodsOrStreamsToRemove || methodsOrStreamsToRemove.length === 0) {
-                                return [2, Promise.reject("Could not find a " + (forStream ? "stream" : "method") + " matching the specified condition!")];
-                            }
-                            return [4, this.removeMethodsOrStreams(methodsOrStreamsToRemove)];
-                        case 1:
-                            _a.sent();
-                            return [2];
+                        if (!methodsOrStreamsToRemove || methodsOrStreamsToRemove.length === 0) {
+                            return [2, Promise.reject('Could not find a ' + (forStream ? 'stream' : 'method') + ' matching the specified condition!')];
+                        }
+                        return [4, this.removeMethodsOrStreams(methodsOrStreamsToRemove)];
+                    case 1:
+                        _a.sent();
+                        return [2];
                     }
                 });
             });
@@ -5684,10 +5684,10 @@
             methodsToRemove.forEach(function (method) {
                 var promise = _this.protocol.server.unregister(method)
                     .then(function () {
-                    if (method.repoId) {
-                        _this.serverRepository.remove(method.repoId);
-                    }
-                });
+                        if (method.repoId) {
+                            _this.serverRepository.remove(method.repoId);
+                        }
+                    });
                 methodUnregPromises.push(promise);
                 _this.addAsCurrentlyUnregistering(method.definition.name, promise);
             });
@@ -5712,44 +5712,44 @@
                 var _this = this;
                 return __generator$1(this, function (_a) {
                     switch (_a.label) {
-                        case 0:
-                            if (typeof method === "string") {
-                                methodDefinition = { name: "" + method };
-                            }
-                            else {
-                                methodDefinition = __assign$1({}, method);
-                            }
-                            if (!methodDefinition.name) {
-                                return [2, Promise.reject("Please, provide a (unique) string value for the \u201Cname\u201D property in the \u201CmethodDefinition\u201D object: " + JSON.stringify(method))];
-                            }
-                            unregisterInProgress = this.currentlyUnregistering[methodDefinition.name];
-                            if (!unregisterInProgress) return [3, 2];
-                            return [4, unregisterInProgress];
-                        case 1:
-                            _a.sent();
-                            _a.label = 2;
-                        case 2:
-                            nameAlreadyExists = this.serverRepository.getList()
-                                .some(function (serverMethod) { return serverMethod.definition.name === methodDefinition.name; });
-                            if (nameAlreadyExists) {
-                                return [2, Promise.reject("A method with the name \"" + methodDefinition.name + "\" already exists! Please, provide a unique name for the method.")];
-                            }
-                            if (methodDefinition.supportsStreaming) {
-                                return [2, Promise.reject("When you create methods with \u201Cglue.interop.register()\u201D or \u201Cglue.interop.registerAsync()\u201D the property \u201CsupportsStreaming\u201D cannot be \u201Ctrue\u201D. If you want \u201C" + methodDefinition.name + "\u201D to be a stream, please use the \u201Cglue.interop.createStream()\u201D method.")];
-                            }
-                            repoMethod = this.serverRepository.add({
-                                definition: methodDefinition,
-                                theFunction: theFunction,
-                                protocolState: {},
-                            });
-                            return [2, this.protocol.server.register(repoMethod)
-                                    .catch(function (err) {
-                                    var _a;
-                                    if ((_a = repoMethod) === null || _a === void 0 ? void 0 : _a.repoId) {
-                                        _this.serverRepository.remove(repoMethod.repoId);
-                                    }
-                                    throw err;
-                                })];
+                    case 0:
+                        if (typeof method === 'string') {
+                            methodDefinition = { name: '' + method };
+                        }
+                        else {
+                            methodDefinition = __assign$1({}, method);
+                        }
+                        if (!methodDefinition.name) {
+                            return [2, Promise.reject('Please, provide a (unique) string value for the \u201Cname\u201D property in the \u201CmethodDefinition\u201D object: ' + JSON.stringify(method))];
+                        }
+                        unregisterInProgress = this.currentlyUnregistering[methodDefinition.name];
+                        if (!unregisterInProgress) return [3, 2];
+                        return [4, unregisterInProgress];
+                    case 1:
+                        _a.sent();
+                        _a.label = 2;
+                    case 2:
+                        nameAlreadyExists = this.serverRepository.getList()
+                            .some(function (serverMethod) { return serverMethod.definition.name === methodDefinition.name; });
+                        if (nameAlreadyExists) {
+                            return [2, Promise.reject('A method with the name "' + methodDefinition.name + '" already exists! Please, provide a unique name for the method.')];
+                        }
+                        if (methodDefinition.supportsStreaming) {
+                            return [2, Promise.reject('When you create methods with \u201Cglue.interop.register()\u201D or \u201Cglue.interop.registerAsync()\u201D the property \u201CsupportsStreaming\u201D cannot be \u201Ctrue\u201D. If you want \u201C' + methodDefinition.name + '\u201D to be a stream, please use the \u201Cglue.interop.createStream()\u201D method.')];
+                        }
+                        repoMethod = this.serverRepository.add({
+                            definition: methodDefinition,
+                            theFunction: theFunction,
+                            protocolState: {},
+                        });
+                        return [2, this.protocol.server.register(repoMethod)
+                            .catch(function (err) {
+                                var _a;
+                                if ((_a = repoMethod) === null || _a === void 0 ? void 0 : _a.repoId) {
+                                    _this.serverRepository.remove(repoMethod.repoId);
+                                }
+                                throw err;
+                            })];
                     }
                 });
             });
@@ -5761,19 +5761,19 @@
             }
             methodToExecute.theFunction(invocationArgs, function (err, result) {
                 if (err !== undefined && err !== null) {
-                    if (err.message && typeof err.message === "string") {
+                    if (err.message && typeof err.message === 'string') {
                         err = err.message;
                     }
-                    else if (typeof err !== "string") {
+                    else if (typeof err !== 'string') {
                         try {
                             err = JSON.stringify(err);
                         }
                         catch (unStrException) {
-                            err = "un-stringifyable error in onMethodInvoked! Top level prop names: " + Object.keys(err);
+                            err = 'un-stringifyable error in onMethodInvoked! Top level prop names: ' + Object.keys(err);
                         }
                     }
                 }
-                if (typeof result !== "object" || result.constructor === Array) {
+                if (typeof result !== 'object' || result.constructor === Array) {
                     result = { _value: result };
                 }
                 if (!result) {
@@ -5849,7 +5849,7 @@
             this.callbacks = lib$2();
         }
         ClientRepository.prototype.addServer = function (info, serverId) {
-            this.logger.debug("adding server " + serverId);
+            this.logger.debug('adding server ' + serverId);
             var current = this.servers[serverId];
             if (current) {
                 return current.id;
@@ -5862,29 +5862,29 @@
                 wrapper: wrapper,
             };
             this.servers[serverId] = serverEntry;
-            this.callbacks.execute("onServerAdded", serverEntry.instance);
+            this.callbacks.execute('onServerAdded', serverEntry.instance);
             return serverId;
         };
         ClientRepository.prototype.removeServerById = function (id, reason) {
             var _this = this;
             var server = this.servers[id];
             if (!server) {
-                this.logger.warn("not aware of server " + id + ", my state " + JSON.stringify(Object.keys(this.servers)));
+                this.logger.warn('not aware of server ' + id + ', my state ' + JSON.stringify(Object.keys(this.servers)));
                 return;
             }
             else {
-                this.logger.debug("removing server " + id);
+                this.logger.debug('removing server ' + id);
             }
             Object.keys(server.methods).forEach(function (methodId) {
                 _this.removeServerMethod(id, methodId);
             });
             delete this.servers[id];
-            this.callbacks.execute("onServerRemoved", server.instance, reason);
+            this.callbacks.execute('onServerRemoved', server.instance, reason);
         };
         ClientRepository.prototype.addServerMethod = function (serverId, method) {
             var server = this.servers[serverId];
             if (!server) {
-                throw new Error("server does not exists");
+                throw new Error('server does not exists');
             }
             if (server.methods[method.id]) {
                 return;
@@ -5900,7 +5900,7 @@
                 objectTypes: method.object_types || [],
                 accepts: method.input_signature,
                 returns: method.result_signature,
-                supportsStreaming: typeof method.flags !== "undefined" ? method.flags.streaming : false,
+                supportsStreaming: typeof method.flags !== 'undefined' ? method.flags.streaming : false,
             };
             methodDefinition.object_types = methodDefinition.objectTypes;
             methodDefinition.display_name = methodDefinition.displayName;
@@ -5912,24 +5912,24 @@
             server.methods[method.id] = methodDefinition;
             if (!this.methodsCount[identifier]) {
                 this.methodsCount[identifier] = 0;
-                this.callbacks.execute("onMethodAdded", methodDefinition);
+                this.callbacks.execute('onMethodAdded', methodDefinition);
             }
             this.methodsCount[identifier] = this.methodsCount[identifier] + 1;
-            this.callbacks.execute("onServerMethodAdded", server.instance, methodDefinition);
+            this.callbacks.execute('onServerMethodAdded', server.instance, methodDefinition);
             return methodDefinition;
         };
         ClientRepository.prototype.removeServerMethod = function (serverId, methodId) {
             var server = this.servers[serverId];
             if (!server) {
-                throw new Error("server does not exists");
+                throw new Error('server does not exists');
             }
             var method = server.methods[methodId];
             delete server.methods[methodId];
             this.methodsCount[method.identifier] = this.methodsCount[method.identifier] - 1;
             if (this.methodsCount[method.identifier] === 0) {
-                this.callbacks.execute("onMethodRemoved", method);
+                this.callbacks.execute('onMethodRemoved', method);
             }
-            this.callbacks.execute("onServerMethodRemoved", server.instance, method);
+            this.callbacks.execute('onServerMethodRemoved', server.instance, method);
         };
         ClientRepository.prototype.getMethods = function () {
             var _this = this;
@@ -5962,17 +5962,17 @@
             });
         };
         ClientRepository.prototype.onServerAdded = function (callback) {
-            var unsubscribeFunc = this.callbacks.add("onServerAdded", callback);
+            var unsubscribeFunc = this.callbacks.add('onServerAdded', callback);
             var serversWithMethodsToReplay = this.getServers().map(function (s) { return s.instance; });
             return this.returnUnsubWithDelayedReplay(unsubscribeFunc, serversWithMethodsToReplay, callback);
         };
         ClientRepository.prototype.onMethodAdded = function (callback) {
-            var unsubscribeFunc = this.callbacks.add("onMethodAdded", callback);
+            var unsubscribeFunc = this.callbacks.add('onMethodAdded', callback);
             var methodsToReplay = this.getMethods();
             return this.returnUnsubWithDelayedReplay(unsubscribeFunc, methodsToReplay, callback);
         };
         ClientRepository.prototype.onServerMethodAdded = function (callback) {
-            var unsubscribeFunc = this.callbacks.add("onServerMethodAdded", callback);
+            var unsubscribeFunc = this.callbacks.add('onServerMethodAdded', callback);
             var unsubCalled = false;
             var servers = this.getServers();
             setTimeout(function () {
@@ -5991,15 +5991,15 @@
             };
         };
         ClientRepository.prototype.onMethodRemoved = function (callback) {
-            var unsubscribeFunc = this.callbacks.add("onMethodRemoved", callback);
+            var unsubscribeFunc = this.callbacks.add('onMethodRemoved', callback);
             return unsubscribeFunc;
         };
         ClientRepository.prototype.onServerRemoved = function (callback) {
-            var unsubscribeFunc = this.callbacks.add("onServerRemoved", callback);
+            var unsubscribeFunc = this.callbacks.add('onServerRemoved', callback);
             return unsubscribeFunc;
         };
         ClientRepository.prototype.onServerMethodRemoved = function (callback) {
-            var unsubscribeFunc = this.callbacks.add("onServerMethodRemoved", callback);
+            var unsubscribeFunc = this.callbacks.add('onServerMethodRemoved', callback);
             return unsubscribeFunc;
         };
         ClientRepository.prototype.getServerById = function (id) {
@@ -6008,14 +6008,14 @@
         ClientRepository.prototype.reset = function () {
             var _this = this;
             Object.keys(this.servers).forEach(function (key) {
-                _this.removeServerById(key, "reset");
+                _this.removeServerById(key, 'reset');
             });
             this.servers = {};
             this.methodsCount = {};
         };
         ClientRepository.prototype.createMethodIdentifier = function (methodInfo) {
-            var accepts = methodInfo.input_signature !== undefined ? methodInfo.input_signature : "";
-            var returns = methodInfo.result_signature !== undefined ? methodInfo.result_signature : "";
+            var accepts = methodInfo.input_signature !== undefined ? methodInfo.input_signature : '';
+            var returns = methodInfo.result_signature !== undefined ? methodInfo.result_signature : '';
             return (methodInfo.name + accepts + returns).toLowerCase();
         };
         ClientRepository.prototype.getServersByMethod = function (id) {
@@ -6060,15 +6060,15 @@
             return method;
         };
         ServerRepository.prototype.remove = function (repoId) {
-            if (typeof repoId !== "string") {
-                return new TypeError("Expecting a string");
+            if (typeof repoId !== 'string') {
+                return new TypeError('Expecting a string');
             }
             this.methods = this.methods.filter(function (m) {
                 return m.repoId !== repoId;
             });
         };
         ServerRepository.prototype.getById = function (id) {
-            if (typeof id !== "string") {
+            if (typeof id !== 'string') {
                 return undefined;
             }
             return this.methods.find(function (m) {
@@ -6087,34 +6087,34 @@
         return ServerRepository;
     }());
 
-    var SUBSCRIPTION_REQUEST = "onSubscriptionRequest";
-    var SUBSCRIPTION_ADDED = "onSubscriptionAdded";
-    var SUBSCRIPTION_REMOVED = "onSubscriptionRemoved";
+    var SUBSCRIPTION_REQUEST = 'onSubscriptionRequest';
+    var SUBSCRIPTION_ADDED = 'onSubscriptionAdded';
+    var SUBSCRIPTION_REMOVED = 'onSubscriptionRemoved';
     var ServerStreaming$1 = (function () {
         function ServerStreaming(session, repository, serverRepository) {
             var _this = this;
             this.session = session;
             this.repository = repository;
             this.serverRepository = serverRepository;
-            this.ERR_URI_SUBSCRIPTION_FAILED = "com.tick42.agm.errors.subscription.failure";
+            this.ERR_URI_SUBSCRIPTION_FAILED = 'com.tick42.agm.errors.subscription.failure';
             this.callbacks = lib$2();
             this.nextStreamId = 0;
-            session.on("add-interest", function (msg) {
+            session.on('add-interest', function (msg) {
                 _this.handleAddInterest(msg);
             });
-            session.on("remove-interest", function (msg) {
+            session.on('remove-interest', function (msg) {
                 _this.handleRemoveInterest(msg);
             });
         }
         ServerStreaming.prototype.acceptRequestOnBranch = function (requestContext, streamingMethod, branch) {
-            if (typeof branch !== "string") {
-                branch = "";
+            if (typeof branch !== 'string') {
+                branch = '';
             }
-            if (typeof streamingMethod.protocolState.subscriptionsMap !== "object") {
-                throw new TypeError("The streaming method is missing its subscriptions.");
+            if (typeof streamingMethod.protocolState.subscriptionsMap !== 'object') {
+                throw new TypeError('The streaming method is missing its subscriptions.');
             }
             if (!Array.isArray(streamingMethod.protocolState.branchKeyToStreamIdMap)) {
-                throw new TypeError("The streaming method is missing its branches.");
+                throw new TypeError('The streaming method is missing its branches.');
             }
             var streamId = this.getStreamId(streamingMethod, branch);
             var key = requestContext.msg.subscription_id;
@@ -6128,27 +6128,27 @@
             };
             streamingMethod.protocolState.subscriptionsMap[key] = subscription;
             this.session.sendFireAndForget({
-                type: "accepted",
+                type: 'accepted',
                 subscription_id: key,
                 stream_id: streamId,
             });
             this.callbacks.execute(SUBSCRIPTION_ADDED, subscription, streamingMethod);
         };
         ServerStreaming.prototype.rejectRequest = function (requestContext, streamingMethod, reason) {
-            if (typeof reason !== "string") {
-                reason = "";
+            if (typeof reason !== 'string') {
+                reason = '';
             }
-            this.sendSubscriptionFailed("Subscription rejected by user. " + reason, requestContext.msg.subscription_id);
+            this.sendSubscriptionFailed('Subscription rejected by user. ' + reason, requestContext.msg.subscription_id);
         };
         ServerStreaming.prototype.pushData = function (streamingMethod, data, branches) {
             var _this = this;
-            if (typeof streamingMethod !== "object" || !Array.isArray(streamingMethod.protocolState.branchKeyToStreamIdMap)) {
+            if (typeof streamingMethod !== 'object' || !Array.isArray(streamingMethod.protocolState.branchKeyToStreamIdMap)) {
                 return;
             }
-            if (typeof data !== "object") {
-                throw new Error("Invalid arguments. Data must be an object.");
+            if (typeof data !== 'object') {
+                throw new Error('Invalid arguments. Data must be an object.');
             }
-            if (typeof branches === "string") {
+            if (typeof branches === 'string') {
                 branches = [branches];
             }
             else if (!Array.isArray(branches) || branches.length <= 0) {
@@ -6156,16 +6156,16 @@
             }
             var streamIdList = streamingMethod.protocolState.branchKeyToStreamIdMap
                 .filter(function (br) {
-                if (!branches || branches.length === 0) {
-                    return true;
-                }
-                return branches.indexOf(br.key) >= 0;
-            }).map(function (br) {
-                return br.streamId;
-            });
+                    if (!branches || branches.length === 0) {
+                        return true;
+                    }
+                    return branches.indexOf(br.key) >= 0;
+                }).map(function (br) {
+                    return br.streamId;
+                });
             streamIdList.forEach(function (streamId) {
                 var publishMessage = {
-                    type: "publish",
+                    type: 'publish',
                     stream_id: streamId,
                     data: data,
                 };
@@ -6173,11 +6173,11 @@
             });
         };
         ServerStreaming.prototype.pushDataToSingle = function (method, subscription, data) {
-            if (typeof data !== "object") {
-                throw new Error("Invalid arguments. Data must be an object.");
+            if (typeof data !== 'object') {
+                throw new Error('Invalid arguments. Data must be an object.');
             }
             var postMessage = {
-                type: "post",
+                type: 'post',
                 subscription_id: subscription.id,
                 data: data,
             };
@@ -6188,9 +6188,9 @@
                 delete streamingMethod.protocolState.subscriptionsMap[subscription.id];
             }
             var dropSubscriptionMessage = {
-                type: "drop-subscription",
+                type: 'drop-subscription',
                 subscription_id: subscription.id,
-                reason: "Server dropping a single subscription",
+                reason: 'Server dropping a single subscription',
             };
             this.session.sendFireAndForget(dropSubscriptionMessage);
             var subscriber = subscription.instance;
@@ -6198,7 +6198,7 @@
         };
         ServerStreaming.prototype.closeMultipleSubscriptions = function (streamingMethod, branchKey) {
             var _this = this;
-            if (typeof streamingMethod !== "object" || typeof streamingMethod.protocolState.subscriptionsMap !== "object") {
+            if (typeof streamingMethod !== 'object' || typeof streamingMethod.protocolState.subscriptionsMap !== 'object') {
                 return;
             }
             if (!streamingMethod.protocolState.subscriptionsMap) {
@@ -6207,9 +6207,9 @@
             var subscriptionsMap = streamingMethod.protocolState.subscriptionsMap;
             var subscriptionsToClose = Object.keys(subscriptionsMap)
                 .map(function (key) {
-                return subscriptionsMap[key];
-            });
-            if (typeof branchKey === "string") {
+                    return subscriptionsMap[key];
+                });
+            if (typeof branchKey === 'string') {
                 subscriptionsToClose = subscriptionsToClose.filter(function (sub) {
                     return sub.branchKey === branchKey;
                 });
@@ -6217,15 +6217,15 @@
             subscriptionsToClose.forEach(function (subscription) {
                 delete subscriptionsMap[subscription.id];
                 var drop = {
-                    type: "drop-subscription",
+                    type: 'drop-subscription',
                     subscription_id: subscription.id,
-                    reason: "Server dropping all subscriptions on stream_id: " + subscription.streamId,
+                    reason: 'Server dropping all subscriptions on stream_id: ' + subscription.streamId,
                 };
                 _this.session.sendFireAndForget(drop);
             });
         };
         ServerStreaming.prototype.getSubscriptionList = function (streamingMethod, branchKey) {
-            if (typeof streamingMethod !== "object") {
+            if (typeof streamingMethod !== 'object') {
                 return [];
             }
             var subscriptions = [];
@@ -6235,9 +6235,9 @@
             var subscriptionsMap = streamingMethod.protocolState.subscriptionsMap;
             var allSubscriptions = Object.keys(subscriptionsMap)
                 .map(function (key) {
-                return subscriptionsMap[key];
-            });
-            if (typeof branchKey !== "string") {
+                    return subscriptionsMap[key];
+                });
+            if (typeof branchKey !== 'string') {
                 subscriptions = allSubscriptions;
             }
             else {
@@ -6248,7 +6248,7 @@
             return subscriptions;
         };
         ServerStreaming.prototype.getBranchList = function (streamingMethod) {
-            if (typeof streamingMethod !== "object") {
+            if (typeof streamingMethod !== 'object') {
                 return [];
             }
             if (!streamingMethod.protocolState.subscriptionsMap) {
@@ -6257,12 +6257,12 @@
             var subscriptionsMap = streamingMethod.protocolState.subscriptionsMap;
             var allSubscriptions = Object.keys(subscriptionsMap)
                 .map(function (key) {
-                return subscriptionsMap[key];
-            });
+                    return subscriptionsMap[key];
+                });
             var result = [];
             allSubscriptions.forEach(function (sub) {
-                var branch = "";
-                if (typeof sub === "object" && typeof sub.branchKey === "string") {
+                var branch = '';
+                if (typeof sub === 'object' && typeof sub.branchKey === 'string') {
                     branch = sub.branchKey;
                 }
                 if (result.indexOf(branch) === -1) {
@@ -6282,14 +6282,14 @@
         };
         ServerStreaming.prototype.handleRemoveInterest = function (msg) {
             var streamingMethod = this.serverRepository.getById(msg.method_id);
-            if (typeof msg.subscription_id !== "string" ||
-                typeof streamingMethod !== "object") {
+            if (typeof msg.subscription_id !== 'string' ||
+                typeof streamingMethod !== 'object') {
                 return;
             }
             if (!streamingMethod.protocolState.subscriptionsMap) {
                 return;
             }
-            if (typeof streamingMethod.protocolState.subscriptionsMap[msg.subscription_id] !== "object") {
+            if (typeof streamingMethod.protocolState.subscriptionsMap[msg.subscription_id] !== 'object') {
                 return;
             }
             var subscription = streamingMethod.protocolState.subscriptionsMap[msg.subscription_id];
@@ -6300,7 +6300,7 @@
             this.callbacks.add(eventName, handlerFunc);
         };
         ServerStreaming.prototype.getNextStreamId = function () {
-            return this.nextStreamId++ + "";
+            return this.nextStreamId++ + '';
         };
         ServerStreaming.prototype.handleAddInterest = function (msg) {
             var caller = this.repository.getServerById(msg.caller_id);
@@ -6312,20 +6312,20 @@
             };
             var streamingMethod = this.serverRepository.getById(msg.method_id);
             if (streamingMethod === undefined) {
-                var errorMsg = "No method with id " + msg.method_id + " on this server.";
+                var errorMsg = 'No method with id ' + msg.method_id + ' on this server.';
                 this.sendSubscriptionFailed(errorMsg, msg.subscription_id);
                 return;
             }
             if (streamingMethod.protocolState.subscriptionsMap &&
                 streamingMethod.protocolState.subscriptionsMap[msg.subscription_id]) {
-                this.sendSubscriptionFailed("A subscription with id " + msg.subscription_id + " already exists.", msg.subscription_id);
+                this.sendSubscriptionFailed('A subscription with id ' + msg.subscription_id + ' already exists.', msg.subscription_id);
                 return;
             }
             this.callbacks.execute(SUBSCRIPTION_REQUEST, requestContext, streamingMethod);
         };
         ServerStreaming.prototype.sendSubscriptionFailed = function (reason, subscriptionId) {
             var errorMessage = {
-                type: "error",
+                type: 'error',
                 reason_uri: this.ERR_URI_SUBSCRIPTION_FAILED,
                 reason: reason,
                 request_id: subscriptionId,
@@ -6333,17 +6333,17 @@
             this.session.sendFireAndForget(errorMessage);
         };
         ServerStreaming.prototype.getStreamId = function (streamingMethod, branchKey) {
-            if (typeof branchKey !== "string") {
-                branchKey = "";
+            if (typeof branchKey !== 'string') {
+                branchKey = '';
             }
             if (!streamingMethod.protocolState.branchKeyToStreamIdMap) {
-                throw new Error("streaming " + streamingMethod.definition.name + " method without protocol state");
+                throw new Error('streaming ' + streamingMethod.definition.name + ' method without protocol state');
             }
             var needleBranch = streamingMethod.protocolState.branchKeyToStreamIdMap.filter(function (branch) {
                 return branch.key === branchKey;
             })[0];
             var streamId = (needleBranch ? needleBranch.streamId : undefined);
-            if (typeof streamId !== "string" || streamId === "") {
+            if (typeof streamId !== 'string' || streamId === '') {
                 streamId = this.getNextStreamId();
                 streamingMethod.protocolState.branchKeyToStreamIdMap.push({ key: branchKey, streamId: streamId });
             }
@@ -6361,7 +6361,7 @@
             this.logger = logger;
             this.callbacks = lib$2();
             this.streaming = new ServerStreaming$1(session, clientRepository, serverRepository);
-            this.session.on("invoke", function (msg) { return _this.handleInvokeMessage(msg); });
+            this.session.on('invoke', function (msg) { return _this.handleInvokeMessage(msg); });
         }
         ServerProtocol.prototype.createStream = function (repoMethod) {
             repoMethod.protocolState.subscriptionsMap = {};
@@ -6373,39 +6373,39 @@
             var methodDef = repoMethod.definition;
             var flags = { streaming: isStreaming || false };
             var registerMsg = {
-                type: "register",
+                type: 'register',
                 methods: [{
-                        id: repoMethod.repoId,
-                        name: methodDef.name,
-                        display_name: methodDef.displayName,
-                        description: methodDef.description,
-                        version: methodDef.version,
-                        flags: flags,
-                        object_types: methodDef.objectTypes || methodDef.object_types,
-                        input_signature: methodDef.accepts,
-                        result_signature: methodDef.returns,
-                        restrictions: undefined,
-                    }],
+                    id: repoMethod.repoId,
+                    name: methodDef.name,
+                    display_name: methodDef.displayName,
+                    description: methodDef.description,
+                    version: methodDef.version,
+                    flags: flags,
+                    object_types: methodDef.objectTypes || methodDef.object_types,
+                    input_signature: methodDef.accepts,
+                    result_signature: methodDef.returns,
+                    restrictions: undefined,
+                }],
             };
             return this.session.send(registerMsg, { methodId: repoMethod.repoId })
                 .then(function () {
-                _this.logger.debug("registered method " + repoMethod.definition.name + " with id " + repoMethod.repoId);
-            })
+                    _this.logger.debug('registered method ' + repoMethod.definition.name + ' with id ' + repoMethod.repoId);
+                })
                 .catch(function (msg) {
-                _this.logger.warn("failed to register method " + repoMethod.definition.name + " with id " + repoMethod.repoId + " - " + JSON.stringify(msg));
-                throw msg;
-            });
+                    _this.logger.warn('failed to register method ' + repoMethod.definition.name + ' with id ' + repoMethod.repoId + ' - ' + JSON.stringify(msg));
+                    throw msg;
+                });
         };
         ServerProtocol.prototype.onInvoked = function (callback) {
-            this.callbacks.add("onInvoked", callback);
+            this.callbacks.add('onInvoked', callback);
         };
         ServerProtocol.prototype.methodInvocationResult = function (method, invocationId, err, result) {
             var msg;
-            if (err || err === "") {
+            if (err || err === '') {
                 msg = {
-                    type: "error",
+                    type: 'error',
                     request_id: invocationId,
-                    reason_uri: "agm.errors.client_error",
+                    reason_uri: 'agm.errors.client_error',
                     reason: err,
                     context: result,
                     peer_id: undefined,
@@ -6413,7 +6413,7 @@
             }
             else {
                 msg = {
-                    type: "yield",
+                    type: 'yield',
                     invocation_id: invocationId,
                     peer_id: this.session.peerId,
                     result: result,
@@ -6427,15 +6427,15 @@
                 var msg;
                 return __generator$1(this, function (_a) {
                     switch (_a.label) {
-                        case 0:
-                            msg = {
-                                type: "unregister",
-                                methods: [method.repoId],
-                            };
-                            return [4, this.session.send(msg)];
-                        case 1:
-                            _a.sent();
-                            return [2];
+                    case 0:
+                        msg = {
+                            type: 'unregister',
+                            methods: [method.repoId],
+                        };
+                        return [4, this.session.send(msg)];
+                    case 1:
+                        _a.sent();
+                        return [2];
                     }
                 });
             });
@@ -6487,7 +6487,7 @@
             }
             var client = this.clientRepository.getServerById(callerId).instance;
             var invocationArgs = { args: args, instance: client };
-            this.callbacks.execute("onInvoked", method, invocationId, invocationArgs);
+            this.callbacks.execute('onInvoked', method, invocationId, invocationArgs);
         };
         return ServerProtocol;
     }());
@@ -6497,14 +6497,14 @@
             this.repository = repository;
             this.subscriptionData = subscriptionData;
         }
-        Object.defineProperty(UserSubscription.prototype, "requestArguments", {
+        Object.defineProperty(UserSubscription.prototype, 'requestArguments', {
             get: function () {
                 return this.subscriptionData.params.arguments || {};
             },
             enumerable: true,
             configurable: true
         });
-        Object.defineProperty(UserSubscription.prototype, "servers", {
+        Object.defineProperty(UserSubscription.prototype, 'servers', {
             get: function () {
                 var _this = this;
                 return this.subscriptionData.trackedServers
@@ -6514,14 +6514,14 @@
             enumerable: true,
             configurable: true
         });
-        Object.defineProperty(UserSubscription.prototype, "serverInstance", {
+        Object.defineProperty(UserSubscription.prototype, 'serverInstance', {
             get: function () {
                 return this.servers[0];
             },
             enumerable: true,
             configurable: true
         });
-        Object.defineProperty(UserSubscription.prototype, "stream", {
+        Object.defineProperty(UserSubscription.prototype, 'stream', {
             get: function () {
                 return this.subscriptionData.method;
             },
@@ -6529,8 +6529,8 @@
             configurable: true
         });
         UserSubscription.prototype.onData = function (dataCallback) {
-            if (typeof dataCallback !== "function") {
-                throw new TypeError("The data callback must be a function.");
+            if (typeof dataCallback !== 'function') {
+                throw new TypeError('The data callback must be a function.');
             }
             this.subscriptionData.handlers.onData.push(dataCallback);
             if (this.subscriptionData.handlers.onData.length === 1 && this.subscriptionData.queued.data.length > 0) {
@@ -6540,16 +6540,16 @@
             }
         };
         UserSubscription.prototype.onClosed = function (closedCallback) {
-            if (typeof closedCallback !== "function") {
-                throw new TypeError("The callback must be a function.");
+            if (typeof closedCallback !== 'function') {
+                throw new TypeError('The callback must be a function.');
             }
             this.subscriptionData.handlers.onClosed.push(closedCallback);
         };
         UserSubscription.prototype.onFailed = function (callback) {
         };
         UserSubscription.prototype.onConnected = function (callback) {
-            if (typeof callback !== "function") {
-                throw new TypeError("The callback must be a function.");
+            if (typeof callback !== 'function') {
+                throw new TypeError('The callback must be a function.');
             }
             this.subscriptionData.handlers.onConnected.push(callback);
         };
@@ -6562,12 +6562,12 @@
         return UserSubscription;
     }());
 
-    var STATUS_AWAITING_ACCEPT = "awaitingAccept";
-    var STATUS_SUBSCRIBED = "subscribed";
-    var ERR_MSG_SUB_FAILED = "Subscription failed.";
-    var ERR_MSG_SUB_REJECTED = "Subscription rejected.";
-    var ON_CLOSE_MSG_SERVER_INIT = "ServerInitiated";
-    var ON_CLOSE_MSG_CLIENT_INIT = "ClientInitiated";
+    var STATUS_AWAITING_ACCEPT = 'awaitingAccept';
+    var STATUS_SUBSCRIBED = 'subscribed';
+    var ERR_MSG_SUB_FAILED = 'Subscription failed.';
+    var ERR_MSG_SUB_REJECTED = 'Subscription rejected.';
+    var ON_CLOSE_MSG_SERVER_INIT = 'ServerInitiated';
+    var ON_CLOSE_MSG_CLIENT_INIT = 'ClientInitiated';
     var ClientStreaming = (function () {
         function ClientStreaming(session, repository, logger) {
             var _this = this;
@@ -6581,7 +6581,7 @@
                 var tag = errorResponse._tag;
                 var subLocalKey = tag.subLocalKey;
                 var pendingSub = _this.subscriptionsList[subLocalKey];
-                if (typeof pendingSub !== "object") {
+                if (typeof pendingSub !== 'object') {
                     return;
                 }
                 pendingSub.trackedServers = pendingSub.trackedServers.filter(function (server) {
@@ -6590,14 +6590,14 @@
                 if (pendingSub.trackedServers.length <= 0) {
                     clearTimeout(pendingSub.timeoutId);
                     if (pendingSub.status === STATUS_AWAITING_ACCEPT) {
-                        var reason = (typeof errorResponse.reason === "string" && errorResponse.reason !== "") ?
+                        var reason = (typeof errorResponse.reason === 'string' && errorResponse.reason !== '') ?
                             ' Publisher said "' + errorResponse.reason + '".' :
-                            " No reason given.";
-                        var callArgs = typeof pendingSub.params.arguments === "object" ?
+                            ' No reason given.';
+                        var callArgs = typeof pendingSub.params.arguments === 'object' ?
                             JSON.stringify(pendingSub.params.arguments) :
-                            "{}";
+                            '{}';
                         pendingSub.error({
-                            message: ERR_MSG_SUB_REJECTED + reason + " Called with:" + callArgs,
+                            message: ERR_MSG_SUB_REJECTED + reason + ' Called with:' + callArgs,
                             called_with: pendingSub.params.arguments,
                             method: pendingSub.method,
                         });
@@ -6611,15 +6611,15 @@
             this.handleSubscribed = function (msg) {
                 var subLocalKey = msg._tag.subLocalKey;
                 var pendingSub = _this.subscriptionsList[subLocalKey];
-                if (typeof pendingSub !== "object") {
+                if (typeof pendingSub !== 'object') {
                     return;
                 }
                 var serverId = msg._tag.serverId;
                 var acceptingServer = pendingSub.trackedServers
                     .filter(function (server) {
-                    return server.serverId === serverId;
-                })[0];
-                if (typeof acceptingServer !== "object") {
+                        return server.serverId === serverId;
+                    })[0];
+                if (typeof acceptingServer !== 'object') {
                     return;
                 }
                 acceptingServer.subscriptionId = msg.subscription_id;
@@ -6651,11 +6651,11 @@
             };
             this.handleEventData = function (msg) {
                 var subLocalKey = _this.subscriptionIdToLocalKeyMap[msg.subscription_id];
-                if (typeof subLocalKey === "undefined") {
+                if (typeof subLocalKey === 'undefined') {
                     return;
                 }
                 var subscription = _this.subscriptionsList[subLocalKey];
-                if (typeof subscription !== "object") {
+                if (typeof subscription !== 'object') {
                     return;
                 }
                 var trackedServersFound = subscription.trackedServers.filter(function (server) {
@@ -6679,7 +6679,7 @@
                 var queuedData = subscription.queued.data;
                 if (onDataHandlers.length > 0) {
                     onDataHandlers.forEach(function (callback) {
-                        if (typeof callback === "function") {
+                        if (typeof callback === 'function') {
                             callback(receivedStreamData());
                         }
                     });
@@ -6690,11 +6690,11 @@
             };
             this.handleSubscriptionCancelled = function (msg) {
                 var subLocalKey = _this.subscriptionIdToLocalKeyMap[msg.subscription_id];
-                if (typeof subLocalKey === "undefined") {
+                if (typeof subLocalKey === 'undefined') {
                     return;
                 }
                 var subscription = _this.subscriptionsList[subLocalKey];
-                if (typeof subscription !== "object") {
+                if (typeof subscription !== 'object') {
                     return;
                 }
                 var expectedNewLength = subscription.trackedServers.length - 1;
@@ -6717,9 +6717,9 @@
                 }
                 delete _this.subscriptionIdToLocalKeyMap[msg.subscription_id];
             };
-            session.on("subscribed", this.handleSubscribed);
-            session.on("event", this.handleEventData);
-            session.on("subscription-cancelled", this.handleSubscriptionCancelled);
+            session.on('subscribed', this.handleSubscribed);
+            session.on('event', this.handleEventData);
+            session.on('subscription-cancelled', this.handleSubscriptionCancelled);
         }
         ClientStreaming.prototype.subscribe = function (streamingMethod, params, targetServers, success, error, existingSub) {
             var _this = this;
@@ -6727,17 +6727,17 @@
                 error({
                     method: streamingMethod,
                     called_with: params.arguments,
-                    message: ERR_MSG_SUB_FAILED + " No available servers matched the target params.",
+                    message: ERR_MSG_SUB_FAILED + ' No available servers matched the target params.',
                 });
                 return;
             }
             var subLocalKey = this.getNextSubscriptionLocalKey();
             var pendingSub = this.registerSubscription(subLocalKey, streamingMethod, params, success, error, params.methodResponseTimeout || 10000, existingSub);
-            if (typeof pendingSub !== "object") {
+            if (typeof pendingSub !== 'object') {
                 error({
                     method: streamingMethod,
                     called_with: params.arguments,
-                    message: ERR_MSG_SUB_FAILED + " Unable to register the user callbacks.",
+                    message: ERR_MSG_SUB_FAILED + ' Unable to register the user callbacks.',
                 });
                 return;
             }
@@ -6745,7 +6745,7 @@
                 var serverId = target.server.id;
                 var method = target.methods.find(function (m) { return m.name === streamingMethod.name; });
                 if (!method) {
-                    _this.logger.error("can not find method " + streamingMethod.name + " for target " + target.server.id);
+                    _this.logger.error('can not find method ' + streamingMethod.name + ' for target ' + target.server.id);
                     return;
                 }
                 pendingSub.trackedServers.push({
@@ -6753,7 +6753,7 @@
                     subscriptionId: undefined,
                 });
                 var msg = {
-                    type: "subscribe",
+                    type: 'subscribe',
                     server_id: serverId,
                     method_id: method.gatewayId,
                     arguments_kv: params.arguments,
@@ -6819,13 +6819,13 @@
                     error({
                         method: method,
                         called_with: params.arguments,
-                        message: ERR_MSG_SUB_FAILED + " Subscription attempt timed out after " + timeout + " ms.",
+                        message: ERR_MSG_SUB_FAILED + ' Subscription attempt timed out after ' + timeout + ' ms.',
                     });
                     delete _this.subscriptionsList[subLocalKey];
                 }
                 else if (pendingSub.status === STATUS_SUBSCRIBED && pendingSub.trackedServers.length > 0) {
                     pendingSub.trackedServers = pendingSub.trackedServers.filter(function (server) {
-                        return (typeof server.subscriptionId !== "undefined");
+                        return (typeof server.subscriptionId !== 'undefined');
                     });
                     delete pendingSub.timeoutId;
                     if (pendingSub.trackedServers.length <= 0) {
@@ -6840,11 +6840,11 @@
             var closersCount = subscription.queued.closers.length;
             var closingServerId = (closersCount > 0) ? subscription.queued.closers[closersCount - 1] : null;
             var closingServer;
-            if (closingServerId !== undefined && typeof closingServerId === "string") {
+            if (closingServerId !== undefined && typeof closingServerId === 'string') {
                 closingServer = this.repository.getServerById(closingServerId).instance;
             }
             subscription.handlers.onClosed.forEach(function (callback) {
-                if (typeof callback !== "function") {
+                if (typeof callback !== 'function') {
                     return;
                 }
                 callback({
@@ -6858,18 +6858,18 @@
         ClientStreaming.prototype.closeSubscription = function (subLocalKey) {
             var _this = this;
             var subscription = this.subscriptionsList[subLocalKey];
-            if (typeof subscription !== "object") {
+            if (typeof subscription !== 'object') {
                 return;
             }
             subscription.trackedServers.forEach(function (server) {
-                if (typeof server.subscriptionId === "undefined") {
+                if (typeof server.subscriptionId === 'undefined') {
                     return;
                 }
                 subscription.queued.closers.push(server.serverId);
                 _this.session.sendFireAndForget({
-                    type: "unsubscribe",
+                    type: 'unsubscribe',
                     subscription_id: server.subscriptionId,
-                    reason_uri: "",
+                    reason_uri: '',
                     reason: ON_CLOSE_MSG_CLIENT_INIT,
                 });
                 delete _this.subscriptionIdToLocalKeyMap[server.subscriptionId];
@@ -6887,10 +6887,10 @@
             this.session = session;
             this.repository = repository;
             this.logger = logger;
-            session.on("peer-added", function (msg) { return _this.handlePeerAdded(msg); });
-            session.on("peer-removed", function (msg) { return _this.handlePeerRemoved(msg); });
-            session.on("methods-added", function (msg) { return _this.handleMethodsAddedMessage(msg); });
-            session.on("methods-removed", function (msg) { return _this.handleMethodsRemovedMessage(msg); });
+            session.on('peer-added', function (msg) { return _this.handlePeerAdded(msg); });
+            session.on('peer-removed', function (msg) { return _this.handlePeerRemoved(msg); });
+            session.on('methods-added', function (msg) { return _this.handleMethodsAddedMessage(msg); });
+            session.on('methods-removed', function (msg) { return _this.handleMethodsRemovedMessage(msg); });
             this.streaming = new ClientStreaming(session, repository, logger);
         }
         ClientProtocol.prototype.subscribe = function (stream, options, targetServers, success, error, existingSub) {
@@ -6901,7 +6901,7 @@
             var serverId = target.id;
             var methodId = method.gatewayId;
             var msg = {
-                type: "call",
+                type: 'call',
                 server_id: serverId,
                 method_id: methodId,
                 arguments_kv: args,
@@ -6970,11 +6970,11 @@
                 result: result,
                 instance: server.instance,
                 status: InvokeStatus.Success,
-                message: ""
+                message: ''
             };
         };
         ClientProtocol.prototype.handleInvocationError = function (msg) {
-            this.logger.debug("handle invocation error " + JSON.stringify(msg));
+            this.logger.debug('handle invocation error ' + JSON.stringify(msg));
             var invocationId = msg._tag.invocationId;
             var serverId = msg._tag.serverId;
             var server = this.repository.getServerById(serverId);
@@ -6992,22 +6992,22 @@
     }());
 
     function gW3ProtocolFactory (instance, connection, clientRepository, serverRepository, libConfig, interop) {
-        var logger = libConfig.logger.subLogger("gw3-protocol");
+        var logger = libConfig.logger.subLogger('gw3-protocol');
         var resolveReadyPromise;
         var readyPromise = new Promise(function (resolve) {
             resolveReadyPromise = resolve;
         });
-        var session = connection.domain("agm", ["subscribed"]);
-        var server = new ServerProtocol(session, clientRepository, serverRepository, logger.subLogger("server"));
-        var client = new ClientProtocol(session, clientRepository, logger.subLogger("client"));
+        var session = connection.domain('agm', ['subscribed']);
+        var server = new ServerProtocol(session, clientRepository, serverRepository, logger.subLogger('server'));
+        var client = new ClientProtocol(session, clientRepository, logger.subLogger('client'));
         function handleReconnect() {
-            logger.info("reconnected - will replay registered methods and subscriptions");
+            logger.info('reconnected - will replay registered methods and subscriptions');
             var existingSubscriptions = client.drainSubscriptions();
             for (var _i = 0, existingSubscriptions_1 = existingSubscriptions; _i < existingSubscriptions_1.length; _i++) {
                 var sub = existingSubscriptions_1[_i];
                 var methodInfo = sub.method;
                 var params = Object.assign({}, sub.params);
-                logger.info("trying to re-subscribe to method " + methodInfo.name);
+                logger.info('trying to re-subscribe to method ' + methodInfo.name);
                 interop.client.subscribe(methodInfo, params, undefined, undefined, sub);
             }
             var registeredMethods = serverRepository.getList();
@@ -7015,7 +7015,7 @@
             for (var _a = 0, registeredMethods_1 = registeredMethods; _a < registeredMethods_1.length; _a++) {
                 var method = registeredMethods_1[_a];
                 var def = method.definition;
-                logger.info("re-publishing method " + def.name);
+                logger.info('re-publishing method ' + def.name);
                 if (method.stream) {
                     interop.server.createStream(def, method.streamCallbacks, undefined, undefined, method.stream);
                 }
@@ -7055,29 +7055,29 @@
     var Interop = (function () {
         function Interop(configuration) {
             var _this = this;
-            if (typeof configuration === "undefined") {
-                throw new Error("configuration is required");
+            if (typeof configuration === 'undefined') {
+                throw new Error('configuration is required');
             }
-            if (typeof configuration.connection === "undefined") {
-                throw new Error("configuration.connections is required");
+            if (typeof configuration.connection === 'undefined') {
+                throw new Error('configuration.connections is required');
             }
             var connection = configuration.connection;
-            if (typeof configuration.methodResponseTimeout !== "number") {
+            if (typeof configuration.methodResponseTimeout !== 'number') {
                 configuration.methodResponseTimeout = 30 * 1000;
             }
-            if (typeof configuration.waitTimeoutMs !== "number") {
+            if (typeof configuration.waitTimeoutMs !== 'number') {
                 configuration.waitTimeoutMs = 30 * 1000;
             }
             InstanceWrapper.API = this;
             this.instance = new InstanceWrapper(undefined, connection).unwrap();
-            this.clientRepository = new ClientRepository(configuration.logger.subLogger("cRep"));
+            this.clientRepository = new ClientRepository(configuration.logger.subLogger('cRep'));
             this.serverRepository = new ServerRepository();
             var protocolPromise;
             if (connection.protocolVersion === 3) {
                 protocolPromise = gW3ProtocolFactory(this.instance, connection, this.clientRepository, this.serverRepository, configuration, this);
             }
             else {
-                throw new Error("protocol " + connection.protocolVersion + " not supported");
+                throw new Error('protocol ' + connection.protocolVersion + ' not supported');
             }
             this.readyPromise = protocolPromise.then(function (protocol) {
                 _this.protocol = protocol;
@@ -7137,14 +7137,14 @@
         return Interop;
     }());
 
-    var successMessages = ["subscribed", "success"];
+    var successMessages = ['subscribed', 'success'];
     var MessageBus = (function () {
         function MessageBus(connection, logger) {
             var _this = this;
             this.publish = function (topic, data, options) {
                 var _a = options || {}, routingKey = _a.routingKey, target = _a.target;
                 var args = _this.removeEmptyValues({
-                    type: "publish",
+                    type: 'publish',
                     topic: topic,
                     data: data,
                     peer_id: _this.peerId,
@@ -7157,7 +7157,7 @@
                 return new Promise(function (resolve, reject) {
                     var _a = options || {}, routingKey = _a.routingKey, target = _a.target;
                     var args = _this.removeEmptyValues({
-                        type: "subscribe",
+                        type: 'subscribe',
                         topic: topic,
                         peer_id: _this.peerId,
                         routing_key: routingKey,
@@ -7165,23 +7165,23 @@
                     });
                     _this.session.send(args)
                         .then(function (response) {
-                        var subscription_id = response.subscription_id;
-                        _this.subscriptions.push({ subscription_id: subscription_id, topic: topic, callback: callback, source: target });
-                        resolve({
-                            unsubscribe: function () {
-                                _this.session.send({ type: "unsubscribe", subscription_id: subscription_id, peer_id: _this.peerId });
-                                _this.subscriptions = _this.subscriptions.filter(function (s) { return s.subscription_id !== subscription_id; });
-                                return Promise.resolve();
-                            }
-                        });
-                    })
+                            var subscription_id = response.subscription_id;
+                            _this.subscriptions.push({ subscription_id: subscription_id, topic: topic, callback: callback, source: target });
+                            resolve({
+                                unsubscribe: function () {
+                                    _this.session.send({ type: 'unsubscribe', subscription_id: subscription_id, peer_id: _this.peerId });
+                                    _this.subscriptions = _this.subscriptions.filter(function (s) { return s.subscription_id !== subscription_id; });
+                                    return Promise.resolve();
+                                }
+                            });
+                        })
                         .catch(function (error) { return reject(error); });
                 });
             };
             this.watchOnEvent = function () {
-                _this.session.on("event", function (args) {
+                _this.session.on('event', function (args) {
                     var data = args.data, subscription_id = args.subscription_id;
-                    var source = args["publisher-identity"];
+                    var source = args['publisher-identity'];
                     var subscription = _this.subscriptions.find(function (s) { return s.subscription_id === subscription_id; });
                     if (subscription) {
                         if (!subscription.source) {
@@ -7199,7 +7199,7 @@
             this.logger = logger;
             this.peerId = connection.peerId;
             this.subscriptions = [];
-            this.session = connection.domain("bus", successMessages);
+            this.session = connection.domain('bus', successMessages);
             this.readyPromise = this.session.join();
             this.readyPromise.then(function () {
                 _this.watchOnEvent();
@@ -7236,7 +7236,7 @@
         var preloadPromise = Promise.resolve();
         if (gdVersion) {
             if (gdVersion < 3) {
-                throw new Error("GD v2 is not supported. Use v4 of the API to run in that context.");
+                throw new Error('GD v2 is not supported. Use v4 of the API to run in that context.');
             }
             else if (gdVersion >= 3) {
                 glue42gd = window.glue42gd;
@@ -7256,14 +7256,14 @@
         var _allowTrace;
         var libs = {};
         function registerLib(name, inner, t) {
-            _allowTrace = _logger.canPublish("trace");
+            _allowTrace = _logger.canPublish('trace');
             if (_allowTrace) {
-                _logger.trace("registering " + name + " module");
+                _logger.trace('registering ' + name + ' module');
             }
             var done = function () {
                 inner.initTime = t.stop();
                 inner.initEndTime = t.endTime;
-                _logger.trace(name + " is ready");
+                _logger.trace(name + ' is ready');
             };
             inner.initStartTime = t.startTime;
             if (inner.ready) {
@@ -7284,52 +7284,52 @@
         }
         function setupConnection() {
             var initTimer = timer();
-            _connection = new Connection(internalConfig.connection, _logger.subLogger("connection"));
+            _connection = new Connection(internalConfig.connection, _logger.subLogger('connection'));
             var authPromise = Promise.resolve(internalConfig.auth);
             if (internalConfig.connection && !internalConfig.auth) {
                 if (glue42gd) {
-                    _logger.trace("trying to get gw token...");
+                    _logger.trace('trying to get gw token...');
                     authPromise = glue42gd.getGWToken().then(function (token) {
                         var _a;
-                        _logger.trace("got GW token " + ((_a = token) === null || _a === void 0 ? void 0 : _a.substring(token.length - 10)));
+                        _logger.trace('got GW token ' + ((_a = token) === null || _a === void 0 ? void 0 : _a.substring(token.length - 10)));
                         return {
                             gatewayToken: token
                         };
                     });
                 }
                 else {
-                    authPromise = Promise.reject("You need to provide auth information");
+                    authPromise = Promise.reject('You need to provide auth information');
                 }
             }
             return authPromise
                 .then(function (authConfig) {
-                var authRequest;
-                if (Object.prototype.toString.call(authConfig) === "[object Object]") {
-                    authRequest = authConfig;
-                }
-                else {
-                    throw new Error("Invalid auth object - " + JSON.stringify(authConfig));
-                }
-                return _connection.login(authRequest);
-            })
+                    var authRequest;
+                    if (Object.prototype.toString.call(authConfig) === '[object Object]') {
+                        authRequest = authConfig;
+                    }
+                    else {
+                        throw new Error('Invalid auth object - ' + JSON.stringify(authConfig));
+                    }
+                    return _connection.login(authRequest);
+                })
                 .then(function () {
-                registerLib("connection", _connection, initTimer);
-                return internalConfig;
-            })
+                    registerLib('connection', _connection, initTimer);
+                    return internalConfig;
+                })
                 .catch(function (e) {
-                if (_connection) {
-                    _connection.logout();
-                }
-                throw e;
-            });
+                    if (_connection) {
+                        _connection.logout();
+                    }
+                    throw e;
+                });
         }
         function setupLogger() {
             var _a;
             var initTimer = timer();
-            _logger = new Logger("" + ((_a = internalConfig.connection.identity) === null || _a === void 0 ? void 0 : _a.application), undefined, internalConfig.customLogger);
+            _logger = new Logger('' + ((_a = internalConfig.connection.identity) === null || _a === void 0 ? void 0 : _a.application), undefined, internalConfig.customLogger);
             _logger.consoleLevel(internalConfig.logger.console);
             _logger.publishLevel(internalConfig.logger.publish);
-            registerLib("logger", _logger, initTimer);
+            registerLib('logger', _logger, initTimer);
             return Promise.resolve(undefined);
         }
         function setupMetrics() {
@@ -7337,28 +7337,28 @@
             var config = internalConfig.metrics;
             var rootMetrics = metrics({
                 connection: config ? _connection : undefined,
-                logger: _logger.subLogger("metrics")
+                logger: _logger.subLogger('metrics')
             });
             var rootSystem = rootMetrics;
-            if (typeof config !== "boolean" && config.disableAutoAppSystem) {
+            if (typeof config !== 'boolean' && config.disableAutoAppSystem) {
                 rootSystem = rootMetrics;
             }
             else {
-                rootSystem = rootMetrics.subSystem("App");
+                rootSystem = rootMetrics.subSystem('App');
             }
             _metrics = addFAVSupport(rootSystem);
-            registerLib("metrics", _metrics, initTimer);
+            registerLib('metrics', _metrics, initTimer);
             return Promise.resolve();
         }
         function setupInterop() {
             var initTimer = timer();
             var agmConfig = {
                 connection: _connection,
-                logger: _logger.subLogger("interop"),
+                logger: _logger.subLogger('interop'),
             };
             _interop = new Interop(agmConfig);
             Logger.Interop = _interop;
-            registerLib(["interop", "agm"], _interop, initTimer);
+            registerLib(['interop', 'agm'], _interop, initTimer);
             return Promise.resolve();
         }
         function setupContexts() {
@@ -7368,9 +7368,9 @@
                 var initTimer = timer();
                 _contexts = new ContextsModule({
                     connection: _connection,
-                    logger: _logger.subLogger("contexts")
+                    logger: _logger.subLogger('contexts')
                 });
-                registerLib("contexts", _contexts, initTimer);
+                registerLib('contexts', _contexts, initTimer);
                 return _contexts;
             }
             else {
@@ -7388,8 +7388,8 @@
                         return [2, Promise.resolve()];
                     }
                     initTimer = timer();
-                    _bus = new MessageBus(_connection, _logger.subLogger("bus"));
-                    registerLib("bus", _bus, initTimer);
+                    _bus = new MessageBus(_connection, _logger.subLogger('bus'));
+                    registerLib('bus', _bus, initTimer);
                     return [2, Promise.resolve()];
                 });
             });
@@ -7426,7 +7426,7 @@
                 if (!_interop) {
                     return;
                 }
-                _interop.invoke("T42.ACS.Feedback", feedbackInfo, "best");
+                _interop.invoke('T42.ACS.Feedback', feedbackInfo, 'best');
             };
             var info = {
                 coreVersion: version$2,
@@ -7447,7 +7447,7 @@
                 userConfig: userConfig,
                 done: function () {
                     var _a;
-                    (_a = _logger) === null || _a === void 0 ? void 0 : _a.info("done called by user...");
+                    (_a = _logger) === null || _a === void 0 ? void 0 : _a.info('done called by user...');
                     return _connection.logout();
                 }
             };
@@ -7467,22 +7467,22 @@
                 get initTimes() {
                     var result = Object.keys(glue)
                         .filter(function (key) {
-                        var _a;
-                        if (key === "initTimes" || key === "agm") {
-                            return false;
-                        }
-                        return (_a = glue[key]) === null || _a === void 0 ? void 0 : _a.initTime;
-                    })
+                            var _a;
+                            if (key === 'initTimes' || key === 'agm') {
+                                return false;
+                            }
+                            return (_a = glue[key]) === null || _a === void 0 ? void 0 : _a.initTime;
+                        })
                         .map(function (key) {
-                        return {
-                            name: key,
-                            time: glue[key].initTime,
-                            startTime: glue[key].initStartTime,
-                            endTime: glue[key].initEndTime
-                        };
-                    });
+                            return {
+                                name: key,
+                                time: glue[key].initTime,
+                                startTime: glue[key].initStartTime,
+                                endTime: glue[key].initEndTime
+                            };
+                        });
                     result.push({
-                        name: "glue",
+                        name: 'glue',
                         startTime: glueInitTimer.startTime,
                         endTime: glueInitTimer.endTime,
                         time: glueInitTimer.period
@@ -7518,25 +7518,25 @@
             .then(function () { return Promise.all([setupMetrics(), setupInterop(), setupContexts(), setupBus()]); })
             .then(function () { return _interop.readyPromise; })
             .then(function () {
-            return setupExternalLibs(internalConfig.libs || []);
-        })
+                return setupExternalLibs(internalConfig.libs || []);
+            })
             .then(waitForLibs)
             .then(constructGlueObject)
             .catch(function (err) {
-            return Promise.reject({
-                err: err,
-                libs: libs
+                return Promise.reject({
+                    err: err,
+                    libs: libs
+                });
             });
-        });
     };
-    if (typeof window !== "undefined") {
+    if (typeof window !== 'undefined') {
         window.GlueCore = GlueCore;
     }
     GlueCore.version = version$2;
     GlueCore.default = GlueCore;
 
     var glueWebFactory = createFactoryFunction(GlueCore);
-    if (typeof window !== "undefined") {
+    if (typeof window !== 'undefined') {
         window.GlueWeb = glueWebFactory;
     }
     glueWebFactory.default = glueWebFactory;
