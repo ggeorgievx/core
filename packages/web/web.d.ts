@@ -59,6 +59,9 @@ export namespace Glue42Web {
 
     export interface API extends Glue42Core.GlueCore {
         windows: Glue42Web.Windows.API;
+        /**
+         * @ignore
+         */
         layouts: Glue42Web.Layouts.API;
         notifications: Glue42Web.Notifications.API;
     }
@@ -189,6 +192,7 @@ export namespace Glue42Web {
     /**
      * @docmenuorder 6
      * @intro
+     * @ignore
      * **Layouts** allows you to save the arrangement of any set of applications running in Glue42 Desktop and later restore it. The **Layouts** API can be accessed using `glue.layouts`.
      *
      * The **Layouts** library supports different types of layouts:
