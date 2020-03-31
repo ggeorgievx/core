@@ -116,6 +116,45 @@ describe("invoke results", () => {
         });
     });
 
+    it("server returns undefined result", (done) => {
+        const name = getMethodName();
+        glueServer.interop.register(name, () => {
+            // do nothing
+        }).then(()=>{
+            glueClient.agm.invoke(name).then(() => {
+                done();
+            }).catch((err) => {
+                done(err);
+            });
+        });
+    });
+
+    it("server returns null result", (done) => {
+        const name = getMethodName();
+        glueServer.interop.register(name, () => {
+            return null;
+        }).then(()=>{
+            glueClient.agm.invoke(name).then(() => {
+                done();
+            }).catch((err) => {
+                done(err);
+            });
+        });
+    });
+
+    it("server returns array result", (done) => {
+        const name = getMethodName();
+        glueServer.interop.register(name, () => {
+            return [1,2,3];
+        }).then(()=>{
+            glueClient.agm.invoke(name).then(() => {
+                done();
+            }).catch((err) => {
+                done(err);
+            });
+        });
+    });
+
     function validateResult(result: Glue42Core.Interop.InvocationResult<any>, m: string, calledWith: any): void {
         expect(result.method.name).to.equal(m);
         expect(result.called_with.arg).to.equal(calledWith);

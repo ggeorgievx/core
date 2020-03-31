@@ -330,12 +330,11 @@ export default class Server {
                 }
             }
 
-            // The AGM library only transfers objects. If the result is not an object, put it in one
-            if (typeof result !== "object" || result.constructor === Array) {
-                result = { _value: result };
-            }
             if (!result) {
                 result = {};
+            } else if (typeof result !== "object" || Array.isArray(result)) {
+                // The AGM library only transfers objects. If the result is not an object, put it in one
+                result = { _value: result };
             }
 
             this.protocol.server.methodInvocationResult(methodToExecute, invocationId, err, result);
