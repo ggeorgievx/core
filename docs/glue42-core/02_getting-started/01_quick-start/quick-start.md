@@ -16,7 +16,7 @@ Create a new app directory with a basic html and a basic JS file.
 
 Your directory should look like this:
 
-```text
+```cmd
 /myApp
     /index.html
     /script.js
@@ -34,23 +34,14 @@ gluec init
 
 ## Step Four
 
-Initiate npm and get the `@glue42/web` npm package:
-
-```javascript
-npm init --yes
-npm install --save @glue42/web 
-```
-
-## Step Five
-
-Go to the `index.html` and reference the `@glue42/web` dist file. Your html should look like this
+Go to the `index.html` and reference the `@glue42/web` dist file from unpkg. Your html should look like this
 
 ```html
-<script src="/glueweb.js">
+<script src="https://unpkg.com/@glue42/web@latest/dist/web.umd.js"></script>
 <script src="./script.js">
 ```
 
-## Initiate Glue42Web
+## Step Five
 
 Go to `./script.js`, declare a simple `init` function like this:
 
@@ -65,7 +56,7 @@ init().catch(console.error);
 
 ```
 
-## Configure the Glue42 Core CLI
+## Step Six
 
 Configure the CLI to serve your app and the Glue42 Web script. To do that go over to `glue.config.dev.json` and modify it to look like this:
 
@@ -82,17 +73,12 @@ Configure the CLI to serve your app and the Glue42 Web script. To do that go ove
                 }
             }
         ],
-        "sharedAssets": [
-            {
-                "route": "/glueweb.js",
-                "path": "./node_modules/@glue42/web/dist/web.umd.min.js"
-            }
-        ]
+        "sharedAssets": []
     }
 }
 ```
 
-## Step Six
+## Step Seven
 
 Launch your app:
 

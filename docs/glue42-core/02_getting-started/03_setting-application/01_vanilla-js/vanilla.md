@@ -6,24 +6,18 @@ We will assume that the application is a simple, light app, with just an index.h
 
 ## Prerequisites 
 
-We will assume that this is the only application in the project and that you have already did the environment setup. Next we need to get the `@glue42/web` npm package which will connect our client to the environment and give us access to the Glue42 Web API **TODO: Link**.
+We will assume that this is the only application in the project and that you have already did the environment setup. Next we need to reference `@glue42/web` in the `index.html` which will connect our client to the environment and give us access to the Glue42 Web API **TODO: Link**.
 
 ## Set up Glue42 Web
 
-First, we need to get the package:
-
-```javascript
-npm install --save @glue42/web
-```
-
-Next we need to reference it from the **index.html** with a simple `<script>` tag, like this:
+The easiest way to use unpkg.
 
 ```html
-<script src="./node_modules/@glue42/web/dist/web.umd.min.js">
+<script src="https://unpkg.com/@glue42/web@latest/dist/web.umd.js"></script>
 <script src="./index.js">
 ```
 
-Generally it is not a good idea to serve your entire node_modules directory, so it would be better to set the source to something like `/web.js` and configure your server to correctly serve this resource or you can take advantage of the Glue42 Core CLI **TODO: Link**. We are using `web.umd.min.js` just to keep it simple, this script will attach a factory function `GlueWeb` to the `window` object.
+We are using `web.umd.js` just to keep it simple, this script will attach a factory function `GlueWeb` to the `window` object.
 
 Next we go to the `./index.js`, which in our example is just a simple JS file with an `init` method and we initialize Glue42 Web.
 
