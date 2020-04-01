@@ -4,18 +4,18 @@ The Glue42 Core Environment is a set of JS and JSON files which must be hosted a
 
 The environment consists of:
 - A shared worker used as a central point for all Glue42 Clients to connect to
-- A gateway which carries out the communication between all Glue42 Clients
+- A gateway which carries out the communication between all [**Glue42 Clients**](../glue42-client/index.html)
 - **Optional** configuration file used to define Glue42 Core settings and defaults
 
 The Glue42 Core environment requirements are:
 - All files must be hosted on the same domain as your applications
-- All files must be served from a path easily accessible by all Glue42 Clients. 
+- All files must be served from a path easily accessible by all [**Glue42 Clients**](../glue42-client/index.html). 
 
 ### Setting up environment
 
-Setting up is much easier than it seems. We have created a CLI tool **TODO: LINK** which makes the process of setting up your development environment and bundling the Glue42 Core environment for deployment easy and painless. We have prepared detailed guides for setting up the environment using the CLI for single application **TODO: LINK** and multiple application **TODO: LINK** projects.
+Setting up is much easier than it seems. We have created a [**CLI**](../cli/index.html) tool which makes the process of setting up your development environment and bundling the Glue42 Core environment for deployment easy and painless. We have prepared detailed guides for setting up the environment using the CLI for [**single application**](../../../getting-started/setting-environment/single-application/index.html) and [**multiple application**](../../../getting-started/setting-environment/multiple-applications/index.html) projects.
 
-Those of you who need fine-grained control over the development and deployment of their project, can head over to the Manual Setup **TODO: LINK** section. There we have prepared a detailed guide for manually setting up the environment.
+Those of you who need fine-grained control over the development and deployment of their project, can head over to the [**Manual Setup**](../../../getting-started/setting-environment/manual/index.html) section. There we have prepared a detailed guide for manually setting up the environment.
 
 ## Configuration File
 
@@ -34,9 +34,9 @@ interface Glue42CoreConfig {
 
 ### Glue42WebConfig
 
-This is an **optional** configuration object which when defined will be used as a common setting when all Glue42 Clients on this domain initialize the Glue42 Web library. Every client can define it's own initialization options, which will overwrite the common settings in `glue.config.json`.
+This is an **optional** configuration object which when defined will be used as a common setting when all [**Glue42 Clients**](../glue42-client/index.html) on this domain initialize the Glue42 Web library. Every client can define it's own initialization options, which will overwrite the common settings in `glue.config.json`.
 
-For more information on the Glue42WebConfig, head over to the Glue42 Web reference documentation. **TODO: LINK**
+For more information on the Glue42WebConfig, head over to the Glue42 Web reference documentation. **TODO**
 
 ### GatewayConfig
 
@@ -54,7 +54,7 @@ This is an **optional** configuration object which defines settings used by the 
 
 #### Gateway log appender
 
-You can overwrite the default logging configuration of the gateway from `glue.config.json`. For most cases this is not needed, because the gateway logs internal messages sent back and forth from Glue42 Clients. However, if you really need to, you can define:
+You can overwrite the default logging configuration of the gateway from `glue.config.json`. For most cases this is not needed, because the gateway logs internal messages sent back and forth from [**Glue42 Clients**](../glue42-client/index.html). However, if you really need to, you can define:
 - log level - accepts: `"trace" | "debug" | "info" | "warn" | "error"`, defaults to: `info`
 - appender - a function that receives a **LogInfo** object. By default logs to the shared worker console, but your custom function can send those logs to a remove server, for example. The **LogInfo** object has a structure like this:
 
@@ -98,7 +98,7 @@ self.log = (logInfo) => {
 
 ## Shared Worker
 
-The shared worker is a script, which is used to create a Shared Web Worker. This is the central point to which all Glue42 Clients connect when initializing the javascript glue library. It is responsible to configuring, initializing and linking Glue42 Clients to the gateway.
+The shared worker is a script, which is used to create a Shared Web Worker. This is the central point to which all [**Glue42 Clients**](../glue42-client/index.html) connect when initializing the javascript glue library. It is responsible to configuring, initializing and linking [**Glue42 Clients**](../glue42-client/index.html) to the gateway.
 
 The shared worker will use the `glue.config.json` to get user-defined settings for the gateway.
 

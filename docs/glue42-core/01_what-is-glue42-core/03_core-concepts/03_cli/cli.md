@@ -26,7 +26,7 @@ gluec init
 ```
 
 This command will set up Glue42 Core for the current directory. This means that the CLI will:
-- npm install (or npm init --yes beforehand, if no package.json was found) the Glue42 Core Environment **TODO: Link** files
+- npm install (or npm init --yes beforehand, if no package.json was found) the [**Glue42 Core Environment**](../environment/index.html) files
 - create `glue.config.dev.json` with default settings and correct paths for all Glue42 Core assets
 - create `glue.config.json` with default settings for easy overwrite
 
@@ -67,16 +67,16 @@ interface GlueDevConfig {
 
 ### GlueAssets
 
-`glueAssets` is optional and defines the locations of all scripts and configs part of the Glue42 Core Environment **TODO: LINK**. These settings are used by the `serve` command to correctly host all required files and by the `build` command to correctly compose your Glue42 Core bundle. It has the following properties:
+`glueAssets` is optional and defines the locations of all scripts and configs part of the [**Glue42 Core Environment**](../environment/index.html). These settings are used by the `serve` command to correctly host all required files and by the `build` command to correctly compose your Glue42 Core bundle. It has the following properties:
 
 |Property|Type|Description|Default|
 |--------|----|-----------|-------|
 |`worker`|`string`|**Optional** The location of the @glue42/worker-web dist JS file| Defaults to: "./node_modules/@glue42/worker-web/dist/worker.js" |
 |`gateway`|`object`|**Optional**| - |
 |`gateway.location`|`string`|**Optional** The location of the @glue42/gateway-web dist JS file| Defaults to: "./node_modules/@glue42/gateway-web/web/gateway-web.js" |
-|`gateway.gwLogAppender`|`string`|**Optional** The location of a custom Gateway **TODO: LINK** log appender file.  | no default |
+|`gateway.gwLogAppender`|`string`|**Optional** The location of a custom Gateway log appender file.  | no default |
 |`config`|`string`|**Optional** The location of the glue.config.json file | Defaults to: "./glue.config.json" |
-|`route`|`string`|**Optional** The base route where the Glue42 Core Environment **TODO: LINK** files will be served by the dev server | Defaults to: "/glue" |
+|`route`|`string`|**Optional** The base route where the [**Glue42 Core Environment**](../environment/index.html) files will be served by the dev server | Defaults to: "/glue" |
 
 Example:
 ```json
@@ -95,7 +95,7 @@ Example:
 
 In this example, the user has a `lib` directory where he has put the built dist files of the `@glue42/worker-web` and `@glue42/gateway-web` packages. The CLI will use these locations (for serving and building) and will fail with an error if any of the files where not found.
 
-Here the user has also overwritten the default `route` to `"/shared/glue"`. This could be useful, if the user wishes to keep all shared resources like images, scripts, styles, etc and Glue42 Core files under the same base path. However now all Glue42 Clients need to be instructed where to find the Glue42 Core Environment files. For detailed information on how to do that head over to the Glue42 Client **TODO: LINK** section. 
+Here the user has also overwritten the default `route` to `"/shared/glue"`. This could be useful, if the user wishes to keep all shared resources like images, scripts, styles, etc and Glue42 Core files under the same base path. However now all [**Glue42 Clients**](../glue42-client/index.html) need to be instructed where to find the [**Glue42 Core Environment**](../environment/index.html) files. For detailed information on how to do that head over to the [**Glue42 Clients**](../glue42-client/index.html) section. 
 
 ### Server
 
