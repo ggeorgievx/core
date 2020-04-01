@@ -1,7 +1,7 @@
 import { Glue42Web } from "../../web";
 import { defaultConfigLocation, defaultConfig, defaultWorkerName } from "./defaults";
 
-const fetchTimeout = (url: string, timeoutMilliseconds: number = 1000): Promise<Response> => {
+const fetchTimeout = (url: string, timeoutMilliseconds = 1000): Promise<Response> => {
     return new Promise((resolve, reject) => {
         let timeoutHit = false;
         const timeout = setTimeout(() => {
@@ -39,7 +39,7 @@ const getRemoteConfig = async (userConfig: Glue42Web.Config): Promise<Glue42Web.
             return {};
         }
 
-        const json: any = await response.json();
+        const json = await response.json();
         return json?.glue ?? {};
     } catch {
         return {};

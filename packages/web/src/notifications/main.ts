@@ -24,7 +24,7 @@ export class Notifications implements Glue42Web.Notifications.API {
 
         if (options.clickInterop) {
             const interopOptions = options.clickInterop;
-            notification.onclick = () => {
+            notification.onclick = (): void => {
                 this.interop.invoke(interopOptions.method, interopOptions?.arguments ?? {}, interopOptions?.target ?? "best");
             };
         }

@@ -24,6 +24,6 @@ export interface SaveAutoLayoutCommandArgs {
     parentInfo: Glue42Web.Layouts.LayoutComponent;
     childWindows: string[];
     closeEveryone: boolean;
-    context: any;
-    metadata: any;
+    context: object;
+    metadata: object;
 }

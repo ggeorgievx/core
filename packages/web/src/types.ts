@@ -3,7 +3,7 @@ import { Glue42 } from "@glue42/desktop";
 
 /** Optional context passed to new windows */
 export interface StartingContext {
-    context: any;
+    context: object;
     name: string;
     parent: string; // id of the parent window
 }

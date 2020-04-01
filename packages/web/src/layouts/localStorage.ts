@@ -47,11 +47,11 @@ export class LocalStorage {
         return {};
     }
 
-    private setObjectToLocalStorage(obj: LocalStorageEntry) {
+    private setObjectToLocalStorage(obj: LocalStorageEntry): void {
         window.localStorage.setItem(LocalStorage.KEY, JSON.stringify(obj));
     }
 
-    private getKey(name: string, type: string) {
+    private getKey(name: string, type: string): string {
         return `${type}_${name}`;
     }
 }

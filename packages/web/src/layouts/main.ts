@@ -3,7 +3,7 @@ import { LocalStorage } from "./localStorage";
 import { Windows } from "../windows/main";
 import { LocalWebWindow } from "../windows/my";
 import { Control } from "../control/control";
-import { SaveAutoLayoutCommandArgs, SaveAutoLayoutCommand, RemoteCommand, LayoutCommand, LayoutRemoteCommand } from "../control/commands";
+import { SaveAutoLayoutCommandArgs, RemoteCommand, LayoutRemoteCommand } from "../control/commands";
 
 export class Layouts implements Glue42Web.Layouts.API {
     private static readonly SaveContextMethodName = "T42.HC.GetSaveContext";
@@ -27,7 +27,7 @@ export class Layouts implements Glue42Web.Layouts.API {
         }
 
         const openedWindows = this.windows.getChildWindows().map((w) => w.id);
-        const components: any[] = await this.getRemoteWindowsInfo(openedWindows);
+        const components = await this.getRemoteWindowsInfo(openedWindows);
         // push the local info
         components.push(this.getLocalLayoutComponent(layoutOptions.context, true));
 
@@ -66,12 +66,12 @@ export class Layouts implements Glue42Web.Layouts.API {
 
     public onSaveRequested(callback: (context?: object | undefined) => Glue42Web.Layouts.SaveRequestResponse): () => void {
         this.getLocalInfoCallback = callback;
-        return () => {
+        return (): void => {
             this.getLocalInfoCallback = undefined;
         };
     }
 
-    public getLocalLayoutComponent(context?: any, main: boolean = false): Glue42Web.Layouts.LayoutComponent {
+    public getLocalLayoutComponent(context?: object, main = false): Glue42Web.Layouts.LayoutComponent {
         let requestResult: Glue42Web.Layouts.SaveRequestResponse | undefined;
         const my = this.windows.my() as LocalWebWindow;
 
@@ -103,13 +103,13 @@ export class Layouts implements Glue42Web.Layouts.API {
         };
     }
 
-    private registerRequestMethods() {
+    private registerRequestMethods(): void {
         this.interop.register(Layouts.SaveContextMethodName, (args) => {
             return this.getLocalLayoutComponent(args);
         });
     }
 
-    private async handleControlMessage(command: RemoteCommand) {
+    private async handleControlMessage(command: RemoteCommand): Promise<void> {
         const layoutCommand = command as LayoutRemoteCommand;
         if (layoutCommand.command === "saveLayoutAndClose") {
             const args = layoutCommand.args as SaveAutoLayoutCommandArgs;

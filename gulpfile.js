@@ -142,7 +142,10 @@ const publish = async () => {
 };
 
 const stableSyncPush = async () => {
-    await git.raw(['merge', '--strategy-option=theirs', releaseBranch]);
+    for (const packageName of packagesDirNamesToRelease) {
+        console.log(`checking out ${packageName}`);
+        await git.raw(['checkout', releaseBranch, `packages/${packageName}`]);
+    }
     await addCommit('[post-release] Release and sync completed');
     await git.push();
 };

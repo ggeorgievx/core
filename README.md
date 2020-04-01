@@ -41,6 +41,8 @@ TODO: Angular -> link to docs
 
 ## Roadmap
 
+To see and help us shape the direction of Glue42 Core, review the [new feature tag](https://github.com/Glue42/core/issues?q=is%3Aissue+is%3Aopen+label%3A%22tag%3A+new+feature%22) in the issues section - we would love to hear more from you!
+
 ## Getting Started
 
 TODO: links to tutorial, links to framework specific guides
