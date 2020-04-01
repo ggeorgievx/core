@@ -1,6 +1,6 @@
 ## Overview
 
-The previous pages of the Getting Started section got you up to speed with setting up the Glue42 Core environment and setting up a Glue42 Client in React and Vanilla JS. Now, we will take a look at how to get all the files you need bundled up and ready for deployment.
+The previous pages of the Getting Started section got you up to speed with setting up the [**Glue42 Core environment**](../../what-is-glue42-core/core-concepts/environment/index.html) and setting up a [**Glue42 Client**](../../what-is-glue42-core/core-concepts/glue42-client/index.html) in [**React**](../setting-application/react/index.html) and [**Vanilla JS**](../setting-application/vanilla-js/index.html). Now, we will take a look at how to get all the files you need bundled up and ready for deployment.
 
 We are going to quickly explain how to do that using the CLI only, because if you have gone down the manual path, then you should already know what you need, where is located and how to deploy it using your custom setup.
 
@@ -19,4 +19,4 @@ Just a quick reminder of what the Glue42 Client defaults are:
 - `/glue/gateway.js` for the gateway
 - `/glue/glue.config.json` for the configuration
 
-In case you need to overwrite these defaults, head over to the Glue42 Client **TODO: Link** for detailed explanation and examples.
+In case you need to overwrite these defaults, head over to the [**Glue42 Client**](../../what-is-glue42-core/core-concepts/glue42-client/index.html) for detailed explanation and examples.

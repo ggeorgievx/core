@@ -19,9 +19,9 @@ Those of you who need fine-grained control over the development and deployment o
 
 ## Configuration File
 
-This is a simple JSON file containing general Glue42 Core settings, gateway settings and shared configuration used by all Glue42 Clients on this domain.
+This is a simple JSON file containing general Glue42 Core settings, gateway settings and shared configuration used by all [**Glue42 Clients**](../glue42-client/index.html) on this domain.
 
-If this file is not present, then all Glue42 Clients will initialize using default settings (more on that in the Glue42 Client section **TODO: LINK**) and will try to connect to the shared worker at the default location at `/glue/worker.js`. The shared worker will also try to connect to the gateway at the default location at `/glue/gateway.js`.
+If this file is not present, then all Glue42 Clients will initialize using default settings (more on that in the [**Glue42 Client**](../glue42-client/index.html) section) and will try to connect to the shared worker at the default location at `/glue/worker.js`. The shared worker will also try to connect to the gateway at the default location at `/glue/gateway.js`.
 
 If you provide a configuration file, then it **must** be named `glue.config.json`. The interface of the config is:
 
