@@ -36,7 +36,7 @@ interface Glue42CoreConfig {
 
 This is an **optional** configuration object which when defined will be used as a common setting when all [**Glue42 Clients**](../glue42-client/index.html) on this domain initialize the Glue42 Web library. Every client can define it's own initialization options, which will overwrite the common settings in `glue.config.json`.
 
-For more information on the Glue42WebConfig, head over to the Glue42 Web reference documentation. **TODO**
+For more information on the Glue42WebConfig, head over to the [Glue42 Web](../../../../reference/core/latest/glue42%20web/index.html) reference documentation.
 
 ### GatewayConfig
 

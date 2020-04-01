@@ -11,12 +11,12 @@ To "initialize" client, means to connect to the [**Glue42 Core Environment**](..
 - [**React**](../../../getting-started/setting-application/react/index.html)
 
 We are not going to overlap the explanations there, instead we will get in-depth on how we can configure this initialization and why would we want to do that. Regardless of whether you use Vanilla JS or our React library, the configuration is done using two **optional** elements, and we will cover both here:
-- Glue42Web.Config **TODO**
+- [Glue42Web.Config](../../../../reference/core/latest/glue42%20web/index.html)
 - `glue.config.json`
 
 ## Glue42Web.Config
 
-Regardless of whether you use the `@glue42/web` library directly or our [**React**](../../../getting-started/setting-application/react/index.html) library, the initialization is done by invoking a factory function exposed by the libraries. This factory function accepts an **optional** configuration object of type `Glue42Web.Config`. Full details on the Glue42 Web API can be found at the API reference **TODO** page, however here we will explain the config object in more details.
+Regardless of whether you use the `@glue42/web` library directly or our [**React**](../../../getting-started/setting-application/react/index.html) library, the initialization is done by invoking a factory function exposed by the libraries. This factory function accepts an **optional** configuration object of type `Glue42Web.Config`. Full details on the Glue42 Web API can be found at the [API reference](../../../../reference/core/latest/glue42%20web/index.html) page, however here we will explain the config object in more details.
 
 The interface of Glue42Web.Config looks like this:
 
@@ -51,7 +51,7 @@ interface Glue42CoreConfig {
 }
 ```
 
-We are interested in the `glue` property, which is of type Glue42Web.Config **TODO**. The Glue42Web.Config **TODO** defined in property `glue` will be used (unless explicitly told not to) by all clients on the domain as a base config. This base config can be extended by each client and is helpful so that you don't have to declare the same object in all of your clients.
+We are interested in the `glue` property, which is of type [Glue42Web.Config](../../../../reference/core/latest/glue42%20web/index.html). The [Glue42Web.Config](../../../../reference/core/latest/glue42%20web/index.html) defined in property `glue` will be used (unless explicitly told not to) by all clients on the domain as a base config. This base config can be extended by each client and is helpful so that you don't have to declare the same object in all of your clients.
 
 Example:
 ```json
@@ -65,7 +65,7 @@ Example:
     }
 }
 ```
-
+[Glue42Web.Config](../../../../reference/core/latest/glue42%20web/index.html)
 Without any further configuration all Glue42 Clients will now auto-restore and auto-save their window contexts by default. If you wish a specific client to ignore this default, you can either:
-- overwrite these properties in the client's Glue42Web.Config object **TODO**
-- set `{"extends": false}` in the client's Glue42Web.Config object **TODO**
+- overwrite these properties in the client's [Glue42Web.Config](../../../../reference/core/latest/glue42%20web/index.html) object
+- set `{"extends": false}` in the client's [Glue42Web.Config](../../../../reference/core/latest/glue42%20web/index.html) object

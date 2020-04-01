@@ -4,7 +4,7 @@ Glue42 Core gives you the tools to enhance your traditional web apps and take yo
 
 ## Interop
 
-The **Interop API** **TODO** enables applications to:
+The [Interop API](../../../reference/core/latest/interop/index.html) enables applications to:
 
 - **offer functionality** to other applications (JavaScript **and** native executables) by **registering** Interop methods
 - **discover applications which offer methods**
@@ -17,7 +17,7 @@ Head over to the [**Interop**](../../../glue42-concepts/data-sharing-between-app
 
 ## Window Management
 
-Using the **Windows API** your application can easily open and manipulate browser windows. This allows you to transform your traditional single-window web app into a multi-window native-like PWA application. The **Window Management** API enables applications to:
+Using the [Windows API](../../../reference/core/latest/windows/index.html) your application can easily open and manipulate browser windows. This allows you to transform your traditional single-window web app into a multi-window native-like PWA application. The [Windows API](../../../reference/core/latest/windows/index.html) enables applications to:
 - **open multiple windows**
 - **manipulate the position and size** of opened windows
 - **pass data upon opening new windows**
@@ -29,7 +29,7 @@ Using the **Windows API** your application can easily open and manipulate browse
 
 A **Shared Context** is a named object (holding a `map` of `key`/`value` pairs) that stores cross application data. The context object can hold any cross-application data on your domain. Any application can update a context or subscribe for update notifications (by using the name of the context). Apps can also react to context changes (by subscribing for context updates) or update the context at runtime.
 
-The **Shared Contexts API** **TODO** offers a simple and effective solution for sharing data between the applications on your domain. Imagine that on your domain you have an application showing a list of clients (served at `/clients`) and an application showing a list of stocks (served at `/stocks`). What you need, is your "Stocks" app to show all stocks by default, but if the "Clients" app is also opened (in a different window) and user selects a client, then you want the "Stocks" app to only show stocks owned by the selected client. You can easily achieve this in a few simple steps by using the **Shared Contexts** **TODO** API:
+The [Shared Contexts API](../../../reference/core/latest/shared%20contexts/index.html) offers a simple and effective solution for sharing data between the applications on your domain. Imagine that on your domain you have an application showing a list of clients (served at `/clients`) and an application showing a list of stocks (served at `/stocks`). What you need, is your "Stocks" app to show all stocks by default, but if the "Clients" app is also opened (in a different window) and user selects a client, then you want the "Stocks" app to only show stocks owned by the selected client. You can easily achieve this in a few simple steps by using the [Shared Contexts API](../../../reference/core/latest/shared%20contexts/index.html) API:
 
 - instruct the "Clients" app to publish updates to a context object, holding the `id` of the currently selected client;
 - instruct the "Stocks" app to subscribe for updates of that same context object and specify how the "Stocks" app should handle the received data in order to update its current state;

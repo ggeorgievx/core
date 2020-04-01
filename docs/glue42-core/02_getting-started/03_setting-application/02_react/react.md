@@ -44,8 +44,8 @@ This is achieved via [React Hooks](https://reactjs.org/docs/hooks-intro.html) an
 | Property      | Type                          | Description                                                     | Default                        |
 | ------------- | ----------------------------- | --------------------------------------------------------------- | ------------------------------ |
 | `children`    | `React.node`                  | React Elements which can include glue related logic             | -                              |
-| `config`      | **TODO**     | **Optional** Configuration object for Glue factory function     | **TODO** |
-| `glueFactory` | **TODO** | **Optional** Factory function used to initialize Glue           | `window.Glue`                  |
+| `config`      | [Glue42Web.Config](../../../../reference/core/latest/glue42%20web/index.html)     | **Optional** Configuration object for Glue factory function     | [Glue42Web.Config](../../../../reference/core/latest/glue42%20web/index.html) |
+| `glueFactory` | [Glue42Web](../../../../reference/core/latest/glue42%20web/index.html) | **Optional** Factory function used to initialize Glue           | `window.Glue`                  |
 | `fallback`    | `React.node`                  | **Optional** React Component to display while initializing Glue | null                           |
 
 Example:
@@ -85,7 +85,7 @@ The callback is invoked with _glue_ object and developer defined _dependencies_ 
 | Property                          | Type                        | Description                                                                                                                                                                                                                                       | Default                            |
 | --------------------------------- | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------- |
 | `callback`                        | `function`                  | A/synchronous function which can possibly return a value                                                                                                                                                                                          | -                                  |
-| `callback.arguments.glue`         | **TODO**   | `glue` object API variable                                                                                                                                                                                                                        | **TODO** |
+| `callback.arguments.glue`         | [Glue42Web](../../../../reference/core/latest/glue42%20web/index.html)   | `glue` object API variable                                                                                                                                                                                                                        | [Glue42Web](../../../../reference/core/latest/glue42%20web/index.html) |
 | `callback.arguments.dependencies` | `array`                     | **Optional** User defined variables spread as arguments                                                                                                                                                                                           | `[]`                               |
 | `callback.returnValue`            | `Promise | variable | void` | Value returned(if such) will be returned by the hook and this will trigger component re-render                                                                                                                                                    | -                                  |
 | `dependencies`                    | `array`                     | User defined variables used to repeat invocation of the hook logic, based on if their values have changed(same functionlity as React Hook [useEffect](https://reactjs.org/docs/hooks-effect.html#tip-optimizing-performance-by-skipping-effects)) | `[]`                               |
@@ -142,8 +142,8 @@ export const Application = () => {
 
 | Property      | Type                          | Description                                                 | Default                            |
 | ------------- | ----------------------------- | ----------------------------------------------------------- | ---------------------------------- |
-| `config`      | **TODO**     | **Optional** Configuration object for Glue factory function | **TODO** |
-| `glueFactory` | **TODO** | **Optional** Factory function used to initialize Glue       | `window.Glue`                      |
+| `config`      | [Glue42Web](../../../../reference/core/latest/glue42%20web/index.html)     | **Optional** Configuration object for Glue factory function | [Glue42Web](../../../../reference/core/latest/glue42%20web/index.html) |
+| `glueFactory` | [Glue42Web](../../../../reference/core/latest/glue42%20web/index.html) | **Optional** Factory function used to initialize Glue       | `window.Glue`                      |
 
 Example:
 

@@ -14,7 +14,7 @@ This is the engine behind Glue42 Core - a collection of resources, which once ho
 
 ### Glue42 Client
 
-A [**Glue42 Client**](../core-concepts/glue42-client/index.html) is any application which connects to the [**Environment**](../core-concepts/environment/index.html), we also called them **glue-enabled apps**. This is done by our `@glue42/web` JavaScript library. The Glue42 Web library also exposes an **API TODO** for utilizing the Glue42 Core functionalities.
+A [**Glue42 Client**](../core-concepts/glue42-client/index.html) is any application which connects to the [**Environment**](../core-concepts/environment/index.html), we also called them **glue-enabled apps**. This is done by our `@glue42/web` JavaScript library. The Glue42 Web library also exposes an [API](../../../reference/core/latest/glue42%20web/index.html) for utilizing the Glue42 Core functionalities.
 
 ### Glue42 Core CLI
 

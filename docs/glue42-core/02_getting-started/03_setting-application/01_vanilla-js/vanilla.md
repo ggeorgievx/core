@@ -6,7 +6,7 @@ We will assume that the application is a simple, light app, with just an index.h
 
 ## Prerequisites 
 
-We will assume that this is the only application in the project and that you have already did the environment setup. Next we need to reference `@glue42/web` in the `index.html` which will connect our client to the [environment](../../../what-is-glue42-core/core-concepts/environment/index.html) and give us access to the Glue42 Web API **TODO**.
+We will assume that this is the only application in the project and that you have already did the environment setup. Next we need to reference `@glue42/web` in the `index.html` which will connect our client to the [environment](../../../what-is-glue42-core/core-concepts/environment/index.html) and give us access to the [Glue42 Web API](../../../../reference/core/latest/glue42%20web/index.html).
 
 ## Set up Glue42 Web
 
@@ -33,7 +33,7 @@ const init = async () => {
 init().catch(console.error);
 ```
 
-When `GlueWeb()` resolves, we get a `glue` object which we can use to access the full Glue42 Web API **TODO**. By default we are not required to pass a config object to `GlueWeb()`, but if you wish you can do so. Check out the [Glue42 Client](../../../what-is-glue42-core/core-concepts/glue42-client/index.html) section for more info on the possible options.
+When `GlueWeb()` resolves, we get a `glue` object which we can use to access the full [Glue42 Web API](../../../../reference/core/latest/glue42%20web/index.html). By default we are not required to pass a config object to `GlueWeb()`, but if you wish you can do so. Check out the [Glue42 Client](../../../what-is-glue42-core/core-concepts/glue42-client/index.html) section for more info on the possible options.
 
 That's it, the application is now configured as a [Glue42 Client](../../../what-is-glue42-core/core-concepts/glue42-client/index.html) and can connect to the [Glue42 Environment](../../../what-is-glue42-core/core-concepts/environment/index.html).
 
