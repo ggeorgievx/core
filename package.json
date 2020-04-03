@@ -4,9 +4,6 @@
   "description": "Web interoperability framework",
   "license": "MIT",
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
   "scripts": {
     "clean": "lerna clean",
     "bootstrap": "lerna bootstrap",
@@ -14,7 +11,8 @@
     "test": "npm run test:scripts && lerna run test",
     "release": "gulp release",
     "test:scripts": "mocha ./scripts/test/**/*spec.js",
-    "lint:fix": "./node_modules/.bin/eslint --ignore-path .gitignore . --fix"
+    "lint:fix": "./node_modules/.bin/eslint --ignore-path .gitignore . --fix",
+    "audit": "lerna-audit"
   },
   "devDependencies": {
     "@lerna/changed": "^3.20.0",
@@ -23,6 +21,8 @@
     "@typescript-eslint/parser": "^2.25.0",
     "chai": "^4.2.0",
     "eslint": "^6.8.0",
+    "eslint-plugin-jest": "^23.8.2",
+    "eslint-plugin-react": "^7.19.0",
     "gulp": "^4.0.2",
     "husky": "^4.2.3",
     "lerna": "^3.20.2",

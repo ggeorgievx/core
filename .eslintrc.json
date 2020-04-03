@@ -12,7 +12,7 @@
         "sourceType": "module"
     },
     "ignorePatterns": [
-		"tutorials/**/*.min.js", 
+		"tutorials/*", 
 		"packages/web/**/*.js", 
 		"packages/core/**/*.js"
 	],

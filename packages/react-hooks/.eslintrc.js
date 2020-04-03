@@ -2,15 +2,10 @@ module.exports = {
     extends: [
         '../../.eslintrc.json',
         'plugin:react/recommended',
-        'prettier/@typescript-eslint',
-        'plugin:prettier/recommended',
         'plugin:jest/recommended',
     ],
     parser: "@typescript-eslint/parser",
     rules: {
-        'prettier/prettier': ["error", {
-            "endOfLine":"auto"
-        }],
         'react/prop-types': 'off',
         'react/display-name': 'off',
         'react/jsx-curly-brace-presence': 'error',

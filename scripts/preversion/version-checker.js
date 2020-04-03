@@ -50,7 +50,7 @@ const overwritePackageJson = (pkg) => {
         }
 
         console.log(`Overwriting ${pkg.contents.name} version to ${pkg.contents.version}`);
-        fs.writeFile(pkg.path, JSON.stringify(pkg.contents, null, 2), (err) => {
+        fs.writeFile(pkg.path, JSON.stringify(pkg.contents, null, 4), (err) => {
             if (err) {
                 return reject(err);
             }

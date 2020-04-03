@@ -9,7 +9,6 @@ coverage
 
 npm-debug.log
 metrics.log
-package-lock.json
 
 junit.xml
 
