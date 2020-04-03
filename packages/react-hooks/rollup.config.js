@@ -19,14 +19,14 @@ export default {
     output: [
         {
             file: pkg.main,
-            name: 'core',
+            name: 'glue-hooks',
             format: 'umd',
             sourcemap: true,
             globals,
         },
         {
-            file: './dist/react-glue-zero.umd.min.js',
-            name: 'core.min',
+            file: './dist/glue-hooks.umd.min.js',
+            name: 'glue-hooks.min',
             format: 'umd',
             sourcemap: true,
             globals,
