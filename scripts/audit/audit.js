@@ -12,16 +12,19 @@ const filterInternalDeps = (deps, packageNames) => {
 };
 
 const packageFilter = (originalDependencies, filter) => {
-    return Object.entries(originalDependencies || {}).filter(([name]) => {
-        return filter(name);
-    }).reduce((filteredDependencies, [name, version]) => ({ ...filteredDependencies, [name]: version }), {});
+    return Object.entries(originalDependencies || {})
+        .filter(([name]) => filter(name))
+        .reduce((filteredDependencies, [name, version]) => ({ ...filteredDependencies, [name]: version }), {});
 };
 
 const writePackageJson = (packageSource, contents) => {
     return new Promise((resolve, reject) => {
 
         const location = join(packageSource, 'package.json');
-        const data = JSON.stringify(contents, null, 4);
+        let data = JSON.stringify(contents, null, 4);
+
+        // normalizing EOL
+        data = data.replace(/\r\n/gm, '\n').replace(/\n/gm, '\r\n');
 
         writeFile(location, data, (err) => {
             if (err) {
@@ -59,7 +62,6 @@ const runNpmAudit = () => {
         child.on('error', reject);
         child.on('exit', (code) => {
             if (code === 1) {
-                console.log('COODEEEEE 1111111111111');
                 reject();
             }
             resolve();
