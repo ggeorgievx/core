@@ -57,11 +57,11 @@ const runNpmAudit = () => {
         const child = spawn(npmCommand, ['audit'], { stdio: 'inherit' });
 
         child.on('error', reject);
-        child.on('exit', () => {
-            // if (code === 1) {
-            //     console.log('COODEEEEE 1111111111111');
-            //     return reject(`Failed audit at package: ${packageName}.`);
-            // }
+        child.on('exit', (code) => {
+            if (code === 1) {
+                console.log('COODEEEEE 1111111111111');
+                reject();
+            }
             resolve();
         });
     });
@@ -92,7 +92,7 @@ const audit = async () => {
         await writePackageJson(packageRoot, packageJsonOriginal);
     } catch (error) {
         await writePackageJson(packageRoot, packageJsonOriginal);
-        throw new Error(error);
+        throw new Error(packageJsonOriginal.name);
     }
 };
 
