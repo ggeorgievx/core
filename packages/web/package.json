@@ -17,14 +17,13 @@
         "tslint": "tslint -t codeFrame ./src/**/*.ts",
         "validate-changelog": "node ./build/validate-config.js",
         "docs": "typedoc --options typedoc.json ./src",
-        "prepublishOnly": "npm run auditPackage && npm run test && npm run build",
         "test": "tsc -p ./tsconfig.test.json && mocha ./tests/ --recursive --exit",
-        "auditPackage": "npm audit --registry=https://registry.npmjs.com",
         "coverage": "nyc npm run test",
         "publish:beta": "npm publish --tag beta",
         "build": "npm run tslint && tsc -p ./tsconfig.json && rollup -c",
         "generate-docs-new-structure": "glue-js-documentation-builder build-reference --project g4e -q reference --modules ./web.d.ts,./node_modules/@glue42/core/glue.d.ts --newStructure --ignoreModules Connection,Bus,Metrics,Logger",
-        "audit": "node ../../scripts/audit/index.js"
+        "audit": "node ../../scripts/audit/index.js",
+        "preversion": "npm tun test && npm run audit && npm run build"
     },
     "author": {
         "name": "Glue42",

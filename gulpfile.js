@@ -2,8 +2,7 @@
 const { series } = require('gulp');
 const fs = require('fs');
 const { join } = require('path');
-const { exec } = require('child_process');
-const { RunCommand } = require('@lerna/run');
+const { spawn } = require('child_process');
 const { PublishCommand } = require('@lerna/publish');
 const git = require('simple-git/promise')(__dirname);
 const sync = require('./scripts/preversion/sync.js');
@@ -13,7 +12,7 @@ const releaseBranch = 'release';
 const ignored = ['.git', '.log', 'node_modules', '.lock', 'packages', '.md', 'package-lock'];
 const packagesDirectory = join(__dirname, '/packages/');
 let packagesDirNamesToRelease = [];
-let packagesNamesToRelease = [];
+let fullRelease = false;
 
 const readDirPromise = (directory) => {
     return new Promise((resolve, reject) => {
@@ -27,22 +26,13 @@ const readDirPromise = (directory) => {
     });
 };
 
-const getPackageName = (dirName) => {
-    return new Promise((resolve, reject) => {
-        fs.readFile(join(packagesDirectory, dirName, 'package.json'), 'UTF-8', (err, data) => {
-            if (err) {
-                return reject(err);
-            }
-
-            const pkgJson = JSON.parse(data);
-
-            resolve(pkgJson.name);
-        });
-    });
-};
-
 const validateReleasePackages = async () => {
     packagesDirNamesToRelease = process.argv[3].replace('--', '').split(',');
+
+    if (packagesDirNamesToRelease.includes('all')) {
+        fullRelease = true;
+        return;
+    }
 
     const areNamesValidType = packagesDirNamesToRelease.every((name) => (typeof name === 'string') && name.length > 0);
 
@@ -55,10 +45,6 @@ const validateReleasePackages = async () => {
     if (!areNamesExisting) {
         throw new Error(`Non-existent packages names: ${JSON.stringify(packagesDirNamesToRelease)}`);
     }
-
-    packagesNamesToRelease = await Promise.all(packagesDirNamesToRelease.map((dirName) => getPackageName(dirName)));
-
-    console.log('All packages are validated and existing');
 };
 
 const checkout = async (branchName) => {
@@ -86,37 +72,34 @@ const syncAllContentsExceptPackages = async () => {
 };
 
 const syncPackagesToRelease = async () => {
+    if (fullRelease) {
+        console.log('Checking out all packages for full release');
+        await git.raw(['checkout', stableBranch, 'packages/']);
+        return;
+    }
+
     for (const packageName of packagesDirNamesToRelease) {
         console.log(`checking out ${packageName}`);
         await git.raw(['checkout', stableBranch, `packages/${packageName}`]);
     }
 };
 
-const yarnInstall = () => {
+const bootstrap = () => {
     return new Promise((resolve, reject) => {
-        const child = exec('yarn', (err, stdout) => {
-            console.log(stdout);
-        });
+        const npmCommand = process.platform === 'win32'
+            ? 'npm.cmd'
+            : 'npm';
+
+        const child = spawn(npmCommand, ['run', 'bootstrap'], { stdio: 'inherit' });
+
         child.on('error', reject);
-        child.on('exit', resolve);
+        child.on('exit', (code) => {
+            if (code === 1) {
+                reject();
+            }
+            resolve();
+        });
     });
-};
-
-const executeConditionalScript = async (script) => {
-    const scope = packagesNamesToRelease.length === 1 ?
-        packagesNamesToRelease[0] :
-        `{${packagesNamesToRelease.join(',')}}`;
-
-    const command = new RunCommand({ script, scope });
-    await command.runner;
-};
-
-const conditionalLernaTest = async () => {
-    await executeConditionalScript('test');
-};
-
-const conditionalLernaBuild = async () => {
-    await executeConditionalScript('build');
 };
 
 const versionSync = async () => {
@@ -128,10 +111,6 @@ const addCommit = async (message) => {
     await git.commit(message, undefined, { '--no-verify': null });
 };
 
-const commitPreReleaseSync = async () => {
-    await addCommit('Pre-release sync and build');
-};
-
 const commitIsolatedPackages = async () => {
     await addCommit('Release package/s isolated');
 };
@@ -141,27 +120,14 @@ const publish = async () => {
     await command.runner;
 };
 
-const stableSyncPush = async () => {
-    for (const packageName of packagesDirNamesToRelease) {
-        console.log(`checking out ${packageName}`);
-        await git.raw(['checkout', releaseBranch, `packages/${packageName}`]);
-    }
-    await addCommit('[post-release] Release and sync completed');
-    await git.push();
-};
-
 exports.release = series(
     validateReleasePackages,
     checkoutRelease,
     syncAllContentsExceptPackages,
     syncPackagesToRelease,
-    yarnInstall,
-    conditionalLernaTest,
-    conditionalLernaBuild,
-    commitPreReleaseSync,
+    bootstrap,
     versionSync,
     commitIsolatedPackages,
     publish,
-    checkoutMaster,
-    stableSyncPush
+    checkoutMaster
 );
