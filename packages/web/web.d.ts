@@ -53,11 +53,8 @@ export default GlueWebFactory;
  */
 export namespace Glue42Web {
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     export import Interop = Glue42Core.Interop;
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     export import Contexts = Glue42Core.Contexts;
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     export import Logger = Glue42Core.Logger;
     export import ChannelContext = Glue42.Channels.ChannelContext;
 
