@@ -1,5 +1,6 @@
 import { Glue42Web } from "../../web";
 import { defaultConfigLocation, defaultConfig, defaultWorkerName } from "./defaults";
+import { Glue42CoreConfig } from "../glue.config";
 
 const fetchTimeout = (url: string, timeoutMilliseconds = 1000): Promise<Response> => {
     return new Promise((resolve, reject) => {
@@ -25,7 +26,7 @@ const fetchTimeout = (url: string, timeoutMilliseconds = 1000): Promise<Response
     });
 };
 
-const getRemoteConfig = async (userConfig: Glue42Web.Config): Promise<Glue42Web.Config> => {
+const getRemoteConfig = async (userConfig: Glue42Web.Config): Promise<Glue42CoreConfig> => {
     // check userConfig, if not there check defaultConfig, if not there use the defaultConfigLocation
     const extend: string | false = userConfig.extends ?? defaultConfig.extends ?? defaultConfigLocation;
     if (extend === false) {
@@ -40,24 +41,32 @@ const getRemoteConfig = async (userConfig: Glue42Web.Config): Promise<Glue42Web.
         }
 
         const json = await response.json();
-        return json?.glue ?? {};
+        return json ?? {};
     } catch {
         return {};
     }
 };
 
-export const buildConfig = async (userConfig?: Glue42Web.Config): Promise<Glue42Web.Config> => {
+export const buildConfig = async (userConfig?: Glue42Web.Config): Promise<Glue42CoreConfig> => {
     userConfig = userConfig ?? {};
     const remoteConfig = await getRemoteConfig(userConfig);
+
     // merge user->remote->default
-    const result = Object.assign({}, defaultConfig, remoteConfig, userConfig);
+    const resultWebConfig: Glue42Web.Config = {
+        ...defaultConfig,
+        ...remoteConfig.glue,
+        ...userConfig
+    };
 
     // if we have extends options, we need to set the worker location to be the same
     // because worker is always on the same level as custom config
-    if (result.extends) {
-        const lastIndex = result.extends.lastIndexOf("/");
-        const worker = result.extends.substr(0, lastIndex + 1) + defaultWorkerName;
-        result.worker = worker;
+    if (resultWebConfig?.extends) {
+        const lastIndex = resultWebConfig.extends.lastIndexOf("/");
+        const worker = resultWebConfig.extends.substr(0, lastIndex + 1) + defaultWorkerName;
+        resultWebConfig.worker = worker;
     }
-    return result;
+    return {
+        ...remoteConfig,
+        glue: resultWebConfig
+    };
 };

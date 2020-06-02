@@ -1,6 +1,6 @@
 ## Introduction
 
-This tutorial is designed to walk you through every aspect of Glue42 Core. Starting from a project setup with the [**Glue42 Core CLI**](../../glue42-core/what-is-glue42-core/core-concepts/cli/index.html), initiating [**Glue42 Clients**](../../glue42-core/what-is-glue42-core/core-concepts/glue42-client/index.html), extending the applications with Interop capabilities, window management functionality and shared contexts integration.
+This tutorial is designed to walk you through every aspect of Glue42 Core. Starting from a project setup with the [**Glue42 Core CLI**](../../glue42-core/what-is-glue42-core/core-concepts/cli/index.html), initiating [**Glue42 Clients**](../../glue42-core/what-is-glue42-core/core-concepts/glue42-client/index.html), extending the applications with Interop capabilities, window management functionality, shared contexts integration and color channel linking.
 
 The following guide is going to use Vanilla JS and keep everything as simple as possible. The goal here is not to make perfect production-ready applications, but for you to get a feel for Glue42 Core and how you can use the platform to make awesome applications.
 
@@ -370,11 +370,11 @@ subscription.onData((streamData) => {
 });
 ```
 
-If you have made it this far without checking out the solution, then awesome work! Let's continue onto the last section where we will link the `clients`, `stocks` and `stock details` windows together.
+If you have made it this far without checking out the solution, then awesome work! Let's continue onto the next section where we will link the `clients`, `stocks` and `stock details` windows together.
 
 ## 5. Shared Contexts
 
-Our clients love the project so far. They are going wild taking full advantage of their multiple monitors thanks to our work with the [**Interop API**](../../reference/core/latest/interop/index.html) and the [**Window Management API**](../../reference/core/latest/windows/index.html). The users' final request is to be able to see in the `stock details` window if the selected client has the stock in their portfolio. So far `clients` and `stock details` had no interaction between each other, so let's change that.
+Our clients love the project so far. They are going wild taking full advantage of their multiple monitors thanks to our work with the [**Interop API**](../../reference/core/latest/interop/index.html) and the [**Window Management API**](../../reference/core/latest/windows/index.html). The users' next request is to be able to see in the `stock details` window if the selected client has the stock in their portfolio. So far `clients` and `stock details` had no interaction between each other, so let's change that.
 
 We could do the same like we did in `stocks` and register a method, but we have a feeling that once the clients start using our app, they will require more integrations with more apps. So, let's complete their request by also allowing ourselves to easily hook more apps to this logic in the future, using the [**Shared Contexts API**](../../reference/core/latest/shared%20contexts/index.html).
 
@@ -415,6 +415,170 @@ window.glue.contexts.subscribe('SelectedClient', (client) => {
     updateClientStatus(client, stock);
 });
 ```
+
+## 6. Shared Contexts
+
+### 6.1. Overview
+
+Our users loved the beta and their feedback was overwhelmingly positive. However as with every project there has been a change in the requirements. Because of the astonishing productivity boost our users can now serve multiple clients at the same time. However we impose a limitation to them as even if they have multiple instances of the stocks and details applications open they all are subscribed and listen for changes to the same shared context. This way our users can only work with one client at a time. In this chapter we will take advantage of the [Channels API](../../reference/core/latest/channels/index.html). It will allow us to have instances of the same application subscribed to different color channel contexts. The clients application will serve as an orchestrator to multiple stocks application instances.
+
+### 6.2. Configuring channels
+
+To take advantage of the Channels API we first need to add the channels to our Glue42 Core environment. We do this by adding the following configuration to the `glue.config.json`. After adding it restart the `gluec` by quitting it and running `gluec serve` again for the changes to take effect:
+
+```json
+{
+    "glue": ...,
+    "gateway": ...,
+    "channels": [
+        {
+            "name": "Red",
+            "meta": {
+                "color": "red"
+            }
+        },
+        {
+            "name": "Green",
+            "meta": {
+                "color": "green"
+            }
+        },
+        {
+            "name": "Blue",
+            "meta": {
+                "color": "#66ABFF"
+            }
+        },
+        {
+            "name": "Pink",
+            "meta": {
+                "color": "#F328BB"
+            }
+        },
+        {
+            "name": "Yellow",
+            "meta": {
+                "color": "#FFE733"
+            }
+        },
+        {
+            "name": "DarkYellow",
+            "meta": {
+                "color": "#b09b00"
+            }
+        },
+        {
+            "name": "Orange",
+            "meta": {
+                "color": "#fa5a28"
+            }
+        },
+        {
+            "name": "Purple",
+            "meta": {
+                "color": "#c873ff"
+            }
+        },
+        {
+            "name": "Lime",
+            "meta": {
+                "color": "#8af59e"
+            }
+        },
+        {
+            "name": "Cyan",
+            "meta": {
+                "color": "#80f3ff"
+            }
+        }
+    ]
+}
+```
+
+Well done. Тhe GlueWeb factory function will now initialize the channels internally.
+
+### 6.3. Channel Selector Widget UI
+
+We want our users to be able to navigate through the channels. For this they will need some sort of user interface. You can create your own channel selector widget by using the Channels API, but for the tutorial we included a jQuery one that we developed. To add it to the stocks and clients do the following:
+
+1. Inside the head of the index.html files of the two applications you will find a **<!-- TODO: Chapter 6 -->**. There you will need to reference the `channelSelectorWidget.js` from the lib folder like this:
+
+```html
+<script src="/lib/channelSelectorWidget.js"></script>
+```
+
+2. Secondly, again inside the index.html files you will find another **<!-- TODO: Chapter 6 -->**. This time you will need to add the HTML `select` element, that will be populated by the channel selector widget script. You can do this like this:
+
+```html
+<select id="channel-selector-widget" class="col-md-2 align-self-center"></select>
+```
+
+3. The only step left is to call the `createChannelSelectorWidget` function exposed by the channelSelectorWidget to populate the channel selector widget. The method expects three arguments:
+    - `NO_CHANNEL_VALUE` - a string, this is the default value to be displayed inside the widget that the users will use to leave the current channel they are on.
+    - `channelNamesAndColors` - an array of objects with name and color properties. This are the names and colors of the channels. We will get them using the Channels API.
+    - `onChannelSelected` - a callback that will be called whenever a channel from the within the widget is selected
+
+3.1. Define `NO_CHANNEL_VALUE` as 'No channel':
+
+```javascript
+const NO_CHANNEL_VALUE = 'No channel';
+```
+
+3.2. Get the channel names and colors using the Channels API's `list()` method like this:
+
+```javascript
+const channelContexts = await window.glue.channels.list();
+const channelNamesAndColors = channelContexts.map(channelContext => ({
+    name: channelContext.name,
+    color: channelContext.meta.color
+}));
+```
+
+3.3. Define the `onChannelSelected` callback. It joins the provided channel using the Channels API. When the channel name is equal to `NO_CHANNEL_VALUE` it needs to leave the current channel if it is part of one. The code should look somethis like this:
+
+```javascript
+const onChannelSelected = (channelName) => {
+    if (channelName === NO_CHANNEL_VALUE) {
+        if (window.glue.channels.my()) {
+            window.glue.channels.leave().catch(console.error);
+        }
+    } else {
+        window.glue.channels.join(channelName).catch(console.error);
+    }
+};
+```
+
+3.4. Finally we can call `createChannelSelectorWidget` with the above arguments like this:
+
+```javascript
+await createChannelSelectorWidget(
+    NO_CHANNEL_VALUE,
+    channelNamesAndColors,
+    onChannelSelected
+);
+```
+
+Great job! Now both the clients and the stocks application can navigate through the channels. In the next section we will allow the client application to send the selected client to the any instance of a stocks application that is on the same channel using the Channels API.
+
+### 6.4. Publishing and Subscribing
+
+A quick reminder. Currently the clients and stocks applications communicate using the Shared Context API (see Chapter 5.). When a client is selected inside of the clients application the stocks application gets notified and it displays the portfolio of the selected client. However when more than one instances of the stocks applications are open they all get notified about the newly selected client. We don't allow our users to have multiple instances of the stocks application working with different data. This is where channels step in.
+
+Let's start with commenting out the code that we added in Chapter 5. (the call to `glue.contexts.update` inside of clients and the call to `glue.contexts.subscribe` inside of stocks) since we won't need it anymore as we will use the channels instead.
+
+Instead we will use the `publish` and `subscribe` methods of the Channels API:
+
+- Inside of the clientClickedHandler (clients app) call `publish` with the selected client. Note that `publish` throws an error when the application isn't part of a channel. You can use the `my` method of the Channels API to get the current channel:
+
+```javascript
+if (window.glue.channels.my()) {
+    window.glue.channels.publish(client).catch(console.error);
+}
+```
+
+- Inside of the stocks app subscribe for data published to the current channel using the `subscribe` method of the Channels API. Provide the same callback you used inside of Chapter 5. that updated the displayed stocks.
+
+With this we are ready to release v1 of our applications. We are sure that our users will love them as their productivity will be off the charts.
 
 ## Congratulations
 

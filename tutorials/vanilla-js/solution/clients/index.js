@@ -46,7 +46,12 @@ const clientClickedHandler = (client) => {
     //     window.glue.interop.invoke(selectClientStocks, { client });
     // }
 
-    window.glue.contexts.update('SelectedClient', client).catch(console.error);
+    // window.glue.contexts.update('SelectedClient', client).catch(console.error);
+
+    // Update the context of the current channel with the newly selected client portfolio.
+    if (window.glue.channels.my()) {
+        window.glue.channels.publish(client).catch(console.error);
+    }
 };
 
 const start = async () => {
@@ -64,6 +69,32 @@ const start = async () => {
     window.glue = await window.GlueWeb();
 
     toggleGlueAvailable();
+
+    // The value that will be displayed inside the channel selector widget to leave the current channel.
+    const NO_CHANNEL_VALUE = 'No channel';
+
+    // Get the channel names and colors using the Channels API.
+    const channelContexts = await window.glue.channels.list();
+    const channelNamesAndColors = channelContexts.map(channelContext => ({
+        name: channelContext.name,
+        color: channelContext.meta.color
+    }));
+
+    const onChannelSelected = (channelName) => {
+        if (channelName === NO_CHANNEL_VALUE) {
+            if (window.glue.channels.my()) {
+                window.glue.channels.leave().catch(console.error);
+            }
+        } else {
+            window.glue.channels.join(channelName).catch(console.error);
+        }
+    };
+
+    await createChannelSelectorWidget(
+        NO_CHANNEL_VALUE,
+        channelNamesAndColors,
+        onChannelSelected
+    );
 };
 
 start().catch(console.error);

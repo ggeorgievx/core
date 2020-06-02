@@ -24,7 +24,8 @@ export const gatewayConfigDecoder: Decoder<GatewayConfig> = object({
 
 export const glue42CoreConfigDecoder: Decoder<Glue42CoreConfig> = object({
     glue: optional(anyJson()),
-    gateway: optional(gatewayConfigDecoder)
+    gateway: optional(gatewayConfigDecoder),
+    channels: optional(anyJson())
 });
 
 export const gateGlobalDecoder: Decoder<GlobalGateway> = object({

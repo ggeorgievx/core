@@ -25,6 +25,10 @@ This folder contains live snippet examples for the [Glue42 Core documentation](h
   - Window Events
   - Window Operations
 
+- Channels
+  - Discovering and Navigating
+  - Publishing and Subscribing
+
 ## Example Template
 
 Each example project contains the following:

@@ -163,19 +163,55 @@ const start = async () => {
 
     toggleGlueAvailable();
 
-    window.glue.interop.register('SelectClient', (args) => {
-        const clientPortfolio = args.client.portfolio;
-        const stockToShow = stocks.filter((stock) => clientPortfolio.includes(stock.RIC));
-        setupStocks(stockToShow);
-    });
+    // window.glue.interop.register('SelectClient', (args) => {
+    //     const clientPortfolio = args.client.portfolio;
+    //     const stockToShow = stocks.filter((stock) => clientPortfolio.includes(stock.RIC));
+    //     setupStocks(stockToShow);
+    // });
 
-    window.glue.contexts.subscribe('SelectedClient', (client) => {
-        const clientPortfolio = client.portfolio;
-        const stockToShow = stocks.filter((stock) => clientPortfolio.includes(stock.RIC));
-        setupStocks(stockToShow);
+    // window.glue.contexts.subscribe('SelectedClient', (client) => {
+    //     const clientPortfolio = client.portfolio;
+    //     const stockToShow = stocks.filter((stock) => clientPortfolio.includes(stock.RIC));
+    //     setupStocks(stockToShow);
+    // });
+
+    window.glue.channels.subscribe((client) => {
+        if (client.portfolio) {
+            const clientPortfolio = client.portfolio;
+            const stockToShow = stocks.filter((stock) => clientPortfolio.includes(stock.RIC));
+            setupStocks(stockToShow);
+        } else {
+            setupStocks(stocks);
+        }
     });
 
     window.priceStream = await glue.interop.createStream('LivePrices');
+
+    // The value that will be displayed inside the channel selector widget to leave the current channel.
+    const NO_CHANNEL_VALUE = 'No channel';
+
+    // Get the channel names and colors using the Channels API.
+    const channelContexts = await window.glue.channels.list();
+    const channelNamesAndColors = channelContexts.map(channelContext => ({
+        name: channelContext.name,
+        color: channelContext.meta.color
+    }));
+
+    const onChannelSelected = (channelName) => {
+        if (channelName === NO_CHANNEL_VALUE) {
+            if (window.glue.channels.my()) {
+                window.glue.channels.leave().catch(console.error);
+            }
+        } else {
+            window.glue.channels.join(channelName).catch(console.error);
+        }
+    };
+
+    await createChannelSelectorWidget(
+        NO_CHANNEL_VALUE,
+        channelNamesAndColors,
+        onChannelSelected
+    );
 };
 
 start().catch(console.error);

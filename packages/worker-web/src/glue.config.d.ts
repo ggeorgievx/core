@@ -13,4 +13,5 @@ export interface GatewayConfig {
 export interface Glue42CoreConfig {
     glue?: any;
     gateway?: GatewayConfig;
+    channels?: any;
 }

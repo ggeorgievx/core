@@ -15,11 +15,11 @@ Environment requirements:
 
 *Due to the current limitations of the [Shared Worker](https://developer.mozilla.org/en-US/docs/Web/API/SharedWorker) interface, it is recommended that all three files reside in the same directory within your project.*
 
-All files are described in more detail below. For step-by-step guides and examples on how to set up the Environment files depending on your project requirements, see the [**Glue42 Environment: Setup**](../setup/index.html) section. 
+All files are described in more detail below. For step-by-step guides and examples on how to set up the Environment files depending on your project requirements, see the [**Glue42 Environment: Setup**](../setup/index.html) section.
 
 ## Configuration File
 
-This is an *optional* JSON file containing a [`Config`](../../../../reference/core/latest/glue42%20web/index.html#!Config) object with general **Glue42 Core** settings, Glue42 Gateway settings and shared configuration settings to be used by all [**Glue42 Clients**](../../glue42-client/overview/index.html) on this domain. If you provide a configuration file, then it **must** be named `glue.config.json`. 
+This is an *optional* JSON file containing a [`Config`](../../../../reference/core/latest/glue42%20web/index.html#!Config) object with general **Glue42 Core** settings, Glue42 Gateway settings and shared configuration settings to be used by all [**Glue42 Clients**](../../glue42-client/overview/index.html) on this domain. If you provide a configuration file, then it **must** be named `glue.config.json`.
 
 Each Glue42 Client app can initialize the [**Glue42 Web**](../../../../reference/core/latest/glue42%20web/index.html) library with its own [`Config`](../../../../reference/core/latest/glue42%20web/index.html#!Config) object which will override the default settings specified in the `glue.config.json` file (see [Initializing a Glue42 Client](../../glue42-client/overview/index.html#initializing_a_glue42_client)).
 
@@ -38,7 +38,8 @@ Below you can see the default content and settings in the `glue.config.json` fil
     },
     "gateway": {
         "location": "./gateway.js"
-    }
+    },
+    "channels": []
 }
 ```
 
@@ -68,6 +69,10 @@ The `gateway` top-level key has the following properties:
 | `appender.name` | `string` | The name of the logging function defined in the log appender script. | Yes | `-` |
 
 For more information on defining a custom log appender, see the [Advanced Setup](../setup/index.html#advanced) section.
+
+- `channels` - An *optional* configuration object that defines the [color channels](../../capabilities/channels/index.html) with their names, colors and initial contexts. The channels configuration is shared between all applications.
+
+The shape of the property is the same as the [**Glue42 Enterprise: Channels Configuration**](../../../developers/configuration/channels/index.html#channels_configuration).
 
 ## Glue42 Gateway
 
