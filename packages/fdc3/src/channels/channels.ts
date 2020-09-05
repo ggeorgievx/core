@@ -2,6 +2,7 @@ import { FDC3 } from "../../types";
 import { Glue42 } from "@glue42/desktop";
 import { SystemChannel, AppChannel } from "./channel";
 import { WindowType } from "../windowtype";
+import { isGlue42Core } from "../utils";
 
 const Listener = (actualUnsub:
     (() => void)
@@ -92,13 +93,16 @@ const createChannelsApi = (): FDC3.ChannelsAPI => {
 
         const current = await (window as WindowType).glue.channels.current();
 
-        if (current) {
-            handleSwitchChannelUI(current);
-        }
+        // In Glue42 Core the channel selector widget needs to use the FDC3 Channels API instead of the Glue42 Channels API to navigate between the channels.
+        if (!isGlue42Core) {
+            if (current) {
+                handleSwitchChannelUI(current);
+            }
 
-        glue.channels.changed((channelId) => {
-            handleSwitchChannelUI(channelId);
-        });
+            glue.channels.changed((channelId) => {
+                handleSwitchChannelUI(channelId);
+            });
+        }
     };
 
     const initDone = init();
@@ -240,16 +244,6 @@ const createChannelsApi = (): FDC3.ChannelsAPI => {
 
         if (pendingSubscription) {
             const { contextType, handler, setActualUnsub } = pendingSubscription;
-
-            const replay = async (): Promise<void> => {
-                const data = await newChannel?.getCurrentContext();
-
-                if (data) {
-                    handler(data);
-                }
-            };
-
-            replay();
 
             const listener = addContextListener(contextType, handler);
 

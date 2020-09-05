@@ -7,6 +7,7 @@ import { FDC3 } from "../types";
 import { WindowType } from "./windowtype";
 
 const defaultGlueConfig = {
+    application: (window as WindowType).fdc3AppName,
     appManager: true,
     context: true,
     intents: true,
