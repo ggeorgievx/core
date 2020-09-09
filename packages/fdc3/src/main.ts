@@ -1,5 +1,5 @@
 import createDesktopAgent from "./agent";
-import Glue, { Glue42 } from "@glue42/desktop";
+import { Glue42 } from "@glue42/desktop";
 import GlueWebFactory from "@glue42/web";
 import { isGlue42Core, decorateContextApi } from "./utils";
 import { version } from "../package.json";
@@ -24,9 +24,10 @@ const patchSharedContexts = (): Promise<void> => {
         let interval: any;
 
         const callback = async (): Promise<void> => {
-            const channels = await (window as WindowType).glue.channels.list();
+            const channels = await (window as WindowType).glue.channels.all();
+            const firstChannel: Glue42.Channels.ChannelContext = await (window as WindowType).glue.channels.get(channels[0]);
 
-            if (channels.length === 0 || !isEmptyObject(channels[0])) {
+            if (channels.length === 0 || !isEmptyObject(firstChannel)) {
                 clearInterval(interval);
                 resolve();
             }
@@ -67,7 +68,13 @@ const setupGlue = (clientGlueConfig?: Glue42.Config): void => {
         });
 
         (window as WindowType).gluePromise = waitGlue42GD
-            .then(() => Glue(clientGlueConfig || defaultGlueConfig))
+            .then(() => {
+                const GlueFactory = (window as WindowType).Glue;
+                if (!GlueFactory) {
+                    return Promise.reject(Error("There is no Glue factory function on the window object !"));
+                }
+                return GlueFactory(clientGlueConfig || defaultGlueConfig);
+            })
             .then((g) => {
                 const glue = decorateContextApi(g);
                 (window as WindowType).glue = glue;

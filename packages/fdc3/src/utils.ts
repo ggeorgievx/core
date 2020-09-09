@@ -7,23 +7,25 @@ import { Glue42Web } from "@glue42/web";
  * 2. Ignore initial replay
  */
 export const decorateContextApi = (glue: Glue42.Glue | Glue42Web.API): Glue42.Glue | Glue42Web.API => {
-    glue.contexts.subscribe = (name: string, callback: (data: any, delta: any, removed: string[], unsubscribe: () => void, extraData?: any) => void): Promise<() => void> => {
+    const newGlue: any = { ...glue, contexts: { ...glue.contexts } };
+
+    newGlue.contexts.subscribe = (name: string, callback: (data: any, delta: any, removed: string[], unsubscribe: () => void, extraData?: any) => void): Promise<() => void> => {
         let didReplay = false;
-        return glue.contexts.subscribe(name, (data: any, delta: any, removed: string[], unsubscribe: () => void, extraData?: any) => {
+        return newGlue.contexts.subscribe(name, (data: any, delta: any, removed: string[], unsubscribe: () => void, extraData?: any) => {
             if (!didReplay) {
                 didReplay = true;
                 return;
             }
- 
+
             const updateFromMe = extraData.updaterId === glue.interop.instance.instance;
- 
+
             if (!updateFromMe) {
                 callback(data, delta, removed, unsubscribe, extraData);
             }
         });
     };
- 
-    return glue;
+
+    return newGlue;
 };
 
 export const isGlue42Core = !navigator.userAgent.toLowerCase().includes(" electron/");

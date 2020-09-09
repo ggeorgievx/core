@@ -70,9 +70,13 @@ const createChannelsApi = (): FDC3.ChannelsAPI => {
     };
 
     const createPendingListener = (contextType: string, handler: (context: FDC3.Context) => void): FDC3.Listener => {
-        let unsubscribe = (): void => { pendingSubscription = null; };
+        let unsubscribe = (): void => {
+            pendingSubscription = null;
+        };
 
-        const setActualUnsub = (actualUnsub: () => void): void => { unsubscribe = actualUnsub; };
+        const setActualUnsub = (actualUnsub: () => void): void => {
+            unsubscribe = actualUnsub;
+        };
 
         // Used inside of setCurrentChannel.
         pendingSubscription = { contextType, handler, setActualUnsub };
@@ -85,7 +89,11 @@ const createChannelsApi = (): FDC3.ChannelsAPI => {
     const init = async (): Promise<void> => {
         const glue = await (window as WindowType).gluePromise;
 
-        (await glue.channels.list()).map((channelContext) => {
+        const channelNames = await glue.channels.all();
+        const channelContents: Array<Glue42.Channels.ChannelContext> =
+            await Promise.all(channelNames.map((name: string) => glue.channels.get(name)));
+
+        channelContents.map((channelContext) => {
             channels[channelContext.name] = mapToFDC3SystemChannel(channelContext);
         });
 
@@ -99,7 +107,7 @@ const createChannelsApi = (): FDC3.ChannelsAPI => {
                 handleSwitchChannelUI(current);
             }
 
-            glue.channels.changed((channelId) => {
+            glue.channels.changed((channelId: string) => {
                 handleSwitchChannelUI(channelId);
             });
         }

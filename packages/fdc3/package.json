@@ -1,6 +1,6 @@
 {
     "name": "@glue42/fdc3",
-    "version": "1.0.3",
+    "version": "1.1.1-beta.1",
     "description": "Glue42 implementation of the FDC3 standard",
     "main": "./dist/fdc3-glue42.js",
     "module": "./dist/fdc3-glue42.js",
