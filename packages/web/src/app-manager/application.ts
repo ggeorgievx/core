@@ -2,6 +2,7 @@ import { Glue42Web } from "../../web";
 import { Windows } from "../windows/main";
 import { default as CallbackRegistryFactory, CallbackRegistry, UnsubscribeFunction } from "callback-registry";
 import { AppProps } from "./types";
+import { promisePlus } from "../shared/promise-plus";
 
 export class Application implements Glue42Web.AppManager.Application {
     public _url: string;
@@ -52,36 +53,8 @@ export class Application implements Glue42Web.AppManager.Application {
         return this._appManager.instances().filter((instance: Glue42Web.AppManager.Instance) => instance.application.name === this.name);
     }
 
-    public start(context?: object, options?: Glue42Web.Windows.Settings): Promise<Glue42Web.AppManager.Instance> {
-        return new Promise((resolve, reject) => {
-            // eslint-disable-next-line prefer-const
-            let unsubscribeFunc: UnsubscribeFunction;
-
-            const timeoutId = setTimeout(() => {
-                unsubscribeFunc();
-                reject(`Application "${this.name}" start timeout!`);
-            }, 3000);
-
-            unsubscribeFunc = this._appManager.onInstanceStarted((instance) => {
-                if (instance.application.name === this.name) {
-                    clearTimeout(timeoutId);
-                    unsubscribeFunc();
-                    resolve(instance);
-                }
-            });
-
-            const openOptions = {
-                ...this._props?.userProperties?.details,
-                ...options,
-                context: context || options?.context
-            };
-
-            if (!this._url) {
-                throw new Error(`Application ${this.name} doesn't have a URL.`);
-            }
-
-            this._windows.open(this.name, this._url, openOptions as Glue42Web.Windows.CreateOptions);
-        });
+    public start = (context?: object, options?: Glue42Web.Windows.Settings): Promise<Glue42Web.AppManager.Instance> => {
+        return promisePlus(() => this.startWithoutTimeout(context, options), 3000, `Application "${this.name}" start timeout!`);
     }
 
     /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -102,5 +75,52 @@ export class Application implements Glue42Web.AppManager.Application {
         Object.keys(props).forEach((key) => {
             (this._props as any)[key] = (props as any)[key];
         });
+    }
+
+    private async startWithoutTimeout(context?: object, options?: Glue42Web.Windows.Settings): Promise<Glue42Web.AppManager.Instance> {
+        const openOptions = {
+            ...this._props?.userProperties?.details,
+            ...options,
+            context: context || options?.context
+        };
+
+        if (!this._url) {
+            throw new Error(`Application ${this.name} doesn't have a URL.`);
+        }
+
+        let appWindow: Glue42Web.Windows.WebWindow;
+        let unsubscribeFunc: UnsubscribeFunction;
+        let resolveCallback: (value?: Glue42Web.AppManager.Instance | PromiseLike<Glue42Web.AppManager.Instance>) => void;
+        const startedAppsWindowIdsToInstances: Record<string, Glue42Web.AppManager.Instance> = {};
+
+        const checkResolveCondition = () => {
+            if (typeof appWindow !== "undefined") {
+                const instance = startedAppsWindowIdsToInstances[appWindow.id];
+                if (typeof instance !== "undefined") {
+                    unsubscribeFunc();
+                    return resolveCallback(instance);
+                }
+            }
+        };
+
+        const appInstanceStartedPromise: Promise<Glue42Web.AppManager.Instance> = new Promise((resolve) => {
+            resolveCallback = resolve;
+
+            // `appManager.onInstanceStarted()` could be called before or after `windows.open()` resolves.
+            unsubscribeFunc = this._appManager.onInstanceStarted((startedInstance) => {
+                const windowId = startedInstance.agm.windowId;
+                if (typeof windowId !== "undefined") {
+                    startedAppsWindowIdsToInstances[windowId] = startedInstance;
+                    // Handles the case when `appManager.onInstanceStarted()` is fired AFTER `windows.open()` resolves.
+                    checkResolveCondition();
+                }
+            });
+        });
+
+        appWindow = await this._windows.open(this.name, this._url, openOptions as Glue42Web.Windows.CreateOptions);
+        // Handles the case when `appManager.onInstanceStarted()` is fired BEFORE `windows.open()` resolves.
+        checkResolveCondition();
+
+        return appInstanceStartedPromise;
     }
 }
