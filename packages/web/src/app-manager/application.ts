@@ -52,36 +52,39 @@ export class Application implements Glue42Web.AppManager.Application {
         return this._appManager.instances().filter((instance: Glue42Web.AppManager.Instance) => instance.application.name === this.name);
     }
 
-    public start(context?: object, options?: Glue42Web.Windows.Settings): Promise<Glue42Web.AppManager.Instance> {
-        return new Promise((resolve, reject) => {
-            // eslint-disable-next-line prefer-const
+    public async start(context?: object, options?: Glue42Web.Windows.Settings): Promise<Glue42Web.AppManager.Instance> {
+        const openOptions = {
+            ...this._props?.userProperties?.details,
+            ...options,
+            context: context || options?.context
+        };
+
+        if (!this._url) {
+            throw new Error(`Application ${this.name} doesn't have a URL.`);
+        }
+
+        let appWindow: Glue42Web.Windows.WebWindow;
+
+        const appInstanceStartedPromise: Promise<Glue42Web.AppManager.Instance> = new Promise((resolve, reject) => {
             let unsubscribeFunc: UnsubscribeFunction;
 
             const timeoutId = setTimeout(() => {
                 unsubscribeFunc();
-                reject(`Application "${this.name}" start timeout!`);
+                reject(new Error(`Application "${this.name}" start timeout!`));
             }, 3000);
 
             unsubscribeFunc = this._appManager.onInstanceStarted((instance) => {
-                if (instance.application.name === this.name) {
+                if (appWindow.id === instance.agm.windowId) {
                     clearTimeout(timeoutId);
                     unsubscribeFunc();
                     resolve(instance);
                 }
             });
-
-            const openOptions = {
-                ...this._props?.userProperties?.details,
-                ...options,
-                context: context || options?.context
-            };
-
-            if (!this._url) {
-                throw new Error(`Application ${this.name} doesn't have a URL.`);
-            }
-
-            this._windows.open(this.name, this._url, openOptions as Glue42Web.Windows.CreateOptions);
         });
+
+        appWindow = await this._windows.open(this.name, this._url, openOptions as Glue42Web.Windows.CreateOptions);
+
+        return appInstanceStartedPromise;
     }
 
     /* eslint-disable @typescript-eslint/no-explicit-any */
