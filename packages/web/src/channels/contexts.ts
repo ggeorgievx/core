@@ -23,17 +23,21 @@ export class SharedContextSubscriber {
 
         const contextName = this.createContextName(name);
 
-        return this.contexts.subscribe(contextName, (data, _, __, ___, extraData) => {
-            callback(data.data, data, extraData?.updaterId);
+        return this.contexts.subscribe(contextName, (context, _, __, ___, extraData) => {
+            const contextWithDataObj = this.setContextDataToEmptyObjIfMissing(context);
+
+            callback(contextWithDataObj.data, contextWithDataObj, extraData?.updaterId);
         });
     }
 
     public async switchChannel(name: string): Promise<void> {
         this.unsubscribe();
         const contextName = this.createContextName(name);
-        this.unsubscribeFunc = await this.contexts.subscribe(contextName, (data, _, __, ___, extraData) => {
+        this.unsubscribeFunc = await this.contexts.subscribe(contextName, (context, _, __, ___, extraData) => {
+            const contextWithDataObj = this.setContextDataToEmptyObjIfMissing(context);
+
             if (this.callback) {
-                this.callback(data.data, data, extraData?.updaterId);
+                this.callback(contextWithDataObj.data, contextWithDataObj, extraData?.updaterId);
             }
         });
     }
@@ -64,8 +68,10 @@ export class SharedContextSubscriber {
 
             const contextName = this.createContextName(name);
 
-            this.contexts.subscribe(contextName, (data) => {
-                resolve(data);
+            this.contexts.subscribe(contextName, (context) => {
+                const contextWithDataObj = this.setContextDataToEmptyObjIfMissing(context);
+
+                resolve(contextWithDataObj);
             }).then((unsubscribeFunc) => unsubscribeFunc());
         });
     }
@@ -103,6 +109,13 @@ export class SharedContextSubscriber {
 
     public isChannel(name: string): boolean {
         return this.all().some((channelName) => channelName === name);
+    }
+
+    public setContextDataToEmptyObjIfMissing = (context: Glue42Web.Channels.ChannelContext): Glue42Web.Channels.ChannelContext => {
+        return {
+            ...context,
+            data: context.data || {}
+        };
     }
 
     private createContextName(name: string): string {
